@@ -16,12 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.hre.adapter.RecyclerViewAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCreateIntendBinding
-import com.android.hre.response.CreateIntendObject
+import com.android.hre.models.Intends
 import com.android.hre.response.creatindent.SaveIndentResponse
 import com.android.hre.response.pcns.PCN
-import com.google.gson.JsonObject
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -127,13 +124,13 @@ class CreateIntendActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
-        val array = JSONArray()
-        val objp = JSONObject()
-        objp.put("material_id",materialCategory)
-        objp.put("description",materialdescription)
-        objp.put("quantity",materialSize)
-        val jsonArray = JSONArray()
-        jsonArray.put(objp)
+//        val array = JSONArray()
+//        val objp = JSONObject()
+//        objp.put("material_id",materialCategory)
+//        objp.put("description",materialdescription)
+//        objp.put("quantity",materialSize)
+//        val jsonArray = JSONArray()
+//        jsonArray.put(objp)
 //////        obj.put("user_id", userid)
 //////        obj.put("pcn", "PCN_001")
 ////        for (i in 0 until jsonArray.length()){
@@ -153,8 +150,12 @@ class CreateIntendActivity : AppCompatActivity() {
 //
 //     Log.v("print",hashMap.toString())
 
-        val createIntendObject = CreateIntendObject("1","PCN",jsonArray);
-        RetrofitClient.instance.createIntend(createIntendObject)
+//        val intend = Intends("CT00001","ABCD","20")
+//
+//        val intends: List<Intends>
+
+
+        RetrofitClient.instance.sendReq("1","PCN",getMaterials())
             .enqueue(object: Callback<SaveIndentResponse> {
                 override fun onFailure(call: Call<SaveIndentResponse>, t: Throwable) {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
@@ -178,6 +179,9 @@ class CreateIntendActivity : AppCompatActivity() {
 
 
     }
+
+    fun getMaterials() = listOf( Intends( "CT00001","ABCD","20" ),Intends( "CT00002","ABCD","23" ))
+
 
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {

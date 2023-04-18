@@ -1,5 +1,6 @@
 package com.android.hre.api
 
+import com.android.hre.models.Intends
 import com.android.hre.response.CreateIntendObject
 import com.android.hre.response.Getmaterials
 import com.android.hre.response.LoginResponse
@@ -72,9 +73,24 @@ interface Api {
 //    @POST("create-indent")
 
 
-    @FormUrlEncoded
-    @POST("create-intend")
-    fun createIntend(@Body myJsonObject: CreateIntendObject): Call<SaveIndentResponse>
+//    @FormUrlEncoded
+//    @POST("create-intend")
+//    fun createIntend(@Body myJsonObject: CreateIntendObject): Call<SaveIndentResponse>
+//
+
+    fun sendReq(
+        @Field("user_id") s: String,
+        @Field("pcn") pcn: String,
+        @Field("indents") indents: List<Intends>): Call<SaveIndentResponse>
+
+//        @FormUrlEncoded
+//    @POST("create-indent")
+//    fun sendReq(
+//        @Field("user_id") user_id: String,
+//        @Field("pcn") pcn: String,
+//        @Field("indents") indents: List<Intends>
+//    ): Call<SaveIndentResponse>
+
 
 
 //    @FormUrlEncoded
