@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.android.hre.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_ticketFragment"
+            app:destination="@id/ticketFragment"
+            app:popUpTo="@+id/navigation_home"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_navigation_home_to_indentFragment2"
+            app:destination="@id/indentFragment"
+            app:popUpTo="@+id/navigation_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.android.hre.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.android.hre.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/indentFragment"
+        android:name="com.android.hre.IndentFragment"
+        android:label="fragment_indent"
+        tools:layout="@layout/fragment_indent" />
+    <fragment
+        android:id="@+id/ticketFragment"
+        android:name="com.android.hre.TicketFragment"
+        android:label="fragment_ticket"
+        tools:layout="@layout/fragment_ticket" />
+
+</navigation>
