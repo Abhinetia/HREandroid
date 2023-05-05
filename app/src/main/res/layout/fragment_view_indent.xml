@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ViewIndentFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rv_recvyler"
+        android:layout_height="wrap_content">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recylergrndata"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="5dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:id="@+id/tv_showPening"
+            android:text="No Pending  Indent has Been Created"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+</FrameLayout>
