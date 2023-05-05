@@ -9,6 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:id="@+id/framela"
         android:background="@color/hre_header">
 
     </FrameLayout>
@@ -50,18 +51,78 @@
     </RelativeLayout>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/framela"
+        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="20dp"
+        android:minWidth="120dp"
+        android:padding="1dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black_text"
+        android:layout_above="@+id/rv_recvyler"
+        android:text="Pending Indent"
+        android:layout_height="wrap_content"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rv_recvyler"
+        android:layout_below="@+id/framela"
+        android:layout_height="wrap_content">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recylergrndata"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="5dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:id="@+id/tv_showPening"
+            android:text="No Pending  Indent has Been Created"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
         android:text="Welcome"
+        android:visibility="gone"
         android:id="@+id/tv_display"
         android:layout_height="wrap_content"/>
 
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:text="GRN"
+        android:gravity="center"
+        android:visibility="visible"
+        android:id="@+id/tv_grn"
+        android:layout_height="wrap_content"/>
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ivnotificatn"
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_notification"/>

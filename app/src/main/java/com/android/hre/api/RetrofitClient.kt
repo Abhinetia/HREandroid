@@ -5,8 +5,10 @@ import android.util.Log
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
 
@@ -39,5 +41,25 @@ object RetrofitClient {
 
         retrofit.create(Api::class.java)
     }
+
+
+val client = OkHttpClient.Builder()
+    .build()
+
+    val gson = GsonBuilder()
+        .setLenient()
+        .create()
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://hre.netiapps.com/api/")
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create()) // Add RxJava3 call adapter factory
+
+        .build()
+
+    val api = retrofit.create(Api::class.java)
+
+
 
 }

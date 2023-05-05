@@ -2,20 +2,15 @@ package com.android.hre.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.android.hre.CreateIntendActivity
-import com.android.hre.R
 import com.android.hre.databinding.ViewmoreextramaterialBinding
 import com.android.hre.response.Getmaterials
 import me.tatarka.inject.annotations.Inject
@@ -88,8 +83,11 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
                     //     Log.v("infod",value.toString())
 //                        Log.v("infok",key)
 
+                    fun String.capitalizeWords(): String = split(" ").map { it.capitalize() }.joinToString(" ")
+
                     tvDisplay.setOnClickListener {
-                        tvDisplay.text= stringd
+                        tvDisplay.text= stringd.capitalizeWords()
+                        Log.v("text",stringd.toString())
                         tvqty.visibility = View.VISIBLE
                         description.visibility = View.VISIBLE
                         tvuser.visibility = View.VISIBLE
@@ -97,6 +95,8 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
 
 
                     }
+
+
 
 
 

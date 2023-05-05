@@ -17,7 +17,7 @@ import com.android.hre.databinding.FragmentTicketBinding
 
 class TicketFragment : Fragment() {
 
-    lateinit var cretaeTicket: AppCompatButton
+    lateinit var cretaeTicket: TextView
     lateinit var createviewReplies :TextView
 
 

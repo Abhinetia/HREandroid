@@ -50,7 +50,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:padding="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_below="@+id/rvbackname"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_height="wrap_content"
@@ -67,116 +67,141 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="3dp"
                 android:layout_marginTop="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
 
                 <EditText
+                    android:id="@+id/et_tickettitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/et_tickettitle"
-                    android:hint="Ticket Title"
-                    android:singleLine="true"
-                    android:textSize="13sp"
-                    android:textColor="@color/black_text"
-                    android:padding="12dp"
                     android:background="@color/white"
-                    />
+                    android:hint="Ticket Title"
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text"
+                    android:textSize="13sp" />
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/crdviewDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="3dp"
                 android:layout_marginTop="15dp"
-                android:id="@+id/crdviewDesc"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
 
                 <EditText
+                    android:id="@+id/et_descrtiption"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Description"
-                    android:textColor="@color/black_text"
                     android:layout_gravity="start"
-                    android:gravity="start"
-                    android:id="@+id/et_descrtiption"
-                    android:singleLine="false"
-                    android:minHeight="130dp"
-                    android:textSize="12sp"
-                    android:padding="12dp"
                     android:background="@color/white"
-                    />
+                    android:gravity="start"
+                    android:hint="Description"
+                    android:minHeight="130dp"
+                    android:padding="12dp"
+                    android:singleLine="false"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
 
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Assign to"
                 android:layout_marginTop="15dp"
+                android:text="PCN"
                 android:textColor="@color/black_text"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="3dp"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/et_selctpcn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Employee ID"
-                    android:id="@+id/et_employeeid"
-                    android:singleLine="true"
-                    android:textSize="12sp"
-                    android:drawableRight="@drawable/ic_dropdown"
-                    android:padding="13dp"
                     android:background="@color/white"
-                    />
+                    android:drawableRight="@drawable/ic_dropdown"
+                    android:hint="Select PCN"
+                    android:padding="13dp"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Recipient"
+                android:textColor="@color/black_text"
+                android:textSize="13sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
+
+                <EditText
+                    android:id="@+id/et_selctrecepitent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:drawableRight="@drawable/ic_dropdown"
+                    android:hint="Select Recipient"
+                    android:padding="13dp"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
 
             </androidx.cardview.widget.CardView>
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:id="@+id/rvimage"
-            android:padding="5dp"
-            android:layout_gravity="center|start"
-            android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/rvimage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle"
-                android:backgroundTint="#FF5E5E"
-                android:orientation="horizontal">
-                <ImageView
+                android:layout_gravity="center|start"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/iv_camera"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_camera"/>
+                    android:background="@drawable/rectangle"
+                    android:backgroundTint="#FF5E5E"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:id="@+id/iv_camera"
+                        android:src="@drawable/ic_camera" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:text="Add Images"
+                    android:textColor="@color/black_text">
+
+                </TextView>
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Add Images"
-                android:layout_gravity="center"
-                android:textColor="@color/black_text"
-                android:layout_marginLeft="20dp"
-                android:layout_height="wrap_content">
-
-            </TextView>
-
-        </LinearLayout>
 
         </LinearLayout>
 

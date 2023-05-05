@@ -44,5 +44,15 @@
         android:name="com.android.hre.TicketFragment"
         android:label="fragment_ticket"
         tools:layout="@layout/fragment_ticket" />
+    <fragment
+        android:id="@+id/GRNFragment"
+        android:name="com.android.hre.GRNFragment"
+        android:label="fragment_g_r_n"
+        tools:layout="@layout/fragment_g_r_n" />
+    <fragment
+        android:id="@+id/viewIndentFragment"
+        android:name="com.android.hre.ViewIndentFragment"
+        android:label="fragment_view_indent"
+        tools:layout="@layout/fragment_view_indent" />
 
 </navigation>

@@ -113,23 +113,38 @@
                 android:layout_marginLeft="68dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity : "
+                android:layout_below="@+id/brnad"
+                android:maxLines="1"
+                android:id="@+id/qty"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="40dp"
                 android:id="@+id/tvuser"
+                android:layout_toRightOf="@+id/qty"
                 android:layout_below="@+id/brnad"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvqty"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:textSize="12sp"
                     android:inputType="number"
-                    android:padding="12dp"
+                    android:padding="8sp"
                     android:layout_height="wrap_content"
-                    android:hint="QTY" />
+                    android:hint="" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,7 +160,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/description"
-                    android:minHeight="100dp"
                     android:layout_gravity="start"
                     android:gravity="start"
                     android:textSize="12sp"
@@ -153,7 +167,7 @@
                     android:singleLine="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Note" />
+                    android:hint="Remarks" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,32 +179,30 @@
                 android:layout_below="@+id/tvusu"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:padding="5dp"
+                android:minWidth="100dp"
                 android:text="View More"
                 android:textColor="@color/black_text"
                 android:textSize="13dp" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_below="@+id/tvusu"
-                android:gravity="right|center"
-                android:layout_marginTop="5dp"
-                android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/tv_display"
-                android:layout_alignParentEnd="true"
-                android:visibility="visible"
                 android:id="@+id/tv_viewmore"
-                android:textSize="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_display"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tv_display"
+                android:gravity="right"
+                android:padding="5dp"
                 android:text="Select"
                 android:textColor="#FF5E5E"
-                />
-
-
+                android:textSize="14dp"
+                android:visibility="visible" />
 
 
 

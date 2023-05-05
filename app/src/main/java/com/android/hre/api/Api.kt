@@ -1,13 +1,18 @@
 package com.android.hre.api
 
 import com.android.hre.models.Intends
-import com.android.hre.response.CreateIntendObject
-import com.android.hre.response.Getmaterials
-import com.android.hre.response.LoginResponse
+import com.android.hre.response.*
+import com.android.hre.response.countupdate.CountList
+import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.creatindent.SaveIndentResponse
+import com.android.hre.response.grn.GrnList
+import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.pcns.PCN
+import com.android.hre.response.viewmoreindent.ViewMoreIndent
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
@@ -39,20 +44,27 @@ interface Api {
         @Field("user_id") user_id:String
    ) : Call<ListMaterials>
 
-//    @FormUrlEncoded
-//    @POST("create-indent")
-//    fun sendReq(
-//        @Field("material_id") material_id:String,
-//        @Field("description") description:String,
-//        @Field("quantity") quantity:String,
-//
-//
-//        @Field("user_id") user_id: String,
-//        @Field("pcn") pcn:String,
-//
-//        @Field("quantity") quantity:String,
-//        @Field("description") description:String,
-//    ) : Call<SaveResponse>  //@Body requestModel: RequestModel
+
+   @GET("grn")
+   fun getGRnDetails(
+       @Query("user_id") user_id: String
+   ) :Call<GrnList>
+
+   @FormUrlEncoded
+   @POST("update-grn")
+   fun updateGrn(
+       @Field("user_id") user_id: String,
+       @Field("grn") grn :String,
+       @Field("approved") approved:String,
+       @Field("rejected") rejected:String
+   ) :Call<CountList>
+
+   @FormUrlEncoded
+   @POST("get-indents")
+   fun getIndents(
+       @Field("user_id") user_id :String
+   ) :Call<GetIndentsHome>
+
 
     @FormUrlEncoded
     @POST("pcns")
@@ -61,52 +73,30 @@ interface Api {
     ) : Call<PCN>
 
 
-//    fun sendReq(jsonArray: JSONArray, s: String, s1: String): Any {
-//     @Field("indents")  learning_objective_uuids :ArrayList<String>,
-//    @Field("user_id") userId :String,
-//    @Field("pcn") pcn: String,
-//
-//    }
+    @FormUrlEncoded
+    @POST("get-indent-details")
+    fun getViewMoreIndent(
+        @Field("user_id") user_id :String,
+        @Field("indent_id") indent_id :String
+    )  :Call<ViewMoreIndent>
 
 
-//        @FormUrlEncoded
-//    @POST("create-indent")
+    @Multipart
+    @POST("create-ticket")
+    fun uploadData(
+        @Part("user_id") userId: RequestBody,
+        @Part("pcn") pcn: RequestBody,
+        @Part("indent_no") indentNo: RequestBody,
+        @Part("subject") subject: RequestBody,
+        @Part("issue") issue: RequestBody,
+        @Part image: MultipartBody.Part,
+        @Part("recipient") recipient: RequestBody
+    ): Call<TicketCreated>
 
 
-//    @FormUrlEncoded
-//    @POST("create-intend")
-//    fun createIntend(@Body myJsonObject: CreateIntendObject): Call<SaveIndentResponse>
-//
-
-    fun sendReq(
-        @Field("user_id") s: String,
-        @Field("pcn") pcn: String,
-        @Field("indents") indents: List<Intends>): Call<SaveIndentResponse>
-
-//        @FormUrlEncoded
-//    @POST("create-indent")
-//    fun sendReq(
-//        @Field("user_id") user_id: String,
-//        @Field("pcn") pcn: String,
-//        @Field("indents") indents: List<Intends>
-//    ): Call<SaveIndentResponse>
-
-
-
-//    @FormUrlEncoded
-//    @POST("create-indent")
-//    fun sendReq(@FieldMap ): Call<SaveResponse>
-
-//    @POST("create-indent")
-//    Call<SaveResponse> sendRequest(@Body RequestBody json )
-
-//    @FormUrlEncoded
-//    @POST("create-indent")
-//    fun sendReq(
-//        @Field("user_id") userid: String,
-//        @Field("pcn") pcn: String,
-//        @Field("indents") obj: JSONArray
-//    ): Call<SaveIndentResponse>
-//
-    
+    @Headers("Content-Type: application/json")
+    @POST("create-indent")
+     fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>
 }
+
+

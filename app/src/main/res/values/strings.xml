@@ -337,6 +337,8 @@
     <string name="no_search_results_found">No Results Found</string>
     <string name="search_articles_hint">Search</string>
     <string name="about_sport">About</string>
+    <string name="nav_drawer_open" />
+    <string name="nav_drawer_close" />
 
 
 </resources>

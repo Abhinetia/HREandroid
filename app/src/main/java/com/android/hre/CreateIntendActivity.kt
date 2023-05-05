@@ -1,10 +1,12 @@
 package com.android.hre
 
+import android.R
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ArrayAdapter
@@ -13,24 +15,25 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.android.hre.adapter.RecyclerViewAdapter
 import com.android.hre.api.RetrofitClient
+import com.android.hre.api.RetrofitClient.api
 import com.android.hre.databinding.ActivityCreateIntendBinding
 import com.android.hre.models.Intends
-import com.android.hre.response.creatindent.SaveIndentResponse
+import com.android.hre.response.CreateIndentRequest
+import com.android.hre.response.Getmaterials
+import com.android.hre.response.Indent
+import com.android.hre.response.IndentResponse
 import com.android.hre.response.pcns.PCN
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.security.AccessController.getContext
 
 
-class CreateIntendActivity : AppCompatActivity() {
+class CreateIntendActivity : AppCompatActivity(), FullScreenBottomSheetDialog.BottomSheetItemClickListener {
 
     lateinit var btnshowbootomsheet :Button
     private lateinit var binding: ActivityCreateIntendBinding
-    lateinit var recyclerViewAdapter: RecyclerViewAdapter
-    lateinit var viewModel: MainActivityViewModel
     var materialCategory :String = ""
     var materialName : String = ""
     var materialBraand:String = ""
@@ -39,17 +42,23 @@ class CreateIntendActivity : AppCompatActivity() {
     var userid : String = ""
     val listdata: ArrayList<String> = arrayListOf()
     var  pcnnumber :String =""
+    val listdindent: ArrayList<String> = arrayListOf()
 
 
+    var arrayList_details: List<Indent> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
-        setContentView(R.layout.activity_create_intend)
+        //setContentView(R.layout.activity_create_intend)
 
         binding = ActivityCreateIntendBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val mLayoutInflater = LayoutInflater.from(this@CreateIntendActivity)
+       // val customLayout = mLayoutInflater.inflate(R.layout.a, null)
 
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
@@ -58,13 +67,12 @@ class CreateIntendActivity : AppCompatActivity() {
 
         binding.btnMaterials.setOnClickListener {
 
-//            if(pcnnumber.isEmpty()){
-//                binding.etpcnId.error = "Please Select PCN From the Drop Down"
-//                binding.etpcnId.requestFocus()
-//                return@setOnClickListener
-//            }
-             val Intent = Intent(this@CreateIntendActivity,SearchMaterialIndentActivity::class.java)
-             startForResult.launch(Intent)
+
+//             val Intent = Intent(this@CreateIntendActivity,SearchMaterialIndentActivity::class.java)
+//             startForResult.launch(Intent)
+
+            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this)
+            fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialog::class.simpleName)
 
         }
         binding.ivCancel.setOnClickListener {
@@ -113,9 +121,9 @@ class CreateIntendActivity : AppCompatActivity() {
                         Log.v("log",i.toString())
                         listdata.add(dataString.pcn)
                     }
-                    val arrayAdapter = ArrayAdapter(this@CreateIntendActivity,R.layout.dropdwon_item,listdata)
-                    binding.etpcnId.setAdapter(arrayAdapter)
-                    binding.etpcnId.setThreshold(1)
+//                    val arrayAdapter = ArrayAdapter(this@CreateIntendActivity,R.layout.dr,listdata)
+//                    binding.etpcnId.setAdapter(arrayAdapter)
+//                    binding.etpcnId.setThreshold(1)
 
                 }
             })
@@ -124,58 +132,80 @@ class CreateIntendActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
-//        val array = JSONArray()
-//        val objp = JSONObject()
-//        objp.put("material_id",materialCategory)
-//        objp.put("description",materialdescription)
-//        objp.put("quantity",materialSize)
-//        val jsonArray = JSONArray()
-//        jsonArray.put(objp)
-//////        obj.put("user_id", userid)
-//////        obj.put("pcn", "PCN_001")
-////        for (i in 0 until jsonArray.length()){
-////            obj.put("indents",jsonArray)
-////        }
+
+//        val request = CreateIndentRequest(
+//            userId = "1",
+//            pcn = "PCN_01155",
+//            indents = listOf(
+//                Indent(materialId = "CT00001", description = "ABCD", quantity = "20"),
+//                Indent(materialId = "CT00002", description = "DEF", quantity = "10")
+//            )
+//        )
+
+        val request = CreateIndentRequest(
+            userId = "1",
+            pcn = "PCN_055",
+            indents = arrayList_details
+        )
+
+//        var arrayList_details: List<Indent>? = request.indents
+//        for (i in 0 until arrayList_details?.size!!){
+//            val dataString : Indent  = arrayList_details.get(i)
 //
-//        jsonArray.put(objp)
+//            Log.v("log",i.toString())
+//            listdata.add(dataString.materialId)
+//            listdata.add(dataString.description)
+//            listdata.add(dataString.quantity)
 //
-////        Log.v("TAG",obj.toString());
-//        Log.v("such",jsonArray.toString())
+//        }
 
-
-//        val hashMap: HashMap<String, Any> = HashMap()
-//        hashMap.put("user_id", userid)
-//        hashMap.put("pcn", "PCN_001")
-//        hashMap.put("indents", jsonArray)
-//
-//     Log.v("print",hashMap.toString())
-
-//        val intend = Intends("CT00001","ABCD","20")
-//
-//        val intends: List<Intends>
-
-
-        RetrofitClient.instance.sendReq("1","PCN",getMaterials())
-            .enqueue(object: Callback<SaveIndentResponse> {
-                override fun onFailure(call: Call<SaveIndentResponse>, t: Throwable) {
-                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+        val call = api.createIndent(request)
+        call.enqueue(object : Callback<IndentResponse> {
+            override fun onResponse(call: Call<IndentResponse>, response: Response<IndentResponse>) {
+                if (response.isSuccessful) {
+                    Log.v("data",response.body().toString())
+                    // Handle successful response
+                    val apiResponse = response.body()
+                    // ...
+                } else {
+                    // Handle error response
+                    val errorMessage = response.message()
+                    // ...
                 }
+            }
 
-                override fun onResponse(call: Call<SaveIndentResponse>, response: Response<SaveIndentResponse>) {
-                    Log.v("Sucess",call.request().toString())
+            override fun onFailure(call: Call<IndentResponse>, t: Throwable) {
+                // Handle network failure or other errors
+                Log.v("data",t.toString())
 
-                    Log.v("Sucess",response.body().toString())
-                   val status = response.body()?.status
-//                    if (status?.equals(1)!!){
-//                        Log.v("respo",status.toString())
+                // ...
+            }
+        })
+
+
+//        Log.v("INPUTS",mainJSONObject.toString())
 //
-//                    }else{
-//                        Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()
+//        RetrofitClient.instance.sendReq(mainJSONObject)
+//            .enqueue(object: Callback<SaveResponse> {
+//                override fun onFailure(call: Call<SaveResponse>, t: Throwable) {
+//                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+//                }
 //
-//                    }
-
-                }
-            })
+//                override fun onResponse(call: Call<SaveResponse>, response: Response<SaveResponse>) {
+//                    Log.v("Sucess",call.request().toString())
+//
+//                    Log.v("Sucess",response.body().toString())
+//                   val status = response.body()?.status
+////                    if (status?.equals(1)!!){
+////                        Log.v("respo",status.toString())
+////
+////                    }else{
+////                        Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()
+////
+////                    }
+//
+//                }
+//            })
 
 
     }
@@ -219,4 +249,45 @@ class CreateIntendActivity : AppCompatActivity() {
 
         }
     }
+
+    override fun onClick(datax: Getmaterials.DataX, size: String, desc: String) {
+
+        val indents = listOf(
+            Indent(materialId = datax.material_id, description = desc, quantity = size)
+        )
+
+        materialCategory = datax.material_id
+        materialName = datax.name
+        materialBraand = datax.brand
+        materialSize = size
+
+        materialdescription = desc
+        binding.rvCosepcn.visibility = VISIBLE
+
+        binding.tvcategoryMaterial.text = materialCategory
+        binding.tvmaterialnameselection.text = materialName
+        binding.tvbrnacdnamescateg.text = materialBraand
+        binding.tvQtysize.text = materialSize
+        binding.tvdescrtipondisp.text = materialdescription
+
+
+        arrayList_details = indents + arrayList_details
+
+        singleLogic()
+
+    }
+
+    private fun singleLogic() {
+
+
+
+//        val mLayoutInflater = LayoutInflater.from(this@CreateIntendActivity)
+//        val customLayout = mLayoutInflater.inflate(R.layout., null)
+
+        TODO("Not yet implemented")
+    }
+
 }
+
+
+

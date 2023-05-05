@@ -16,6 +16,7 @@
         <item name="android:windowBackground">@color/hre_background</item>
 
         <item name="fontFamily">@font/dm_sans_bold</item>
+
     </style>
 
     <style name="Theme.HRE.NoActionBar">
@@ -26,7 +27,6 @@
     <style name="Theme.HRE.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.HRE.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 
 </resources>

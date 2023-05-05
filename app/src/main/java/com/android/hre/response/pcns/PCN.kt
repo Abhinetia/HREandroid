@@ -6,6 +6,11 @@ data class PCN(
     val status: Int
 ){
     class Data(
-        val pcn: String
+        val area: String,
+        val city: String,
+        val client_name: String,
+        val pcn: String,
+        val state: String,
+        val typeof_work: String
     )
 }
