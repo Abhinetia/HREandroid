@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <group
-       >
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
         <item
-            android:title="SOLUTIONS"/>
+            android:title=""
+            />
 
+        <item
+            android:title="SOLUTIONS"
+            />
 
+        <item
+            android:title=""
+            />
 
-    </group>
+        <item
+            android:title=""
+            />
 
+    <item
+        android:id="@+id/indentFragment"
+        android:title="Indent" />
+    <item
+        android:id="@+id/attendanceFragment2"
+        android:title="Attendance" />
     <item
         android:id="@+id/GRNFragment"
         android:title="GRN" />
 
+        <item
+            android:id="@+id/ticketFragment"
+            android:title="Tickets"/>
     <item
-        android:id="@+id/ticketFragment"
-        android:title="Tickets"/>
 
-</menu>
+        android:title="Petty Cash" />
+
+
+
+    </menu>
+
+

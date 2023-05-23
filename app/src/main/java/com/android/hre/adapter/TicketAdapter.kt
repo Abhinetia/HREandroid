@@ -1,62 +1,67 @@
 package com.android.hre.adapter
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
-import com.android.hre.ViewIndentFragment
+import com.android.hre.ViewTicketActivity
+import com.android.hre.databinding.FragmentTicketBinding
 import com.android.hre.databinding.HomeindentlistBinding
+import com.android.hre.databinding.TicketDetailsBinding
 import com.android.hre.response.homeindents.GetIndentsHome
+import com.android.hre.response.tickets.TicketList
 import com.android.hre.viewmoreindent.ViewMoreIndentActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
+class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
-class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
-
-    private lateinit var binding : HomeindentlistBinding
+    private lateinit var binding: TicketDetailsBinding
     private lateinit var context: Context
     var userid : String = ""
 
-
-
     inner class ViewHolder :RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n", "SuspiciousIndentation")
-        fun bind(dataX: GetIndentsHome.Data?) {
+        fun bind(dataX: TicketList.Data?) {
             binding.apply {
                 if (dataX != null){
-                    tvdisplaypcn.text = dataX.pcn
-                    tvIndentstatus.text = dataX.status
-                    tvDisplayindent.text = dataX.indent_no
+                    tvticketno.text = dataX.ticket_no
+                    tvTicketstatus.text = dataX.status
+                    val open = dataX.status
+                    tvTicketstatus.text = "$open"
+                    tvTicketstatus.setText("Open")
+
+
+                    tvTicketsubject.text = dataX.subject
+                    tvBody.text = dataX.message
                     //tvDisplaydate.text = dataX.created_on
 
 
                     val inputDateString = dataX.created_on
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                     val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                    val outputTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
 
                     val date = inputFormat.parse(inputDateString)
                     val outputDateString = outputFormat.format(date)
-                    val outputTimeString = outputTimeFormat.format(date)
 
-                    tvDisplaydate.text  = outputDateString +" "+ outputTimeString
+                    tvDate.text  = outputDateString
 
 
-                       binding.tvViewindents.setOnClickListener {
-                           Log.v("TAG",dataX.indent_id.toString())
-                          val intent = Intent(context,ViewMoreIndentActivity::class.java)
-                           intent.putExtra("indentid",dataX.indent_id.toString())
-                           context.startActivity(intent)
-                       }
+                    binding.tvViewmore.setOnClickListener {
+                        val Intent = Intent(context, ViewTicketActivity::class.java)
+                        Intent.putExtra("TicketId",dataX.ticket_id)
+                        Intent.putExtra("TicketNo",dataX.ticket_no)
+                        Intent.putExtra("Subject",dataX.subject)
+                        Intent.putExtra("Stauts",dataX.status)
+                        context.startActivity(Intent)
+
+                    }
                 }
 
             }
@@ -67,7 +72,7 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = HomeindentlistBinding.inflate(inflater, parent, false)
+        binding = TicketDetailsBinding.inflate(inflater, parent, false)
         context = parent.context
 
 
@@ -82,13 +87,12 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     override fun getItemCount(): Int = differ.currentList.size
 
-
-    private val differCallback = object : DiffUtil.ItemCallback<GetIndentsHome.Data>(){
-        override fun areItemsTheSame(oldItem: GetIndentsHome.Data, newItem: GetIndentsHome.Data): Boolean {
-            return oldItem.indent_id == newItem.indent_id
+    private val differCallback = object : DiffUtil.ItemCallback<TicketList.Data>(){
+        override fun areItemsTheSame(oldItem: TicketList.Data, newItem: TicketList.Data): Boolean {
+            return oldItem.ticket_no == newItem.ticket_no
         }
 
-        override fun areContentsTheSame(oldItem: GetIndentsHome.Data, newItem: GetIndentsHome.Data): Boolean {
+        override fun areContentsTheSame(oldItem: TicketList.Data, newItem: TicketList.Data): Boolean {
             return oldItem == newItem
         }
     }

@@ -40,6 +40,10 @@ class DisplayGrnActivity : AppCompatActivity() {
 
         fetchTheGRNDetails()
 
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun fetchTheGRNDetails() {

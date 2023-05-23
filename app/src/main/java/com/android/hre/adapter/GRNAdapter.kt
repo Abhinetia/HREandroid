@@ -1,14 +1,13 @@
 package com.android.hre.adapter
 
-import android.R.attr.button
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -95,13 +94,23 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                             val count = dataX.dispatched
                             val enteredValue = textViewtotalqusntityy.text.toString().toIntOrNull()
 
+
+
                             if (enteredValue == null) {
                                 Toast.makeText(context, "Please enter a valid number", Toast.LENGTH_SHORT).show()
-                            } else if (enteredValue.toString() > count) {
+                            } else if ("$enteredValue" > count) {
 
                                 Toast.makeText(context, "Count is greater than entered value", Toast.LENGTH_SHORT).show()
                             } else {
-                                RetrofitClient.instance.updateGrn(userid,dataX.grn,enteredValue.toString(),"0")
+
+                                val num1: Int = count.toInt()
+                                val num2: Int = textViewtotalqusntityy.text.toString().toInt()
+
+                                val rejected =  num1 - num2
+
+
+
+                                RetrofitClient.instance.updateGrn(userid,dataX.grn,enteredValue.toString(),rejected.toString())
                                 .enqueue(object : retrofit2.Callback<CountList> {
                                     override fun onResponse(call: Call<CountList>, response: Response<CountList>) {
                                         val updateResponse = response.body()
@@ -170,7 +179,8 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
         builder.setMessage(alertMessage)
         builder.setPositiveButton(
             "OK"
-        ) { dialogInterface, i ->  }
+        ) { dialogInterface, i ->
+             }   // (context as Activity).finish()
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvmesage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:background="@drawable/incomingbub"
+        android:text="I have Received "
+        android:textColor="@color/black_text"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:padding="5dp"
+        android:layout_below="@id/tvmesage"
+        android:id="@+id/tvreceptient"
+        android:text="Shashi"
+        android:textColor="#FF5E5E"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/tvreceptient"
+        android:layout_below="@id/tvmesage"
+        android:id="@+id/tvdate"
+        android:text="Date"
+        android:textColor="@color/black_text"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>

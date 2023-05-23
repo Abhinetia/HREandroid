@@ -25,6 +25,19 @@ class SharedPrefManager private constructor(private val mCtx: Context) {
             )
         }
 
+    fun checkUserNameMatchers(userName : String): Boolean {
+        val sharedPreferences = mCtx.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        if(sharedPreferences.getString("username","").equals(userName)){
+            return true
+        }
+        return false
+    }
+
+
+    fun getUserName(): String {
+        val sharedPreferences = mCtx.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString("username","").toString()
+    }
 
     fun saveUser(user: Data) {
 

@@ -54,5 +54,14 @@
         android:name="com.android.hre.ViewIndentFragment"
         android:label="fragment_view_indent"
         tools:layout="@layout/fragment_view_indent" />
+    <fragment
+        android:id="@+id/attendanceFragment2"
+        android:name="com.android.hre.AttendanceFragment"
+        android:label="fragment_attendance"
+        tools:layout="@layout/fragment_attendance" >
+        <action
+            android:id="@+id/action_attendanceFragment2_to_navigation_notifications"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
 
 </navigation>

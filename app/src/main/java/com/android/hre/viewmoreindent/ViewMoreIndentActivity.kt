@@ -34,16 +34,19 @@ class ViewMoreIndentActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
 
-        id = intent.extras?.getString("indentid") ?: "No ID found"
 
         viewindentadapter = ViewIndnetAdapter()
+
+         id = intent.getStringExtra("indentid")!!
+        Log.v("TAG","id : $id")
+
 
         fetchTheListOfIndents()
     }
 
     private fun fetchTheListOfIndents() {
 
-        val call = RetrofitClient.instance.getViewMoreIndent(userid,"18")
+        val call = RetrofitClient.instance.getViewMoreIndent(userid,id)
         call.enqueue(object : Callback<ViewMoreIndent> {
             override fun onResponse(call: Call<ViewMoreIndent>, response: Response<ViewMoreIndent>) {
                 if (response.isSuccessful) {

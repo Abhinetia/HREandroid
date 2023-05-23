@@ -1,5 +1,6 @@
 package com.android.hre
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -74,6 +75,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.navVview.setupWithNavController(navController)
 
+        binding.hello.text = "Hello"
+        binding.name.text = "Abhishek"
+        binding.logout.setOnClickListener {
+            //Toast.makeText(this, "Logout",Toast.LENGTH_SHORT).show()
+            logout()
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
 
 
@@ -108,5 +116,22 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+
+    private fun  logout() {
+        // Update the user authentication state to indicate logout
+        // For example, you might have a boolean variable isLoggedIn that you set to false.
+      //  isLoggedIn = false
+
+        // Clear cache from SharedPreferences
+        val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+
+        // Navigate to the login screen or any other desired screen
+        val intent = Intent(this, SplashScreenAtivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

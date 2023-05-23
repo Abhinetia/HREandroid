@@ -150,7 +150,7 @@
                 app:cardCornerRadius="10dp"
                 app:cardElevation="3dp">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/et_selctrecepitent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -176,6 +176,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/linearlayoutimage"
                     android:background="@drawable/rectangle"
                     android:backgroundTint="#FF5E5E"
                     android:orientation="horizontal">
@@ -187,6 +188,15 @@
                         android:layout_margin="10dp"
                         android:id="@+id/iv_camera"
                         android:src="@drawable/ic_camera" />
+
+                    <ImageView
+                        android:id="@+id/ivimageuploadq"
+                        android:layout_width="50dp"
+                        android:visibility="gone"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/attach_svgrepo_com" />
+
 
 
                 </LinearLayout>

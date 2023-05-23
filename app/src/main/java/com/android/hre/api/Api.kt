@@ -1,23 +1,21 @@
 package com.android.hre.api
 
-import com.android.hre.models.Intends
 import com.android.hre.response.*
+import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.countupdate.CountList
 import com.android.hre.response.createtccikets.TicketCreated
-import com.android.hre.response.creatindent.SaveIndentResponse
+import com.android.hre.response.employee.EmployeeList
+import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
 import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.pcns.PCN
+import com.android.hre.response.tickets.TicketList
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
-import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import org.json.JSONArray
-import org.json.JSONObject
+
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -80,7 +78,6 @@ interface Api {
         @Field("indent_id") indent_id :String
     )  :Call<ViewMoreIndent>
 
-
     @Multipart
     @POST("create-ticket")
     fun uploadData(
@@ -89,9 +86,41 @@ interface Api {
         @Part("indent_no") indentNo: RequestBody,
         @Part("subject") subject: RequestBody,
         @Part("issue") issue: RequestBody,
-        @Part image: MultipartBody.Part,
-        @Part("recipient") recipient: RequestBody
+        @Part("recipient") recipient: RequestBody,
+        @Part file: MultipartBody.Part
     ): Call<TicketCreated>
+
+   @FormUrlEncoded
+   @POST("get-employees")
+    fun getEmployee(
+        @Field("user_id") user_id :String
+    ) : Call<EmployeeList>
+
+    @FormUrlEncoded
+    @POST("get-tickets")
+    fun getTickets(
+        @Field("user_id") user_id :String
+    )  :Call<TicketList>
+
+
+    @FormUrlEncoded
+    @POST("get-conversation")
+    fun getConverstaion(
+        @Field("user_id") user_id :String,
+        @Field("ticket_id") ticket_id: String,
+        @Field("ticket_no") ticket_no :String
+    ) :Call<Conversation>
+
+
+    @FormUrlEncoded
+    @POST("attendance")
+    fun getattendance(
+        @Field("user_id") user_id:String,
+        @Field("action") action:String,
+        @Field("time") time:String,
+        @Field("lattitude") lattitude:String,
+        @Field("longitude") longitude:String
+    ) :Call<LoginpageAttendance>
 
 
     @Headers("Content-Type: application/json")
