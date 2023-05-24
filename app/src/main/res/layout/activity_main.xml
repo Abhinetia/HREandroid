@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:text="ANDROID"
                 android:textColor="#000000"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:id="@+id/hello"/>
 
             <TextView
@@ -104,18 +104,29 @@
                 android:text="Druva Kumar"
                 android:textColor="#000000"
                 android:textStyle="bold"
+                android:textAllCaps="true"
                 android:textSize="17sp"
                 android:layout_below="@+id/hello"
                 android:id="@+id/name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supervisior"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_below="@+id/name"
+                android:id="@+id/Role"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/name"
+                android:layout_below="@+id/Role"
                 android:layout_marginTop="20dp"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:text="version : 1.1"/>
         </RelativeLayout>
 

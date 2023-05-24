@@ -4,5 +4,6 @@ data class Data(
     val employee_id: String,
     val role: String,
     val user_id: String,
-    val username: String
+    val username: String,
+    val role_name :String
 )

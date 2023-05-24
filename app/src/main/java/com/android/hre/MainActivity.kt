@@ -2,6 +2,7 @@ package com.android.hre
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -28,8 +29,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
     lateinit var navController: NavController
     lateinit var appBarConfiguration: AppBarConfiguration
-
-
+    lateinit var sharedPreferences : SharedPreferences
+    lateinit var editor : SharedPreferences.Editor
+    var name :String = ""
+    var role :String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,11 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
         navView.background = null
+
+        sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
+        editor = sharedPreferences.edit()
+        name = sharedPreferences?.getString("username", "")!!
+        role = sharedPreferences?.getString("role_name","")!!
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -76,7 +84,8 @@ class MainActivity : AppCompatActivity() {
         binding.navVview.setupWithNavController(navController)
 
         binding.hello.text = "Hello"
-        binding.name.text = "Abhishek"
+        binding.name.text = name
+        binding.Role.text = role
         binding.logout.setOnClickListener {
             //Toast.makeText(this, "Logout",Toast.LENGTH_SHORT).show()
             logout()
