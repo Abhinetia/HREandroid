@@ -3,12 +3,14 @@ package com.android.hre.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
+import com.android.hre.R
 import com.android.hre.ViewTicketActivity
 import com.android.hre.databinding.FragmentTicketBinding
 import com.android.hre.databinding.HomeindentlistBinding
@@ -33,11 +35,23 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                     tvticketno.text = dataX.ticket_no
                     tvTicketstatus.text = dataX.status
                     val open = dataX.status
-                    tvTicketstatus.text = "$open"
-                    tvTicketstatus.setText("Open")
+//                    tvTicketstatus.text = "$open"
+//                    tvTicketstatus.setText("Open")
 
+//
+                    if (dataX.status.contains("Pending")){
+                        tvTicketstatus.setBackgroundResource(R.drawable.ic_babypinkboreder)
+                    }
+                     else if (dataX.status.contains("Completed")){
+                        tvTicketstatus.setBackgroundResource(R.drawable.ic_greenbaby)
+                    } else if (dataX.status.contains("Rejected")){
+                        tvTicketstatus.setBackgroundResource(R.drawable.round_corner)
+                    } else if (dataX.status.contains("Created")){
+                        tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
+                        tvViewmore.isFocusable = false
+                    }
 
-                    tvTicketsubject.text = dataX.subject
+                    tvTicketsubject.text = dataX.category
                     tvBody.text = dataX.message
                     //tvDisplaydate.text = dataX.created_on
 
@@ -57,7 +71,7 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                         val Intent = Intent(context, ViewTicketActivity::class.java)
                         Intent.putExtra("TicketId",dataX.ticket_id)
                         Intent.putExtra("TicketNo",dataX.ticket_no)
-                        Intent.putExtra("Subject",dataX.subject)
+                        Intent.putExtra("Subject",dataX.category)
                         Intent.putExtra("Stauts",dataX.status)
                         context.startActivity(Intent)
 

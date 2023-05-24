@@ -10,7 +10,7 @@ data class TicketList(
         val message: String,
         val pcn: String,
         val status: String,
-        val subject: String,
+        val category: String,
         val ticket_id: String,
         val ticket_no: String
     )

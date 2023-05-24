@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Login Report"
+            android:text=" Report"
             android:layout_centerVertical="true"
             android:textSize="15dp"
             android:id="@+id/tvopen"
@@ -74,30 +74,60 @@
             android:textColor="@color/black_text"
             />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardElevation="3dp"
+            android:layout_toLeftOf="@+id/crdmonthg"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp">
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/et_date"
+                android:hint="From Date     "
+                android:singleLine="true"
+                android:textSize="13sp"
+                android:clickable="true"
+                android:inputType="textCapSentences"
+                android:padding="12dp"
+                android:focusable="false"
+                android:background="@color/white"
+                />
+
+
+
+
+
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardElevation="3dp"
+            android:id="@+id/crdmonthg"
             android:layout_alignParentEnd="true"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp">
 
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
+                <EditText
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/et_month"
-                    android:hint="This Month     "
+                    android:hint="To Date        "
                     android:singleLine="true"
+                    android:clickable="true"
                     android:textSize="13sp"
                     android:inputType="textCapSentences"
                     android:padding="12dp"
                     android:focusable="false"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@drawable/ic_dropdown"
                     android:background="@color/white"
                     />
+
 
 
 
@@ -108,138 +138,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:layout_below="@+id/rvaddmaterial"
         android:layout_height="wrap_content"
         android:id="@+id/rv_chosepcn"
         >
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recylergrndata"
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_marginBottom="60dp"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardElevation="3dp"
-                android:layout_marginTop="5dp"
-                app:cardCornerRadius="10dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/rvstatus_showing"
-                    android:layout_marginBottom="10dp"
-                    android:padding="5dp">
+        </androidx.recyclerview.widget.RecyclerView>
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:textSize="16dp"
-                            android:layout_margin="5dp"
-                            android:gravity="center"
-                            android:id="@+id/tv_date"
-                            android:background="@drawable/ic_rectfordtae"
-                            android:text="01\nApril"
-                            android:textColor="@color/black_text"
-                            />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@+id/tv_date"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textAllCaps="true"
-                            android:id="@+id/tv_ore"
-                            android:textSize="11dp"
-                            android:text="LOGIN"
-                            android:textColor="#FF5E5E"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textAllCaps="true"
-                            android:id="@+id/tv_timee"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="13dp"
-                            android:text="10:24 am"
-                            android:textColor="@color/black_text"
-                            />
-
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/im_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_location" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/lnrte"
-                        android:layout_toRightOf="@+id/im_icon"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textAllCaps="true"
-                            android:id="@+id/tv_re"
-                            android:textSize="11dp"
-                            android:text="LOGOUT"
-                            android:textColor="#FF5E5E"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textAllCaps="true"
-                            android:id="@+id/tv_lotimee"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="13dp"
-                            android:text="07:24 pm"
-                            android:textColor="@color/black_text"
-                            />
-
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerInParent="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_toRightOf="@+id/lnrte"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_location"/>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

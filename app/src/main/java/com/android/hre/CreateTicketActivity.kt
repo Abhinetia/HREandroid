@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCreateTicketBinding
 import com.android.hre.response.createtccikets.TicketCreated
+import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.pcns.PCN
 import okhttp3.MediaType
@@ -47,7 +48,9 @@ class CreateTicketActivity : AppCompatActivity() {
     private val IMAGE_PICK_CODE = 1000
     val listdata: ArrayList<String> = arrayListOf()
     val listdata1: ArrayList<String> = arrayListOf()
+    val listdata2 :ArrayList<String> = arrayListOf()
     var listEmployeeData: ArrayList<EmployeeList.Data> = arrayListOf()
+    var listDepartmetData :ArrayList<GetDepartment.Data> = arrayListOf()
 
     var receiptEmployee: Int? = null
     val REQUEST_CODE = 100
@@ -85,6 +88,16 @@ class CreateTicketActivity : AppCompatActivity() {
 
         dropdownEmployeeDetails()
 
+        dropdownDepartmentDetails()
+
+
+        val month = resources.getStringArray(R.array.priority)
+        val arrayAdapter = ArrayAdapter(this,R.layout.dropdwon_item,month)
+        binding.etPriority.setAdapter(arrayAdapter)
+        binding.etPriority.setOnClickListener {
+            binding.etPriority.showDropDown()
+        }
+
 
         binding.ivBack.setOnClickListener {
             finish()
@@ -120,14 +133,14 @@ class CreateTicketActivity : AppCompatActivity() {
 
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val pcn = RequestBody.create(MediaType.parse("text/plain"), binding.etSelctpcn.text.toString())
-            val indentNo = RequestBody.create(MediaType.parse("text/plain"), "MI0021")
+            val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
             val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
             val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
             val recipient = RequestBody.create(MediaType.parse("text/plain"), "$receiptEmployee")
 
             val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
             val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.uploadData(userId, pcn, indentNo, subject, issue,recipient,image)
+            val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,recipient,image)
             Log.v("TAG", "$receiptEmployee")
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
@@ -401,5 +414,47 @@ class CreateTicketActivity : AppCompatActivity() {
     }
 
 
+    private fun dropdownDepartmentDetails() {
+        val call =  RetrofitClient.instance.getdepartment(userid)
+        call.enqueue(object : Callback<GetDepartment> {
+            override fun onResponse(call: Call<GetDepartment>, response: Response<GetDepartment>) {
+                if (response.isSuccessful) {
+                    //  val myDataList = response.body()?.data
+
+                    var listMaterials: GetDepartment? = response.body()
+                    listdata2.clear()
+                    listDepartmetData.clear()
+
+
+                    listDepartmetData = listMaterials?.data as ArrayList<GetDepartment.Data>
+
+                    //  listdata.add("ewfwef")
+                    for (i in 0 until listDepartmetData?.size!!) {
+                        val dataString: GetDepartment.Data = listDepartmetData.get(i)
+
+                        Log.v("log", i.toString())
+                        listdata2.add(dataString.category)
+
+                        //  listPCNdata.add(PCN.Data)
+
+                    }
+
+
+
+                    val arrayAdapter =
+                        ArrayAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata2)
+                    binding.etTickettitle.setAdapter(arrayAdapter)
+
+
+                } else {
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<GetDepartment>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
 
 }

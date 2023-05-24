@@ -2,8 +2,10 @@ package com.android.hre.api
 
 import com.android.hre.response.*
 import com.android.hre.response.attenda.LoginpageAttendance
+import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.countupdate.CountList
 import com.android.hre.response.createtccikets.TicketCreated
+import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
@@ -83,7 +85,7 @@ interface Api {
     fun uploadData(
         @Part("user_id") userId: RequestBody,
         @Part("pcn") pcn: RequestBody,
-        @Part("indent_no") indentNo: RequestBody,
+        @Part("priority") priority: RequestBody,
         @Part("subject") subject: RequestBody,
         @Part("issue") issue: RequestBody,
         @Part("recipient") recipient: RequestBody,
@@ -121,6 +123,20 @@ interface Api {
         @Field("lattitude") lattitude:String,
         @Field("longitude") longitude:String
     ) :Call<LoginpageAttendance>
+
+    @FormUrlEncoded
+    @POST("get-departments")
+    fun getdepartment(
+        @Field("user_id") user_id:String
+    ) :Call<GetDepartment>
+
+    @FormUrlEncoded
+    @POST("myattendance")
+    fun getattendance(
+        @Field("user_id") user_id:String,
+        @Field("start_date") start_date:String,
+        @Field("end_date") end_date:String
+    ) :Call<AttendanceListData>
 
 
     @Headers("Content-Type: application/json")
