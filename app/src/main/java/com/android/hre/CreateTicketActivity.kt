@@ -125,9 +125,9 @@ class CreateTicketActivity : AppCompatActivity() {
             dropdwonfromServer()
         }
 
-        binding.etSelctrecepitent.setOnItemClickListener { adapterView, view, i, l ->
-            receiptEmployee = listEmployeeData.get(i).recipient
-        }
+//        binding.etSelctrecepitent.setOnItemClickListener { adapterView, view, i, l ->
+//            receiptEmployee = listEmployeeData.get(i).recipient
+//        }
 
         binding.btnCretaeticket.setOnClickListener {
 
@@ -136,11 +136,11 @@ class CreateTicketActivity : AppCompatActivity() {
             val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
             val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
             val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
-            val recipient = RequestBody.create(MediaType.parse("text/plain"), "$receiptEmployee")
+           // val recipient = RequestBody.create(MediaType.parse("text/plain"), "$receiptEmployee")
 
             val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
             val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,recipient,image)
+            val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,image)
             Log.v("TAG", "$receiptEmployee")
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
@@ -191,9 +191,7 @@ class CreateTicketActivity : AppCompatActivity() {
 
                     val arrayAdapter =
                         ArrayAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata1)
-                    binding.etSelctrecepitent.setAdapter(arrayAdapter)
-                    // binding.etpcnId.setThreshold(2)
-                    //  binding.etpcnId.threshold = 2
+                   // binding.etSelctrecepitent.setAdapter(arrayAdapter)
 
                 } else {
                     // Handle error response
@@ -206,17 +204,6 @@ class CreateTicketActivity : AppCompatActivity() {
         })
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
-//
-//         val selectedImage = data?.data
-//            var imageFile =  File(selectedImage?.let { getRealPathFromURI(it) })
-//
-//          Log.v("Path", "uri: $imageFile")
-//
-//        }
-//    }
 
     private fun getRealPathFromURI(contentURI: Uri): String? {
         val result: String?

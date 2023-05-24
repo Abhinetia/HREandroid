@@ -134,33 +134,7 @@
                     android:textSize="12sp" />
 
             </androidx.cardview.widget.CardView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Recipient"
-                android:textColor="@color/black_text"
-                android:textSize="13sp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="3dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/et_selctrecepitent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:drawableRight="@drawable/ic_dropdown"
-                    android:hint="Select Recipient"
-                    android:padding="13dp"
-                    android:singleLine="true"
-                    android:textSize="12sp" />
-
-            </androidx.cardview.widget.CardView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

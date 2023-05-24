@@ -88,7 +88,6 @@ interface Api {
         @Part("priority") priority: RequestBody,
         @Part("subject") subject: RequestBody,
         @Part("issue") issue: RequestBody,
-        @Part("recipient") recipient: RequestBody,
         @Part file: MultipartBody.Part
     ): Call<TicketCreated>
 
