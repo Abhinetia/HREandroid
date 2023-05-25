@@ -84,6 +84,8 @@ dependencies {
     implementation "com.ncorti:slidetoact:0.10.0"
 
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
 
 
 

@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.Constants
+import com.android.hre.LocationHelper
 import com.android.hre.adapter.HomeAdapter
 import com.android.hre.adapter.HomeAdapterNew
 import com.android.hre.api.RetrofitClient
@@ -52,10 +53,13 @@ class HomeFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
      var  currentDateAndTime : String = ""
     lateinit var simpleDateFormat : DateFormat
-     var latitude : String = ""
-    var longitude :String = ""
+        var latitude : Double = 0.0
+    var longitude :Double = 0.0
+    var address :String = ""
     lateinit var sharedPreferences :SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    private lateinit var locationHelper: LocationHelper
+
 
 
 
@@ -92,6 +96,9 @@ class HomeFragment : Fragment() {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+        locationHelper = LocationHelper(requireContext())
+
 
         homeAdapter = HomeAdapter()
        // homeAdapterNew = HomeAdapterNew()
@@ -234,9 +241,14 @@ class HomeFragment : Fragment() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    latitude = location.latitude.toString()
-                    longitude = location.longitude.toString()
-                    Log.v("location","$latitude+ $longitude")
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    address = locationHelper.getAddressFromLocation(latitude, longitude)
+                        .toString()
+
+                   // address = getAddressFromLocation(requireContext(), latitude, longitude)!!
+                    Log.v("location","$latitude+ $longitude + $address")
+
                 }
             }
             .addOnFailureListener { exception: Exception ->
@@ -249,7 +261,7 @@ class HomeFragment : Fragment() {
 
     private fun loginattendance( action:String) {
 
-        RetrofitClient.instance.getattendance(userid, action,currentDateAndTime,latitude,longitude)
+        RetrofitClient.instance.getattendance(userid, action,currentDateAndTime,latitude,longitude,address)
             .enqueue(object: retrofit2.Callback<LoginpageAttendance> {
                 override fun onFailure(call: Call<LoginpageAttendance>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()

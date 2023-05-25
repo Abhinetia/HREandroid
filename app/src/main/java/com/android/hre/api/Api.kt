@@ -119,8 +119,9 @@ interface Api {
         @Field("user_id") user_id:String,
         @Field("action") action:String,
         @Field("time") time:String,
-        @Field("lattitude") lattitude:String,
-        @Field("longitude") longitude:String
+        @Field("lattitude") lattitude:Double,
+        @Field("longitude") longitude:Double,
+        @Field("address") address:String
     ) :Call<LoginpageAttendance>
 
     @FormUrlEncoded
