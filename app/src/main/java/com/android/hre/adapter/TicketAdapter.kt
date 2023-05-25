@@ -1,23 +1,37 @@
 package com.android.hre.adapter
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
 import com.android.hre.R
+import com.android.hre.UpdateTicketActivity
 import com.android.hre.ViewTicketActivity
+import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentTicketBinding
 import com.android.hre.databinding.HomeindentlistBinding
 import com.android.hre.databinding.TicketDetailsBinding
+import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.viewmoreindent.ViewMoreIndentActivity
+import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,14 +55,25 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 //
                     if (dataX.status.contains("Pending")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_babypinkboreder)
+                        tvViewmore.visibility = View.VISIBLE
+                        tvMailcount.visibility = View.VISIBLE
+                        tvAssigned.visibility = View.INVISIBLE
                     }
                      else if (dataX.status.contains("Completed")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_greenbaby)
+                        tvViewmore.visibility = View.VISIBLE
+                        tvMailcount.visibility = View.VISIBLE
+                        tvAssigned.visibility = View.INVISIBLE
                     } else if (dataX.status.contains("Rejected")){
                         tvTicketstatus.setBackgroundResource(R.drawable.round_corner)
+                        tvViewmore.visibility = View.GONE
+                        tvMailcount.visibility = View.GONE
+                        tvAssigned.visibility = View.VISIBLE
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
-                        tvViewmore.isFocusable = false
+                        tvViewmore.visibility = View.GONE
+                        tvMailcount.visibility = View.GONE
+                        tvAssigned.visibility = View.VISIBLE
                     }
 
                     tvTicketsubject.text = dataX.category
@@ -66,7 +91,6 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
                     tvDate.text  = outputDateString
 
-
                     binding.tvViewmore.setOnClickListener {
                         val Intent = Intent(context, ViewTicketActivity::class.java)
                         Intent.putExtra("TicketId",dataX.ticket_id)
@@ -76,10 +100,23 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                         context.startActivity(Intent)
 
                     }
+
+                    binding.tvAssigned.setOnClickListener {
+                        val Intent = Intent(context,UpdateTicketActivity::class.java)
+                        Intent.putExtra("TicketId",dataX.ticket_id)
+                        Intent.putExtra("TicketNo",dataX.ticket_no)
+                        Intent.putExtra("Subject",dataX.category)
+                        Intent.putExtra("Body",dataX.message)
+                        Intent.putExtra("PCN",dataX.pcn)
+
+                        context.startActivity(Intent)
+                    }
                 }
 
             }
         }
+
+
 
     }
 
