@@ -91,6 +91,16 @@ interface Api {
         @Part file: MultipartBody.Part
     ): Call<TicketCreated>
 
+    @Multipart
+    @POST("update-ticket")
+    fun updateticket(
+        @Part("user_id") userId:RequestBody,
+        @Part("subject") subject:RequestBody,
+        @Part("issue") issue:RequestBody,
+        @Part("ticket_no") ticket_no:RequestBody,
+        @Part("priority") priority:RequestBody,
+    ) :Call<TicketCreated>
+
    @FormUrlEncoded
    @POST("get-employees")
     fun getEmployee(

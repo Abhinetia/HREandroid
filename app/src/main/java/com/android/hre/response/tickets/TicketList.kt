@@ -9,6 +9,7 @@ data class TicketList(
         val created_on: String,
         val message: String,
         val pcn: String,
+        val priority :String,
         val status: String,
         val category: String,
         val ticket_id: String,

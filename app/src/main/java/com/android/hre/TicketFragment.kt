@@ -61,7 +61,7 @@ class TicketFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    ticketAdapter.differ.submitList(dataList?.reversed())   //now added reverse function in android @5.53 pm need to check while debugging
+                    ticketAdapter.differ.submitList(dataList)   //now added reverse function in android @5.53 pm need to check while debugging
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)

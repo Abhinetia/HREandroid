@@ -108,6 +108,7 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                         Intent.putExtra("Subject",dataX.category)
                         Intent.putExtra("Body",dataX.message)
                         Intent.putExtra("PCN",dataX.pcn)
+                        Intent.putExtra("Priority",dataX.priority)
 
                         context.startActivity(Intent)
                     }
