@@ -63,6 +63,7 @@ class TicketFragment : Fragment() {
 
                     ticketAdapter.differ.submitList(dataList)   //now added reverse function in android @5.53 pm need to check while debugging
 
+                    binding.tvCount.text = dataList?.size.toString()
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)
                         adapter = ticketAdapter

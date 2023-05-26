@@ -165,6 +165,8 @@
                             android:layout_height="wrap_content"
                             android:padding="8sp"
                             android:textSize="11dp"
+                            android:gravity="center"
+                            android:visibility="gone"
                             android:id="@+id/tv_mailcount"
                             android:layout_toRightOf="@+id/tv_viewmore"
                             android:background="@drawable/ic_roundd"

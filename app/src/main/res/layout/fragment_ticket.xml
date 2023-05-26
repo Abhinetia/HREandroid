@@ -82,10 +82,11 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="5dp"
+            android:gravity="center"
             android:id="@+id/tv_count"
             android:layout_toRightOf="@+id/tvopen"
             android:background="@drawable/ic_roundd"
-            android:text="29"
+            android:text="9"
             android:textColor="@color/black_text"
             />
 

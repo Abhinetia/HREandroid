@@ -21,8 +21,7 @@ import com.android.hre.R
 import com.android.hre.UpdateTicketActivity
 import com.android.hre.ViewTicketActivity
 import com.android.hre.api.RetrofitClient
-import com.android.hre.databinding.FragmentTicketBinding
-import com.android.hre.databinding.HomeindentlistBinding
+
 import com.android.hre.databinding.TicketDetailsBinding
 import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.homeindents.GetIndentsHome
