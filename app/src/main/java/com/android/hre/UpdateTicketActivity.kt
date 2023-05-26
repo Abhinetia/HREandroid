@@ -98,39 +98,79 @@ class UpdateTicketActivity : AppCompatActivity() {
 
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
+        }
 
-//
+        val month = resources.getStringArray(R.array.priority)
+        val arrayAdapter = ArrayAdapter(this,R.layout.dropdwon_item,month)
+        binding.etPriority.setAdapter(arrayAdapter)
+        binding.etPriority.setOnClickListener {
+            binding.etPriority.showDropDown()
         }
 
 
         binding.btnCretaeticket.setOnClickListener {
-            val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
-            val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
-            val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
-            val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
-            val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
 
-//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-//            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
-
-            call.enqueue(object : retrofit2.Callback<TicketCreated> {
-                override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
-                    Log.v("TAG", response.body().toString())
-                    Log.v("TAG","message "+ response.body()?.message.toString())
-                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
-
-                }
-
-                override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
-
-                    Log.v("TAG", t.toString())
-                }
-
-            })
+            validationPart()
         }
 
     }
+
+    private fun validationPart() {
+        if (binding.etPriority.text.isEmpty()){
+            showAlertDialogOkAndAfter("Please Select Priority")
+
+        }
+        else if (binding.etSelctpcn.text.isEmpty()){
+            showAlertDialogOkAndAfter("Please Select PCN")
+
+            Toast.makeText(applicationContext, "Please Select Pcn", Toast.LENGTH_LONG).show()
+
+        }
+        else if (binding.etDescrtiption.text.isEmpty()){
+            showAlertDialogOkAndAfter("Please Enter Description")
+        }
+        else if (binding.etTickettitle.text.isEmpty()){
+            showAlertDialogOkAndAfter("Please Select Department")
+        }else{
+            updateToServer()
+        }
+
+    }
+
+    private fun updateToServer() {
+        val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
+        val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
+        val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
+        val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
+        val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
+
+//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+//            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+        val call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
+
+        call.enqueue(object : retrofit2.Callback<TicketCreated> {
+            override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+                Log.v("TAG", response.body().toString())
+                Log.v("TAG","message "+ response.body()?.message.toString())
+                if (response.body()!!.message.contains("Ticket updated")){
+                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                }
+               // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+               else if (response.body()!!.message.contains("Insufficient Inputs")){
+                    showAlertDialogOkAndAfter(response.body()?.message.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
+
+                Log.v("TAG", t.toString())
+            }
+
+        })
+
+    }
+
     private fun dropdownDepartmentDetails() {
         val call =  RetrofitClient.instance.getdepartment(userid)
         call.enqueue(object : Callback<GetDepartment> {
@@ -143,7 +183,6 @@ class UpdateTicketActivity : AppCompatActivity() {
                     listDepartmetData = listMaterials?.data as ArrayList<GetDepartment.Data>
                     for (i in 0 until listDepartmetData?.size!!) {
                         val dataString: GetDepartment.Data = listDepartmetData.get(i)
-
                         Log.v("log", i.toString())
                         listdata2.add(dataString.category)
 
@@ -207,6 +246,19 @@ class UpdateTicketActivity : AppCompatActivity() {
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
+    private fun showAlertDialogOkAndAfter(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+            setResult(Activity.RESULT_OK)
+             }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
     private fun getRealPathFromURI(contentURI: Uri): String? {
         val result: String?
