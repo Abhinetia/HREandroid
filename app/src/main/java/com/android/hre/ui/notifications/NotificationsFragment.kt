@@ -37,6 +37,8 @@ class NotificationsFragment : Fragment() {
     var toodate :String = ""
     private var fromDate: Calendar = Calendar.getInstance()
     private var toDate: Calendar = Calendar.getInstance()
+    val attendanceListData: ArrayList<AttendanceListData.Data> = arrayListOf()
+
 
     private lateinit var attedanceadapter: AttendanceAdapter
 
@@ -128,7 +130,18 @@ class NotificationsFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    attedanceadapter.differ.submitList(dataList)
+
+                    for(i  in 0 until dataList!!.size){
+                        val data  = dataList.get(i)
+                        if (data.working_minutes.contains("---") || data.login.contains("---")||
+                            data.logout.contains("---")){
+
+                        }else{
+                            attendanceListData.add(data)
+                        }
+                    }
+
+                    attedanceadapter.differ.submitList(attendanceListData)
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)

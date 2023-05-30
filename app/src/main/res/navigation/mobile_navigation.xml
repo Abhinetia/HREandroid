@@ -63,5 +63,10 @@
             android:id="@+id/action_attendanceFragment2_to_navigation_notifications"
             app:destination="@id/navigation_notifications" />
     </fragment>
+    <fragment
+        android:id="@+id/pettyCashFragment"
+        android:name="com.android.hre.PettyCashFragment"
+        android:label="fragment_petty_cash"
+        tools:layout="@layout/fragment_petty_cash" />
 
 </navigation>

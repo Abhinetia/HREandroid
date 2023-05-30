@@ -31,7 +31,7 @@
             android:id="@+id/ticketFragment"
             android:title="Tickets"/>
     <item
-
+        android:id="@+id/pettyCashFragment"
         android:title="Petty Cash" />
 
 

@@ -32,14 +32,24 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     tvTmee.text = dataX.login
                     tvTimee.text = dataX.logout
 
-                    val myDividend = dataX.working_minutes.toInt()
-                    val myDivisor = 60
+                    if (dataX.working_minutes.contains("---") || dataX.login.contains("---")||
+                            dataX.logout.contains("---")){
+                        tvLotimee.text = "---"
+                        tvTmee.text = "---"
+                        tvTimee.text = "---"
+                    }else{
 
-                    val resultQuotient = myDividend / myDivisor
-                    val resultRemainder = myDividend % myDivisor
+//                        val myDividend = dataX.working_minutes.toInt()
+//                        val myDivisor = 60
 
-                    tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
+//                        val resultQuotient = myDividend / myDivisor
+//                        val resultRemainder = myDividend % myDivisor
 
+//                        tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
+
+                        tvLotimee.text = dataX.working_minutes
+
+                    }
 
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -50,6 +60,14 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     val outputDateString = outputFormat.format(date)
 
                     tvDisplaydaee.text  = outputDateString
+
+//                    "date": "2023-05-09",
+//                    "login": "---",
+//                    "login_location": "",
+//                    "logout": "---",
+//                    "logout_location": "",
+//                    "working_minutes": "---"
+
 
                 }
 
