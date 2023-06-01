@@ -19,6 +19,7 @@
             android:text="Approve GRN"
             android:layout_marginLeft="10dp"
             android:padding="2sp"
+            android:gravity="center"
             android:textSize="13dp"
             android:layout_height="wrap_content"/>
 
@@ -99,7 +100,7 @@
                 android:textSize="13dp"
                 android:id="@+id/tv_update"
                 android:background="@drawable/icveiwdetails"
-                android:text="Update"
+                android:text="Submit"
                 android:textColor="@color/white"
                 />
 

@@ -367,7 +367,7 @@
                         android:layout_gravity="center"
                         android:textSize="13dp"
                         android:background="@drawable/icveiwdetails"
-                        android:text="View Details"
+                        android:text="Update Details"
                         android:textColor="@color/white"
                         />
 
