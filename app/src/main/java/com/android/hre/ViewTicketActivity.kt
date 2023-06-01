@@ -1,5 +1,6 @@
 package com.android.hre
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -12,7 +13,10 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +27,7 @@ import com.android.hre.databinding.ActivityViewTicketBinding
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.tickets.TicketList
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -89,6 +94,22 @@ class ViewTicketActivity : AppCompatActivity() {
         binding.ivimageupload.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
+        }
+        binding.ivimageuploadq.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_image_preview)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+            val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+            Glide.with(this)
+                .load(imageUri)
+                .into(previewImageView)
+
+            ivnotification.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
     }
 
