@@ -138,6 +138,9 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                             .setView(popupView)
                             .create()
 
+                        tvcancel.setOnClickListener {
+                            popupDialog.dismiss()
+                        }
                         popupDialog.show()
                     }
                 }

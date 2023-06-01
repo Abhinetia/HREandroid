@@ -14,7 +14,10 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +28,7 @@ import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.pcns.PCN
+import com.bumptech.glide.Glide
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -123,6 +127,23 @@ class CreateTicketActivity : AppCompatActivity() {
 
         binding.etSelctpcn.setOnClickListener {
             dropdwonfromServer()
+        }
+
+        binding.ivimageuploadq.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_image_preview)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+            val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+            Glide.with(this)
+                .load(imageUri)
+                .into(previewImageView)
+
+            ivnotification.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
 
 //        binding.etSelctrecepitent.setOnItemClickListener { adapterView, view, i, l ->
