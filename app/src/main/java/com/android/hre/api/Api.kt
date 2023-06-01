@@ -1,6 +1,7 @@
 package com.android.hre.api
 
 import com.android.hre.response.*
+import com.android.hre.response.ApprovalPettyCash.AprrovalPettyCash
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.countupdate.CountList
@@ -12,6 +13,7 @@ import com.android.hre.response.grn.GrnList
 import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.pcns.PCN
+import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
 import okhttp3.MultipartBody
@@ -106,6 +108,19 @@ interface Api {
     fun getEmployee(
         @Field("user_id") user_id :String
     ) : Call<EmployeeList>
+
+    @FormUrlEncoded
+    @POST("get-mypettycash")
+    fun getpettycashDetails(
+        @Field("user_id") user_id:String
+    ) :Call<PettyCashDetails>
+
+    @FormUrlEncoded
+    @POST("get-pettycash_details")
+     fun getPettyCashapproval(
+        @Field("user_id") user_id:String,
+        @Field("pettycash_id") pettycash_id :String
+     ) :Call<AprrovalPettyCash>
 
     @FormUrlEncoded
     @POST("get-tickets")
