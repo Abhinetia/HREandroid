@@ -103,6 +103,16 @@ interface Api {
         @Part("priority") priority:RequestBody,
     ) :Call<TicketCreated>
 
+    @Multipart
+    @POST("upload-pettycash_bill")
+    fun uploadPettycashBill(
+        @Part("user_id") userId:RequestBody,
+        @Part("pettycash_id") pettycash_id:RequestBody,
+        @Part("spent_amount")  spent_amount:RequestBody,
+        @Part("comment") comment:RequestBody,
+        @Part file: MultipartBody.Part
+    ) :Call<TicketCreated>
+
    @FormUrlEncoded
    @POST("get-employees")
     fun getEmployee(

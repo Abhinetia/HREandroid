@@ -46,6 +46,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/round_corner"
                 android:text="Request Cash"
+                android:visibility="invisible"
                 android:gravity="center"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
