@@ -107,7 +107,7 @@ class HomeFragment : Fragment() {
         fetchTheIndentList()
 
 
-        main()
+       // main()
         if (checkLocationPermission()) {
             getLastLocation()
         } else {

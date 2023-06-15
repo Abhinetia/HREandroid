@@ -3,6 +3,7 @@ package com.android.hre.storage
 import android.content.Context
 import com.android.hre.Constants
 import com.android.hre.response.Data
+import com.android.hre.response.LoginResponse
 
 class SharedPrefManager private constructor(private val mCtx: Context) {
 
@@ -40,7 +41,7 @@ class SharedPrefManager private constructor(private val mCtx: Context) {
         return sharedPreferences.getString("username","").toString()
     }
 
-    fun saveUser(user: Data) {
+    fun saveUser(user: LoginResponse.Data) {
 
         val sharedPreferences = mCtx.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

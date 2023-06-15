@@ -1,6 +1,6 @@
-package com.android.hre.response
+package com.android.hre.response.NewLoginResponse
 
-data class  LoginResponse(
+data class NewLogin(
     val `data`: List<Data>,
     val message: String,
     val status: Int

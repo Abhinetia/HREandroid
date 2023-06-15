@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,11 +25,15 @@ import com.android.hre.adapter.TicketAdapter
 import com.android.hre.adapter.ViewTcketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityViewTicketBinding
+import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.tickets.TicketList
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +60,9 @@ class ViewTicketActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var file: File? = null
     private var Imaagefile: File? = null
+    var receiptEmployee: Int? = null
+    var receiptId : Int ? = null
+
 
 
 
@@ -95,6 +103,9 @@ class ViewTicketActivity : AppCompatActivity() {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
+        binding.etpcnId.setOnItemClickListener { adapterView, view, i, l ->
+            receiptEmployee  = listEmployeeData.get(i).recipient
+        }
         binding.ivimageuploadq.setOnClickListener {
             val dialog = Dialog(this)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -111,7 +122,54 @@ class ViewTicketActivity : AppCompatActivity() {
             }
             dialog.show()
         }
+        binding.ivsend.setOnClickListener {
+
+
+            val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
+            val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
+            val message = RequestBody.create(MediaType.parse("text/plain"), binding.etpcnId.toString())
+            val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
+            val recipientid = RequestBody.create(MediaType.parse("text/plain"),"$receiptEmployee")
+
+            Log.v("Data","$receiptEmployee")
+            Log.v("Data",binding.etpcnId.toString())
+
+
+            // Image From Gallery File path
+            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+            val call = RetrofitClient.instance.addConversationForTicket(ticketid,ticketno, message, userId, recipientid,image)
+
+            call.enqueue(object : retrofit2.Callback<TicketCreated> {
+                override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+                    Log.v("TAG", response.body().toString())
+                    Log.v("TAG","message "+ response.body()?.message.toString())
+                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                }
+
+                override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
+
+                    Log.v("TAG", t.toString())
+                }
+
+            })
+        }
     }
+
+    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+//            setResult(Activity.RESULT_OK)
+            finish() }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
     private fun fetchthemailList() {
 
@@ -175,7 +233,7 @@ class ViewTicketActivity : AppCompatActivity() {
                         ArrayAdapter(this@ViewTicketActivity, R.layout.dropdwon_item, listdata1)
                     binding.etpcnId.setAdapter(arrayAdapter)
                     // binding.etpcnId.setThreshold(2)
-                    //  binding.etpcnId.threshold = 2
+                    // binding.etpcnId.threshold = 2
 
                 } else {
                     // Handle error response

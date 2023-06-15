@@ -2,6 +2,7 @@ package com.android.hre.api
 
 import com.android.hre.response.*
 import com.android.hre.response.ApprovalPettyCash.AprrovalPettyCash
+import com.android.hre.response.NewLoginResponse.NewLogin
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.countupdate.CountList
@@ -30,7 +31,7 @@ interface Api {
     fun userLogin(
         @Field("email") email: String,
         @Field("password") password:String
-    ) :Call<LoginResponse>
+    ) :Call<Any>
 
     @FormUrlEncoded
     @POST("get-material-details")
@@ -110,6 +111,17 @@ interface Api {
         @Part("pettycash_id") pettycash_id:RequestBody,
         @Part("spent_amount")  spent_amount:RequestBody,
         @Part("comment") comment:RequestBody,
+        @Part file: MultipartBody.Part
+    ) :Call<TicketCreated>
+
+    @Multipart
+    @POST("add-conversation")
+    fun addConversationForTicket(
+        @Part("ticket_id") ticket_id:RequestBody,
+        @Part("ticket_no") ticket_no: RequestBody,
+        @Part("message") message :RequestBody,
+        @Part("user_id") user_id:RequestBody,
+        @Part("recipient") recipient:RequestBody,
         @Part file: MultipartBody.Part
     ) :Call<TicketCreated>
 
