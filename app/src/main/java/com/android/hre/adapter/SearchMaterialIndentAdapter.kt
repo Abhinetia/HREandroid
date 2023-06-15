@@ -48,56 +48,50 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
                 tvmaterialNameindent.text = dataX.name
                 tvbrnadindent.text = dataX.brand
 
-//                binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
-//                    val checked_rb = group.findViewById<View>(checkedId) as RadioButton
-//                    if (lastCheckedRB != null) {
-//                        lastCheckedRB?.setChecked(false)
-//                    }else{
-//                        lastCheckedRB?.setChecked(true)
-//                    }
-//                    lastCheckedRB = checked_rb
-//                })
+//
                 var size: String?= ""
 
                 val info = dataX.information
+                val sizecheck = dataX.information.size
+                if (sizecheck != 0) {
 
-                Log.v("info",info.toString())
-                val jsonObject = JSONObject(info)
-                var stringd :String = ""
-                val iter: Iterator<String> = jsonObject.keys()
-                while (iter.hasNext()) {
-                    val key = iter.next()
-                    try {
-                        val value: Any = jsonObject.get(key)
-                        if (stringd==""){
-                            stringd = key + "  :  " + value
+                    Log.v("info", info.toString())
+                    val jsonObject = JSONObject(info)
+                    var stringd: String = ""
+                    val iter: Iterator<String> = jsonObject.keys()
+                    while (iter.hasNext()) {
+                        val key = iter.next()
+                        try {
+                            val value: Any = jsonObject.get(key)
+                            if (stringd == "") {
+                                stringd = key + "  :  " + value
 
-                        }else{
-                            stringd = stringd + "\n " + key + " : " + value
+                            } else {
+                                stringd = stringd + "\n " + key + " : " + value
 
+                            }
+
+                        } catch (e: JSONException) {
+                            // Something went wrong!
                         }
-
-                    } catch (e: JSONException) {
-                        // Something went wrong!
                     }
-                    //     Log.v("infod",value.toString())
-//                        Log.v("infok",key)
 
-                    fun String.capitalizeWords(): String = split(" ").map { it.capitalize() }.joinToString(" ")
+                    fun String.capitalizeWords(): String =
+                        split(" ").map { it.capitalize() }.joinToString(" ")
 
                     tvDisplay.setOnClickListener {
-                        tvDisplay.text= stringd.capitalizeWords()
-                        Log.v("text",stringd.toString())
+                        tvDisplay.text = stringd.capitalizeWords()
+                        Log.v("text", stringd.toString())
                         tvqty.visibility = View.VISIBLE
                         description.visibility = View.VISIBLE
                         tvuser.visibility = View.VISIBLE
                         tvusu.visibility = View.VISIBLE
-
-
                     }
 
 
-
+                } else{
+                    binding.tvDisplay.visibility = View.GONE
+                }
 
 
                     tvViewmore.setOnClickListener {
@@ -134,7 +128,7 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
 
                     }
 
-                }
+
             }
         }
 

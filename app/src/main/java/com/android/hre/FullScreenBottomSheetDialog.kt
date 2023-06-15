@@ -95,7 +95,7 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
 
                     val arrayAdapter = ArrayAdapter(context!!,R.layout.dropdwon_item,listdata)
                     binding.etMaterial.setAdapter(arrayAdapter)
-                    binding.etMaterial.setThreshold(1)
+                   // binding.etMaterial.setThreshold(1)
 
 
                 }

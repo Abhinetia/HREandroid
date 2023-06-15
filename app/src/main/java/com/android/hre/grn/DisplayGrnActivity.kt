@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.Constants
@@ -55,13 +56,28 @@ class DisplayGrnActivity : AppCompatActivity() {
                             val apiResponse = response.body()
                             val dataList = apiResponse?.data
                            // Log.v("dat",dataList.toString())
-                            grnAdapter.differ.submitList(dataList)
-                            Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
 
-                            binding.rvRecylergrndata.apply {
+                            if (dataList.isNullOrEmpty()) {
+                                // The list is empty
+                                binding.tvShowPening.visibility = View.VISIBLE
+                                binding.tvShowPening.text = "No Active GRN Available"
+                            } else {
+                                // The list is not empty
+                                grnAdapter.differ.submitList(dataList)
+                                Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
+
+                                binding.rvRecylergrndata.apply {
                                     layoutManager = LinearLayoutManager(this@DisplayGrnActivity)
                                     adapter = grnAdapter
                                 }
+                            }
+//                            grnAdapter.differ.submitList(dataList)
+//                            Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
+//
+//                            binding.rvRecylergrndata.apply {
+//                                    layoutManager = LinearLayoutManager(this@DisplayGrnActivity)
+//                                    adapter = grnAdapter
+//                                }
                         }
                     }
 

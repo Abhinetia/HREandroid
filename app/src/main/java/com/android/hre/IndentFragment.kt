@@ -66,25 +66,37 @@ class IndentFragment : Fragment() {
                     val indentResponse = response.body()
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
+                    if (dataList.isNullOrEmpty()) {
+                        // The list is empty
+                        binding.tvShowPening.visibility = View.VISIBLE
+                        binding.tvShowPening.text = "No Pending Indent has Been Created"
+                    } else {
+                        // The list is not empty
+                        homeAdapter.differ.submitList(dataList.reversed())
 
-                    homeAdapter.differ.submitList(dataList?.reversed())
-
-                    binding.rvRecylergrndata.apply {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = homeAdapter
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = homeAdapter
+                        }
                     }
-
-                    // var dataList = dataList?.reversed()
-//                        homeAdapterNew = HomeAdapterNew(context!!,dataList?.reversed())
-//                    binding.rvRecylergrndata.adapter = homeAdapterNew
-
-                } else if (response.isSuccessful) {
-                    val indentResponse = response.body()
-                    val dataList = indentResponse?.data
-                    if (dataList!!.isEmpty()){
-                        // Texxtview visible
-                    }
-                    // Handle error response
+//                    homeAdapter.differ.submitList(dataList?.reversed())
+//
+//                    binding.rvRecylergrndata.apply {
+//                        layoutManager = LinearLayoutManager(context)
+//                        adapter = homeAdapter
+//                    }
+//
+//                    // var dataList = dataList?.reversed()
+////                        homeAdapterNew = HomeAdapterNew(context!!,dataList?.reversed())
+////                    binding.rvRecylergrndata.adapter = homeAdapterNew
+//
+//                } else if (response.isSuccessful) {
+//                    val indentResponse = response.body()
+//                    val dataList = indentResponse?.data
+//                    if (dataList!!.isEmpty()){
+//                        // Texxtview visible
+//                    }
+//                    // Handle error response
                 }
             }
 

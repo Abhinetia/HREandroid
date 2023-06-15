@@ -51,13 +51,23 @@ class GRNFragment : Fragment() {
                     val apiResponse = response.body()
                     val dataList = apiResponse?.data
                     // Log.v("dat",dataList.toString())
-                    grnAdapter.differ.submitList(dataList)
-                    Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
 
-                    binding.rvRecylergrndata.apply {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = grnAdapter
+                    if (dataList.isNullOrEmpty()) {
+                        // The list is empty
+                        binding.tvShowPening.visibility = View.VISIBLE
+                        binding.tvShowPening.text = "No Active GRN Available"
+                    } else {
+                        // The list is not empty
+                        grnAdapter.differ.submitList(dataList)
+                        Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = grnAdapter
+                        }
                     }
+
+
                 }
             }
 
