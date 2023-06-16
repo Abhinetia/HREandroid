@@ -1,6 +1,7 @@
 package com.android.hre
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -16,7 +17,11 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.android.hre.api.RetrofitClient
@@ -24,6 +29,7 @@ import com.android.hre.databinding.ActivityCaretingIndeNewBinding
 import com.android.hre.databinding.ActivityUploadExpensesBinding
 import com.android.hre.databinding.FragmentPettyCashBinding
 import com.android.hre.response.createtccikets.TicketCreated
+import com.android.hre.response.pcns.PCN
 import com.bumptech.glide.Glide
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -34,6 +40,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -47,6 +54,7 @@ class UploadExpensesActivity : AppCompatActivity() {
     private var file: File? = null
     private var Imaagefile: File? = null
     var pettycashid :String = ""
+    val listdata: ArrayList<String> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +76,53 @@ class UploadExpensesActivity : AppCompatActivity() {
 
         binding.ivBack.setOnClickListener {
             finish()
+        }
+
+        dropdwonfromServer()
+
+        val month = resources.getStringArray(R.array.purpose)
+        val arrayAdapter = ArrayAdapter(this,R.layout.dropdwon_item,month)
+        binding.tvPurpose.setAdapter(arrayAdapter)
+        binding.tvPurpose.setOnClickListener {
+            binding.tvPurpose.showDropDown()
+        }
+
+        binding.tvPurpose.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+
+            if (selectedItem == "Purchase") {
+                binding.linearlayoutpcn.visibility = View.VISIBLE
+            } else {
+                binding.linearlayoutpcn.visibility = View.GONE
+                binding.tvPcn.setText("")
+            }
+        }
+
+
+
+        binding.tvDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+                    val selectedDate = Calendar.getInstance()
+                    selectedDate.set(selectedYear, selectedMonth, selectedDay)
+
+                    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                    val formattedDate = dateFormat.format(selectedDate.time)
+
+                    binding.tvDate.setText(formattedDate)
+                },
+                year,
+                month,
+                dayOfMonth
+            )
+
+            datePickerDialog.show()
         }
 
         binding.imageview1.visibility = View.GONE
@@ -119,8 +174,43 @@ class UploadExpensesActivity : AppCompatActivity() {
             })
         }
 
+    }
+
+    private fun dropdwonfromServer() {
+
+        RetrofitClient.instance.getAllPcns(userid)
+            .enqueue(object: retrofit2.Callback<PCN> {
+                override fun onFailure(call: Call<PCN>, t: Throwable) {
+                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<PCN>, response: Response<PCN>) {
+                    Log.v("Sucess", response.body().toString())
+                    var listMaterials: PCN? = response.body()
+                    listdata.clear()
+
+                    var arrayList_details: List<PCN.Data>? = listMaterials?.data
+
+                    //  listdata.add("ewfwef")
+                    for (i in 0 until arrayList_details?.size!!) {
+                        val dataString: PCN.Data = arrayList_details.get(i)
+
+                        Log.v("log", i.toString())
+                        listdata.add(dataString.pcn)
+                        //  listPCNdata.add(PCN.Data)
+
+                    }
 
 
+                    val arrayAdapter =
+                        ArrayAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
+                    binding.tvPcn.setAdapter(arrayAdapter)
+                    // binding.etpcnId.setThreshold(2)
+                    //  binding.etpcnId.threshold = 2
+
+                }
+
+            })
     }
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
