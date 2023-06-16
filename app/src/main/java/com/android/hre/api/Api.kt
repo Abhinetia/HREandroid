@@ -111,6 +111,9 @@ interface Api {
         @Part("pettycash_id") pettycash_id:RequestBody,
         @Part("spent_amount")  spent_amount:RequestBody,
         @Part("comment") comment:RequestBody,
+        @Part("bill_date") bill_date:RequestBody,
+        @Part("purpose") purpose:RequestBody,
+        @Part("pcn") pcn:RequestBody,
         @Part file: MultipartBody.Part
     ) :Call<TicketCreated>
 

@@ -55,6 +55,7 @@ class UploadExpensesActivity : AppCompatActivity() {
     private var Imaagefile: File? = null
     var pettycashid :String = ""
     val listdata: ArrayList<String> = arrayListOf()
+    var selectedItem :String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +81,8 @@ class UploadExpensesActivity : AppCompatActivity() {
 
         dropdwonfromServer()
 
+
+
         val month = resources.getStringArray(R.array.purpose)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdwon_item,month)
         binding.tvPurpose.setAdapter(arrayAdapter)
@@ -88,13 +91,16 @@ class UploadExpensesActivity : AppCompatActivity() {
         }
 
         binding.tvPurpose.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
-            val selectedItem = parent.getItemAtPosition(position).toString()
+            selectedItem = parent.getItemAtPosition(position).toString()
 
             if (selectedItem == "Purchase") {
                 binding.linearlayoutpcn.visibility = View.VISIBLE
             } else {
                 binding.linearlayoutpcn.visibility = View.GONE
+                binding.carviewpcn.visibility = View.GONE
                 binding.tvPcn.setText("")
+                binding.pcnClinet.setText("")
+                binding.pcnAddress.setText("")
             }
         }
 
@@ -149,14 +155,51 @@ class UploadExpensesActivity : AppCompatActivity() {
         }
 
         binding.btnMaterials.setOnClickListener {
+
+            val  amount = binding.tvamount.text.toString()
+            val comm = binding.etDescrtiption.text.toString()
+            val purpseFrom = binding.tvPurpose.text.toString()
+            val date = binding.tvDate.text.toString()
+            val pcndata = binding.tvPcn.text.toString()
+            if (amount.isEmpty()){
+                binding.tvamount.error = "Amount is required"
+                binding.tvamount.requestFocus()
+                return@setOnClickListener
+            }
+            if (comm.isEmpty()){
+                binding.etDescrtiption.error = "Comment is required"
+                binding.etDescrtiption.requestFocus()
+                return@setOnClickListener
+            }
+            if (purpseFrom.isEmpty()){
+                binding.tvPurpose.error = "Please Select Purpose From Drop Down"
+                binding.tvPurpose.requestFocus()
+                return@setOnClickListener
+            }
+            if (date.isEmpty()){
+                binding.tvDate.error = "Please Select The Date"
+                binding.tvDate.requestFocus()
+                return@setOnClickListener
+            }
+            if (selectedItem.equals("Purchase")){
+                if (pcndata.isEmpty()){
+                    binding.tvPcn.error = "Please Enter The PCN"
+                    binding.tvPcn.requestFocus()
+                    return@setOnClickListener
+                }
+
+            }
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val pettycashid = RequestBody.create(MediaType.parse("text/plain"),pettycashid )
             val spentamount = RequestBody.create(MediaType.parse("text/plain"), binding.tvamount.text.toString())  // extra added priority
             val comment = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
+            val billDate = RequestBody.create(MediaType.parse("text/plain"),binding.tvDate.text.toString())
+            val purpose = RequestBody.create(MediaType.parse("text/plain"),binding.tvPurpose.text.toString())
+            val pcn = RequestBody.create(MediaType.parse("text/plain"),binding.tvPcn.text.toString())
 
             val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
             val image = MultipartBody.Part.createFormData("bill", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.uploadPettycashBill(userId, pettycashid, spentamount, comment,image)
+            val call = RetrofitClient.instance.uploadPettycashBill(userId, pettycashid, spentamount, comment,billDate,purpose,pcn,image)
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
@@ -205,9 +248,14 @@ class UploadExpensesActivity : AppCompatActivity() {
                     val arrayAdapter =
                         ArrayAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
                     binding.tvPcn.setAdapter(arrayAdapter)
-                    // binding.etpcnId.setThreshold(2)
-                    //  binding.etpcnId.threshold = 2
 
+                    binding.tvPcn.setOnItemClickListener { adapterView, view, i, l ->
+                        var data: PCN.Data = arrayList_details.get(i)
+                        binding.carviewpcn.visibility = View.VISIBLE
+                        binding.pcnClinet.text = data.client_name
+                        binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
+
+                    }
                 }
 
             })

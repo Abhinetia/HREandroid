@@ -222,6 +222,86 @@
 
             </LinearLayout>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="3dp"
+                android:visibility="gone"
+                android:padding="2sp"
+                android:id="@+id/carviewpcn"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp"
+                            android:minWidth="100dp"
+                            android:padding="2sp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Client Name "
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:id="@+id/pcn_clinet"
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp"
+                            android:padding="2sp"
+                            android:text=" "
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp"
+                            android:minWidth="100dp"
+                            android:layout_marginLeft="5dp"
+                            android:padding="2sp"
+                            android:text="Address"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:id="@+id/pcn_address"
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp"
+                            android:padding="2sp"
+                            android:text=""
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -322,13 +402,11 @@
                     android:textSize="13sp" />
 
                 <ImageView
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:id="@+id/imageview1"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_addd"
-                    android:backgroundTint="@color/black"
                     android:textAllCaps="false"
                     android:textSize="13sp" />
 
