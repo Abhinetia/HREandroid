@@ -152,6 +152,35 @@ class CreateTicketActivity : AppCompatActivity() {
 
         binding.btnCretaeticket.setOnClickListener {
 
+            val comment =  binding.etDescrtiption.text.toString()
+            val pcnData = binding.etSelctpcn.text.toString()
+            val prior = binding.etPriority.text.toString()
+            val departm = binding.etTickettitle.text.toString()
+
+            if (comment.isEmpty()){
+                binding.etDescrtiption.error = "Please Enter The Description"
+                binding.etDescrtiption.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (pcnData.isEmpty()){
+                binding.etSelctpcn.error = "Please Select The PCN"
+                binding.etSelctpcn.requestFocus()
+                return@setOnClickListener
+            }
+            if (prior.isEmpty()){
+                binding.etPriority.error = "Please Enter The Description"
+                binding.etPriority.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (departm.isEmpty()){
+                binding.etTickettitle.error = "Please Select The Department"
+                binding.etTickettitle.requestFocus()
+                return@setOnClickListener
+            }
+
+
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val pcn = RequestBody.create(MediaType.parse("text/plain"), binding.etSelctpcn.text.toString())
             val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
