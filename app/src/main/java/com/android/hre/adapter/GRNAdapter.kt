@@ -188,6 +188,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
+    override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
 
 
 }

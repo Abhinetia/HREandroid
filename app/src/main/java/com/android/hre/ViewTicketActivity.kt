@@ -55,6 +55,7 @@ class ViewTicketActivity : AppCompatActivity() {
     var subject :String = ""
     private lateinit var viewTicketAdapter: ViewTcketAdapter
     val listdata1: ArrayList<String> = arrayListOf()
+    var maillistdata: ArrayList<Conversation.Data> = arrayListOf()
     var listEmployeeData: ArrayList<EmployeeList.Data> = arrayListOf()
     private val pickImage = 100
     private var imageUri: Uri? = null
@@ -62,6 +63,7 @@ class ViewTicketActivity : AppCompatActivity() {
     private var Imaagefile: File? = null
     var receiptEmployee: Int? = null
     var receiptId : Int ? = null
+    var data : String ? = null
 
 
 
@@ -104,7 +106,13 @@ class ViewTicketActivity : AppCompatActivity() {
             startActivityForResult(gallery, pickImage)
         }
         binding.etpcnId.setOnItemClickListener { adapterView, view, i, l ->
-            receiptEmployee  = listEmployeeData.get(i).recipient
+
+            var index = listdata1.indexOf(adapterView.getItemAtPosition(i))
+
+            Log.v("TAG","i is: "+listEmployeeData.get(index).recipient)
+            receiptEmployee  = listEmployeeData.get(index).recipient
+            data = listdata1.get(index)
+          //  binding.etpcnId.setText(data)
         }
         binding.ivimageuploadq.setOnClickListener {
             val dialog = Dialog(this)
@@ -124,15 +132,18 @@ class ViewTicketActivity : AppCompatActivity() {
         }
         binding.ivsend.setOnClickListener {
 
+            Log.v("Data","$receiptEmployee")
+            Log.v("Data","abcd $binding.etpcnId.text.toString()")
+            var msg = binding.etpcnId.text.toString().replace(data!!,"")
 
             val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
             val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
-            val message = RequestBody.create(MediaType.parse("text/plain"), binding.etpcnId.toString())
+            val message = RequestBody.create(MediaType.parse("text/plain"), msg)
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val recipientid = RequestBody.create(MediaType.parse("text/plain"),"$receiptEmployee")
 
             Log.v("Data","$receiptEmployee")
-            Log.v("Data",binding.etpcnId.toString())
+            Log.v("Data","abcd $binding.etpcnId.text.toString()")
 
 
             // Image From Gallery File path
@@ -178,11 +189,14 @@ class ViewTicketActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Conversation>, response: Response<Conversation>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    val dataList = responseBody?.data
-                    Log.v("dat", dataList.toString())
+                    maillistdata.clear()
+                     maillistdata = responseBody?.data as ArrayList<Conversation.Data>
+                   // Log.v("dat", maillistdata.toString())
 
-                    if (dataList != null) {
-                        viewTicketAdapter.differ.submitList(dataList)
+                    if (maillistdata != null) {
+                       //
+
+                        viewTicketAdapter.differ.submitList(maillistdata)
                     }
 
                     binding.rvRecylergrndata.apply {
@@ -220,12 +234,14 @@ class ViewTicketActivity : AppCompatActivity() {
                     for (i in 0 until listEmployeeData?.size!!) {
                         val dataString: EmployeeList.Data = listEmployeeData.get(i)
 
+
                         Log.v("log", i.toString())
-                        listdata1.add("@" + dataString.name  + " : " +   dataString.role + " ,  ")
+                        listdata1.add("@" + dataString.name  + " : " +   dataString.role + " ,  " )
 
                         //  listPCNdata.add(PCN.Data)
 
                     }
+                    Log.v("TAG","Empl lis : $listdata1")
 
 
 

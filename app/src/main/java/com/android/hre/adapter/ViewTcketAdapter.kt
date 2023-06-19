@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
         fun bind(dataX: Conversation.Data?) {
             binding.apply {
                 if (dataX != null){
+                    Log.v("TAG","data is $dataX")
                     tvmesage.text = dataX.message
                     tvreceptient.text = dataX.recipient
 
@@ -179,6 +181,8 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
         }
     }
     val differ = AsyncListDiffer(this, differCallback)
+
+     override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
 
 //    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //        val item = differ.currentList[position]

@@ -102,5 +102,6 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
         }
     }
     val differ = AsyncListDiffer(this, differCallback)
+    override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
 
 }
