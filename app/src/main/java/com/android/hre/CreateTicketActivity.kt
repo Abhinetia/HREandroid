@@ -417,7 +417,13 @@ class CreateTicketActivity : AppCompatActivity() {
                     binding.etSelctpcn.setAdapter(arrayAdapter)
                     // binding.etpcnId.setThreshold(2)
                     //  binding.etpcnId.threshold = 2
+                    binding.etSelctpcn.setOnItemClickListener { adapterView, view, i, l ->
+                        var data: PCN.Data = arrayList_details.get(i)
+                        binding.carviewpcn.visibility = View.VISIBLE
+                        binding.pcnClinet.text = data.client_name
+                        binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
 
+                    }
                 }
 
 

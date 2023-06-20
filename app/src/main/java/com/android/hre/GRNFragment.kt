@@ -39,6 +39,10 @@ class GRNFragment : Fragment() {
 
         fetchTheGRNDetails()
 
+        binding.ivBack.setOnClickListener {
+            activity?.finish()
+        }
+
         return root
     }
 

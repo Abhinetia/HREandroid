@@ -62,6 +62,10 @@ class AttendanceFragment : Fragment() {
 
         attedanceadapter = AttendanceAdapter()
 
+        binding.ivBack.setOnClickListener {
+            activity?.finish()
+        }
+
 
         return root
     }

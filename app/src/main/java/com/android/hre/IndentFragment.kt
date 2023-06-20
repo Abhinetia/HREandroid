@@ -53,6 +53,9 @@ class IndentFragment : Fragment() {
 
         fetchTheIndentList()
 
+        binding.ivBack.setOnClickListener {
+            activity?.finish()
+        }
 
 
         return root
