@@ -33,12 +33,11 @@
             android:src="@drawable/ic_sidenavigation"/>
 
         <ImageView
+            android:id="@+id/logo"
             android:layout_width="31dp"
             android:layout_height="33dp"
-            android:id="@+id/logo"
-            android:src="@drawable/hre_logo"
             android:layout_centerInParent="true"
-            />
+            android:src="@drawable/hre_logo" />
 
         <ImageView
             android:layout_width="wrap_content"
