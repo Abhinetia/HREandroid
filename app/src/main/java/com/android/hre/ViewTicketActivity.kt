@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -135,6 +136,7 @@ class ViewTicketActivity : AppCompatActivity() {
             Log.v("Data","$receiptEmployee")
             Log.v("Data","abcd $binding.etpcnId.text.toString()")
             var msg = binding.etpcnId.text.toString().replace(data!!,"")
+
 
             val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
             val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)

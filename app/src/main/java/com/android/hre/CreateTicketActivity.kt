@@ -8,12 +8,11 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
@@ -35,12 +34,12 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CreateTicketActivity : AppCompatActivity() {
@@ -107,16 +106,19 @@ class CreateTicketActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.ivCamera.setOnClickListener {
+        binding.rvimage.setOnClickListener {
 //
-//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+//        gallery
+//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//            startActivityForResult(gallery, pickImage)
 
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.type = "image/*"
-//            startActivityForResult(intent, REQUEST_CODE)
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
+// camera
+//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            startActivityForResult(cameraIntent, 200)
+
+
+           // startDialog()
+            selectImage()
 
 //
         }
@@ -212,6 +214,27 @@ class CreateTicketActivity : AppCompatActivity() {
 
     }
 
+    private fun selectImage() {
+        val items = arrayOf<CharSequence>(
+            "Take Photo", "Choose from Library",
+            "Cancel"
+        )
+        val builder = AlertDialog.Builder(this@CreateTicketActivity)
+        builder.setTitle("Add Photo!")
+        builder.setItems(items) { dialog, item ->
+            if (items[item] == "Take Photo") {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cameraIntent, 200)
+            } else if (items[item] == "Choose from Library") {
+                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, pickImage)
+            } else if (items[item] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
     private fun dropdownEmployeeDetails() {
         val call =  RetrofitClient.instance.getEmployee(userid)
         call.enqueue(object : Callback<EmployeeList> {
@@ -269,67 +292,7 @@ class CreateTicketActivity : AppCompatActivity() {
         return result
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-//
-//            val selectedImage = data?.data
-//           // val inputStream = contentResolver.openInputStream(selectedImage!!)
-//            var uri = selectedImage?.let { getRealPathFromURI(it) };
-//            var file = File(uri)
-//           /* val outputStream = FileOutputStream(file)
-//            inputStream?.copyTo(outputStream)*/
-//            Log.v("TAG","uri $file")
-//
-//            val requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-//           // val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-//            val requestFile2: RequestBody =
-//                RequestBody.create(MediaType.parse("multipart/form-data"), file)
-//
-//           // val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
-//
-//
-////            val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-////            val body : MultipartBody.Part= MultipartBody.Part.createFormData("image", file.name, reqFile)
-//
-//            val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-//            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-//
-//
-//
-//
-//
-//            val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
-//            val pcn = RequestBody.create(MediaType.parse("text/plain"), binding.etSelctpcn.text.toString())
-//            val indentNo = RequestBody.create(MediaType.parse("text/plain"), "your-indent-no")
-//            val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
-//            val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
-//            val recipient = RequestBody.create(MediaType.parse("text/plain"), receiptEmployee.toString())
-//
-//
-//            val call = RetrofitClient.instance.uploadData(userId, pcn, indentNo, subject, issue, image, recipient)
-//            call.enqueue(object : Callback<TicketCreated> {
-//                override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
-//                    Log.v("Data",response.body().toString())
-//
-//                    if (response.isSuccessful && response.body() != null && response.body()?.status == 1) {
-//
-//                        // Show a success message to the user
-//                       // Log.v("Data",call.toString())
-//                    Toast.makeText(this@CreateTicketActivity, "Ticket created successfully", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    // Show an error message to the user
-//                    Toast.makeText(this@CreateTicketActivity, "Error: " + response.code(), Toast.LENGTH_SHORT).show()
-//                }
-//                }
-//
-//                override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
-//                    // Handle the error
-//                }
-//            })
-//        }
-//
-//    }
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -341,11 +304,37 @@ class CreateTicketActivity : AppCompatActivity() {
             compressAndSaveImage(file.toString(),50)
 
             // Added This Functionality
-            binding.ivimageuploadq.isVisible = true
-            binding.ivimageuploadq.setImageURI(imageUri)
+            binding.ivImagecapture.isVisible = true
+            binding.ivImagecapture.setImageURI(imageUri)
             binding.ivCamera.isVisible = false
 
         }
+        if (resultCode == RESULT_OK && requestCode == 200 && data != null){
+            //imageView.setImageBitmap(data.extras.get("data") as Bitmap)
+
+            val photo = data.extras!!["data"] as Bitmap?
+            if (photo!= null){
+                binding.ivImagecapture.setImageBitmap(photo)
+                binding.ivImagecapture.visibility = View.VISIBLE
+               // binding.ivCamera.isVisible = false
+
+            }
+            val tempUri = this?.let { getImageUri(it, photo!!) }
+            file = tempUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            compressAndSaveImage(file.toString(),50)
+
+            Log.v("TAG","image path : $tempUri and $file")
+
+        }
+    }
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.getContentResolver(), inImage,
+            "Title", null
+        )
+        return Uri.parse(path)
     }
     private fun compressAndSaveImage(imgage : String , quality : Int) {
 

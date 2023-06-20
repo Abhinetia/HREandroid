@@ -36,6 +36,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -133,8 +134,9 @@ class UploadExpensesActivity : AppCompatActivity() {
 
         binding.imageview1.visibility = View.GONE
         binding.imageview.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
+            selectImage()
+//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//            startActivityForResult(gallery, pickImage)
         }
 
         binding.imageview1.setOnClickListener {
@@ -218,6 +220,28 @@ class UploadExpensesActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun selectImage() {
+        val items = arrayOf<CharSequence>(
+            "Take Photo", "Choose from Library",
+            "Cancel"
+        )
+        val builder = AlertDialog.Builder(this@UploadExpensesActivity)
+        builder.setTitle("Add Photo!")
+        builder.setItems(items) { dialog, item ->
+            if (items[item] == "Take Photo") {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cameraIntent, 200)
+            } else if (items[item] == "Choose from Library") {
+                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, pickImage)
+            } else if (items[item] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
 
     private fun dropdwonfromServer() {
 
@@ -304,6 +328,33 @@ class UploadExpensesActivity : AppCompatActivity() {
             binding.imageview.visibility = View.GONE
 
         }
+        if (resultCode == RESULT_OK && requestCode == 200 && data != null) {
+            //imageView.setImageBitmap(data.extras.get("data") as Bitmap)
+
+            val photo = data.extras!!["data"] as Bitmap?
+            if (photo != null) {
+                binding.imageview1.setImageBitmap(photo)
+                binding.imageview1.visibility = View.VISIBLE
+                // binding.ivCamera.isVisible = false
+                binding.imageview.visibility = View.GONE
+
+            }
+            val tempUri = this?.let { getImageUri(it, photo!!) }
+            file = tempUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            compressAndSaveImage(file.toString(), 50)
+
+            Log.v("TAG", "image path : $tempUri and $file")
+        }
+        }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.getContentResolver(), inImage,
+            "Title", null
+        )
+        return Uri.parse(path)
     }
     private fun compressAndSaveImage(imgage : String , quality : Int) {
 
