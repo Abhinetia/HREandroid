@@ -11,6 +11,7 @@ data class AprrovalPettyCash(
         val filename: String,
         val filepath: String,
         val isapproved: String,
-        val spent_amount: String
+        val spent_amount: String,
+        val my_spend:String
     )
 }

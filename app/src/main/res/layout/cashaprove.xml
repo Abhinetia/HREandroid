@@ -108,12 +108,48 @@
 
 
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:orientation="horizontal"
                         android:layout_below="@+id/lineafrmdate"
+                        android:visibility="visible"
+                        android:id="@+id/lineafdate"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textAllCaps="true"
+                            android:id="@+id/tv"
+                            android:gravity="center"
+                            android:textSize="11dp"
+                            android:text="My Expenditure :"
+                            android:textColor="#FF5E5E"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textAllCaps="true"
+                            android:id="@+id/tv_expendeituree"
+                            android:gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:textSize="13dp"
+                            android:text="50000"
+                            android:textColor="@color/black_text"
+                            />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/lineafdate"
                         android:visibility="visible"
                         android:id="@+id/purpose"
                         android:layout_height="wrap_content">

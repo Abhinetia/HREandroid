@@ -39,7 +39,11 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
 
 
         val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        sharedPreferences?.getString("PettyCashId","defaultName")
+
         userid = sharedPreferences?.getString("user_id", "")!!
+
+
 
 
 
@@ -73,7 +77,7 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
 
     private fun fetchThePettyCashStatus() {
 
-        RetrofitClient.instance.getPettyCashapproval(userid, "5")
+        RetrofitClient.instance.getPettyCashapproval(userid, "1")
             .enqueue(object: retrofit2.Callback<AprrovalPettyCash> {
                 override fun onFailure(call: Call<AprrovalPettyCash>, t: Throwable) {
                     Toast.makeText(context, "Reqeusted Id not Found", Toast.LENGTH_LONG).show()
@@ -104,6 +108,7 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
         val tvDate = custrom.findViewById<TextView>(R.id.tv_displaydaee) // date
         val  tvamount = custrom.findViewById<TextView>(R.id.tv_tmee) // amount
         val  tvreason = custrom.findViewById<TextView>(R.id.tv_timee) // reason
+        val tvmyexpenditure = custrom.findViewById<TextView>(R.id.tv_expendeituree)
         val tvdetails = custrom.findViewById<TextView>(R.id.tv_tvdeatils)
         val tvstatus = custrom.findViewById<TextView>(R.id.tv_stsua)
         val imageView = custrom.findViewById<ImageView>(R.id.myImageView)
@@ -114,6 +119,7 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
         tvamount.text = datax.spent_amount
         tvreason.text = datax.comments
         tvstatus.text = datax.isapproved
+        tvmyexpenditure.text = datax.my_spend
 
 
             imageView.visibility = View.VISIBLE
