@@ -18,6 +18,7 @@
 
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="name_ofthe_app">ONE STOP SOLUTIONS</string>
 
     <string-array name="months">
         <item>January</item>

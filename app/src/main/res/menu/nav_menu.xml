@@ -6,7 +6,7 @@
             />
 
         <item
-            android:title="SOLUTIONS"
+            android:title="@string/name_ofthe_app"
             />
 
         <item

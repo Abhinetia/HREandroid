@@ -129,7 +129,7 @@ class HomeFragment : Fragment() {
                     if (dataList.isNullOrEmpty()) {
                         // The list is empty
                         binding.tvShowPening.visibility = View.VISIBLE
-                        binding.tvShowPening.text = "No Pending Indent has Been Created"
+                        binding.tvShowPening.text = "No Pending Indents"
                     } else {
                         // The list is not empty
                         homeAdapter.differ.submitList(dataList.reversed())
