@@ -250,7 +250,7 @@ class ViewTicketActivity : AppCompatActivity() {
                     val arrayAdapter =
                         ArrayAdapter(this@ViewTicketActivity, R.layout.dropdwon_item, listdata1)
                     binding.etpcnId.setAdapter(arrayAdapter)
-                    // binding.etpcnId.setThreshold(2)
+                     binding.etpcnId.setThreshold(1)
                     // binding.etpcnId.threshold = 2
 
                 } else {

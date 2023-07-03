@@ -139,7 +139,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
 
                     binding.etpcnId.setAdapter(arrayAdapter)
-                   // binding.etpcnId.setThreshold(2)
+                    binding.etpcnId.setThreshold(1)
 
 
                   //  binding.etpcnId.threshold = 2
@@ -262,10 +262,10 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
     override fun onClick(datax: Getmaterials.DataX, size: String, desc: String) {
 
-        if(indentHashMap.containsKey(datax.material_id)){
-            showAlertDialogOkAndClose("Duplicate item codes are not allowed.")
-            return
-        }
+//        if(indentHashMap.containsKey(datax.material_id)){
+//            showAlertDialogOkAndClose("Duplicate item codes are not allowed.")// This Functionlaity Temporiatly Told to be On HolD from kamal they can add duplicate items
+//            return
+//        }
 
         val indents = listOf(
             Indent(materialId = datax.material_id, description = desc, quantity = size)
