@@ -48,6 +48,8 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
     var arrayList_details: List<Indent> = arrayListOf()
     val indentHashMap = HashMap<String, Indent>()
+    val indentArrayList: ArrayList<Indent> = arrayListOf()
+
 
 
     private lateinit var binding: ActivityCaretingIndeNewBinding
@@ -177,8 +179,12 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 //            )
 //        )
 
-        for (key in indentHashMap.keys) {
-            arrayList_details = arrayList_details + indentHashMap.getValue(key)
+//        for (key in indentHashMap.keys) {
+//            arrayList_details = arrayList_details + indentHashMap.getValue(key)
+//        }
+
+        for (keys in indentArrayList){
+            arrayList_details = arrayList_details + keys
         }
 
         val request = CreateIndentRequest(
@@ -186,6 +192,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
             pcn = binding.etpcnId.text.toString(),
             indents = arrayList_details
         )
+        Log.v("TAG",request.toString())
 
 //        var arrayList_details: List<Indent>? = request.indents
 //        for (i in 0 until arrayList_details?.size!!){
@@ -288,13 +295,16 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
         //arrayList_details = indents + arrayList_details
 
-        indentHashMap.put(datax.material_id,Indent(materialId = datax.material_id, description = desc, quantity = size))
+//        indentHashMap.put(datax.material_id,Indent(materialId = datax.material_id, description = desc, quantity = size))
 
-        singleLogic(datax,size,desc)
+        indentArrayList.add(Indent(materialId = datax.material_id, description = desc, quantity = size))
+
+        Log.v("TAG",indentArrayList.toString())
+        singleLogic(datax,size,desc,indentArrayList)
 
     }
 
-    private fun singleLogic(datax: Getmaterials.DataX, size: String, desc: String) {
+    private fun singleLogic(datax: Getmaterials.DataX, size: String, desc: String,indentArrayList : ArrayList<Indent>) {
 
         val infalot = LayoutInflater.from(this)
         val custrom = infalot.inflate(R.layout.recyclerview_row,null)
@@ -305,6 +315,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         val  textqty = custrom.findViewById<TextView>(R.id.tv_qtysize)
         val textdesc = custrom.findViewById<TextView>(R.id.tvdescrtipondisp)
         val iv_cancel = custrom.findViewById<ImageView>(R.id.iv_cancel)
+        textViewitemcode.setTag(indentArrayList.size-1)
 
         textViewitemcode.text = datax.material_id
         textmaterialnames.text = datax.name
@@ -315,9 +326,12 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         iv_cancel.setOnClickListener {
             binding.linearLayoutGridLevelSinglePiece.removeView(custrom)
 
-            if (indentHashMap.containsKey(datax.material_id)) {
-                indentHashMap.remove(datax.material_id)
-            }
+
+            indentArrayList.removeAt(textViewitemcode.getTag() as Int)
+
+//            if (indentHashMap.containsKey(datax.material_id)) {
+//                indentHashMap.remove(datax.material_id)
+//            }
         }
 
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
