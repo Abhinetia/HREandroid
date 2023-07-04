@@ -51,7 +51,7 @@ val client = OkHttpClient.Builder()
         .create()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://hre.netiapps.com/api/")
+        .baseUrl("https://hre.netiapps.com/api/")  // https://hre.netiapps.com/api/ =  test api {https://admin.hresolutions.in/api/  = prod api }
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create()) // Add RxJava3 call adapter factory

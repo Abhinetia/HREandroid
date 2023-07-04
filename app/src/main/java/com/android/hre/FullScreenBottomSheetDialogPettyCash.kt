@@ -3,6 +3,7 @@ package com.android.hre
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +31,9 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
 
     private lateinit var binding: PettycashaproveBinding
     var userid : String = ""
+    lateinit var sharedPreferences: SharedPreferences
+    var pid :String = ""
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,11 +42,12 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
         binding = PettycashaproveBinding.inflate(inflater, container, false)
 
 
-        val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+         sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
         sharedPreferences?.getString("PettyCashId","defaultName")
 
         userid = sharedPreferences?.getString("user_id", "")!!
-
+        pid = sharedPreferences.getString("PID","0")!!
+        Log.v("TAG","PID :"+ sharedPreferences.getString("PID","0"))
 
 
 
@@ -77,7 +82,7 @@ class FullScreenBottomSheetDialogPettyCash(context: Context?) : BottomSheetDialo
 
     private fun fetchThePettyCashStatus() {
 
-        RetrofitClient.instance.getPettyCashapproval(userid, "1")
+        RetrofitClient.instance.getPettyCashapproval(userid, pid)
             .enqueue(object: retrofit2.Callback<AprrovalPettyCash> {
                 override fun onFailure(call: Call<AprrovalPettyCash>, t: Throwable) {
                     Toast.makeText(context, "Reqeusted Id not Found", Toast.LENGTH_LONG).show()

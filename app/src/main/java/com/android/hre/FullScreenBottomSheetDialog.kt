@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.adapter.SearchMaterialIndentAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivitySearchMaterialIndentBinding
@@ -93,9 +94,12 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                     }
 
 
-                    val arrayAdapter = ArrayAdapter(context!!,R.layout.dropdwon_item,listdata)
+                  //  val arrayAdapter = ArrayAdapter(context!!,R.layout.dropdwon_item,listdata)
+                    val arrayAdapter =
+                        AutoCompleteAdapter(context, R.layout.dropdwon_item, listdata)
+
                     binding.etMaterial.setAdapter(arrayAdapter)
-                   // binding.etMaterial.setThreshold(1)
+                    binding.etMaterial.setThreshold(1)
 
 
                 }

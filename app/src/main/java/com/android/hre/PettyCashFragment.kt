@@ -1,8 +1,10 @@
 package com.android.hre
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,6 +31,9 @@ class PettyCashFragment : Fragment() {
     var totalBalance : Int = 0
     var remaingCash :Int = 0
     var spendCash :Int = 0
+     var PettyId : String = ""
+    lateinit var sharedPreferences :SharedPreferences
+    lateinit var editor : SharedPreferences.Editor
 
 
     override fun onCreateView(
@@ -41,7 +46,8 @@ class PettyCashFragment : Fragment() {
         binding = FragmentPettyCashBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+         sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
+        editor= sharedPreferences.edit()
         userid = sharedPreferences?.getString("user_id", "")!!
         name = sharedPreferences?.getString("username", "")!!
 
@@ -99,6 +105,7 @@ class PettyCashFragment : Fragment() {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     private fun cashLogic(datax :PettyCashDetails.Data) {
 
         val infalot = LayoutInflater.from(context)
@@ -109,6 +116,7 @@ class PettyCashFragment : Fragment() {
         val  tvreason = custrom.findViewById<TextView>(R.id.tv_timee) // reason
         val tvdetails = custrom.findViewById<TextView>(R.id.tv_tvdeatils)
         val tvuoplodaExpense = custrom.findViewById<TextView>(R.id.tv_uploadexpense)
+        val tvcashpettyId = custrom.findViewById<TextView>(R.id.tvpid)
 
 
       //  val  tvremaningCahs = custrom.findViewById<TextView>(R.id.tv_lotimee)  // remaing cash
@@ -120,11 +128,16 @@ class PettyCashFragment : Fragment() {
 
         tvamount.text = datax.total_amount
         tvreason.text = datax.purpose
+        tvcashpettyId.text = datax.pettycash_id
+
         //tvremaningCahs.text = datax.remaining_cash
         //tvspendcash.text = datax.spended_cash
 
 
         tvdetails.setOnClickListener {
+            PettyId = tvcashpettyId.text.toString()
+            editor.putString("PID",PettyId)
+            editor.commit()
             val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialogPettyCash(context)
             fullScreenBottomSheetDialogFragment.show(parentFragmentManager, FullScreenBottomSheetDialogPettyCash::class.simpleName)
 
