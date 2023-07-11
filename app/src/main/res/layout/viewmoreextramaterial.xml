@@ -147,6 +147,20 @@
                     android:hint="" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UOM "
+                android:layout_below="@+id/brnad"
+                android:maxLines="1"
+                android:layout_toRightOf="@+id/tvuser"
+                android:id="@+id/qteey"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp"/>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -182,8 +196,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                android:padding="5dp"
                 android:minWidth="100dp"
+                android:padding="5dp"
                 android:text="View More"
                 android:textColor="@color/black_text"
                 android:textSize="13dp" />
@@ -196,7 +210,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/tv_display"
                 android:gravity="right"
                 android:padding="5dp"
                 android:text="Select"

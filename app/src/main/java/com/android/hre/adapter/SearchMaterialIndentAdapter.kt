@@ -47,6 +47,7 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
                 titleTextiew.text = dataX.material_id
                 tvmaterialNameindent.text = dataX.name
                 tvbrnadindent.text = dataX.brand
+                qteey.text = dataX.uom
 
 //
                 var size: String?= ""
