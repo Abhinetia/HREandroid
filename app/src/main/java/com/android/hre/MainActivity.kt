@@ -110,7 +110,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent)
         }
 
+        binding.idsidenavigation.setOnClickListener {
+            if( binding.drawerLayout.isOpen()){
+                binding.drawerLayout.close()
+            }
+            else{
+                binding.drawerLayout.open()
+            }
+        }
 
+        navView.background = null
+        navView.menu.getItem(1).isEnabled = false
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

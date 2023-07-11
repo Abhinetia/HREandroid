@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -7,6 +8,70 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:visibility="gone"
+            />
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/iv_menu"-->
+<!--            android:background="#000000"-->
+<!--            android:src="@drawable/ic_close"/>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:id="@+id/rld"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/idsidenavigation"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_sidenavigation"/>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"
+                android:src="@drawable/hre_logo" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ivnotification"
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_notification"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+<!--    <include-->
+<!--        layout="@layout/app_bar_main"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
