@@ -153,6 +153,8 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         binding.pcnClinet.text = data.client_name
                         //  binding.etpcnId.isEnabled = false
                         binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
+                        binding.etpcnId.isEnabled = false
+
 
                     }
                    // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
@@ -160,6 +162,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
 
                 }
+
 
 
             })

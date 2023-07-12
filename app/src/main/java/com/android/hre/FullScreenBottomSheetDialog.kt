@@ -19,6 +19,7 @@ import com.android.hre.databinding.BottomSheetDialogBinding
 import com.android.hre.response.Getmaterials
 import com.android.hre.response.Indent
 import com.android.hre.response.listmaterial.ListMaterials
+import com.android.hre.response.pcns.PCN
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
@@ -102,6 +103,12 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                     binding.etMaterial.setThreshold(1)
 
 
+                    binding.etMaterial.setOnItemClickListener { adapterView, view, i, l ->
+
+                        binding.etMaterial.isEnabled = false
+
+
+                    }
                 }
             })
 
