@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -57,6 +58,7 @@ class UploadExpensesActivity : AppCompatActivity() {
     var pettycashid :String = ""
     val listdata: ArrayList<String> = arrayListOf()
     var selectedItem :String = ""
+    private val imageUriList = java.util.ArrayList<Uri>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,14 +134,18 @@ class UploadExpensesActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        binding.imageview1.visibility = View.GONE
+      //  binding.imageview1.visibility = View.GONE
         binding.imageview.setOnClickListener {
+            if(imageUriList.size == 4){
+                Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             selectImage()
 //            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
 //            startActivityForResult(gallery, pickImage)
         }
 
-        binding.imageview1.setOnClickListener {
+      /*  binding.imageview1.setOnClickListener {
             val dialog = Dialog(this)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.dialog_image_preview)
@@ -154,7 +160,7 @@ class UploadExpensesActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             dialog.show()
-        }
+        }*/
 
         binding.btnMaterials.setOnClickListener {
 
@@ -323,9 +329,10 @@ class UploadExpensesActivity : AppCompatActivity() {
             compressAndSaveImage(file.toString(),50)
                                                                             
             // Added This Functionality
-            binding.imageview1.setImageURI(imageUri)
-            binding.imageview1.visibility = View.VISIBLE
-            binding.imageview.visibility = View.GONE
+//            binding.imageview1.setImageURI(imageUri)
+//            binding.imageview1.visibility = View.VISIBLE
+//            binding.imageview.visibility = View.GONE
+            addImage("$imageUri")
 
         }
         if (resultCode == RESULT_OK && requestCode == 200 && data != null) {
@@ -333,17 +340,18 @@ class UploadExpensesActivity : AppCompatActivity() {
 
             val photo = data.extras!!["data"] as Bitmap?
             if (photo != null) {
-                binding.imageview1.setImageBitmap(photo)
-                binding.imageview1.visibility = View.VISIBLE
-                // binding.ivCamera.isVisible = false
-                binding.imageview.visibility = View.GONE
+//                binding.imageview1.setImageBitmap(photo)
+//                binding.imageview1.visibility = View.VISIBLE
+//                // binding.ivCamera.isVisible = false
+//                binding.imageview.visibility = View.GONE
 
             }
-            val tempUri = this?.let { getImageUri(it, photo!!) }
-            file = tempUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            imageUri = this?.let { getImageUri(it, photo!!) }
+            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
             compressAndSaveImage(file.toString(), 50)
+            addImage("$imageUri")
 
-            Log.v("TAG", "image path : $tempUri and $file")
+            Log.v("TAG", "image path : $imageUri and $file")
         }
         }
 
@@ -401,6 +409,19 @@ class UploadExpensesActivity : AppCompatActivity() {
         Imaagefile=File(storageDir, imageFileName)
 
         return File(storageDir, imageFileName)
+    }
+
+    private fun addImage(image: String) {
+
+        val infalot = LayoutInflater.from(this)
+        val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
+
+        val imageview = custrom.findViewById<ImageView>(R.id.iv_imagecapture)
+
+        imageUriList.add(imageUri!!) // adding the image to the list
+        imageview.setImageURI(imageUri) // setting the image view
+
+        binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
 
 

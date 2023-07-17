@@ -55,23 +55,23 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                     if (dataX.status.contains("Pending")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_babypinkboreder)
                         tvViewmore.visibility = View.VISIBLE
-                        tvMailcount.visibility = View.VISIBLE
+                        //tvMailcount.visibility = View.VISIBLE
                         tvAssigned.visibility = View.INVISIBLE
                     }
                      else if (dataX.status.contains("Completed")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_greenbaby)
                         tvViewmore.visibility = View.VISIBLE
-                        tvMailcount.visibility = View.VISIBLE
+                       // tvMailcount.visibility = View.VISIBLE
                         tvAssigned.visibility = View.INVISIBLE
                     } else if (dataX.status.contains("Rejected")){
                         tvTicketstatus.setBackgroundResource(R.drawable.round_corner)
                         tvViewmore.visibility = View.GONE
-                        tvMailcount.visibility = View.GONE
+                       // tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.VISIBLE
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
                         tvViewmore.visibility = View.GONE
-                        tvMailcount.visibility = View.GONE
+                       // tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.VISIBLE
                     }
 

@@ -160,19 +160,6 @@
                             android:textColor="#FF5E5E"
                             />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8sp"
-                            android:textSize="11dp"
-                            android:gravity="center"
-                            android:visibility="gone"
-                            android:id="@+id/tv_mailcount"
-                            android:layout_toRightOf="@+id/tv_viewmore"
-                            android:background="@drawable/ic_roundd"
-                            android:text="07"
-                            android:textColor="@color/black_text"
-                            />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,7 +170,7 @@
                             android:id="@+id/tv_assigned"
                             android:textSize="11dp"
                             android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@+id/tv_mailcount"
+                            android:layout_toRightOf="@+id/tv_viewmore"
                             android:background="@drawable/ic_balckround"
                             android:text="More Info"
                             android:textColor="@color/white"

@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ import com.android.hre.grn.DisplayGrnActivity
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.homeindents.GetIndentsHome
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationServices
 import com.ncorti.slidetoact.SlideToActView
 import retrofit2.Call
@@ -39,6 +41,9 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
+import com.google.android.gms.location.*
+import android.os.Looper
+
 
 
 class HomeFragment : Fragment() {
@@ -60,6 +65,16 @@ class HomeFragment : Fragment() {
     lateinit var editor : SharedPreferences.Editor
     private lateinit var locationHelper: LocationHelper
 
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            // Permission granted, proceed with location retrieval
+            getCurrentLocation()
+        } else {
+            // Permission denied, handle accordingly
+        }
+    }
 
 
 
@@ -75,7 +90,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
+        requestLocationPermissionn()
 
 
          sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
@@ -107,7 +122,6 @@ class HomeFragment : Fragment() {
         fetchTheIndentList()
 
 
-       // main()
         if (checkLocationPermission()) {
             getLastLocation()
         } else {
@@ -151,16 +165,7 @@ class HomeFragment : Fragment() {
 //                    binding.rvRecylergrndata.adapter = homeAdapterNew
 
                }
-                //else  {
-//                    val indentResponse = response.body()
-//                    val dataList = indentResponse?.data
-//                    if (dataList?.isEmpty() == true){
-//                         // Texxtview visible
-//                        binding.tvShowPening.visibility = View.VISIBLE
-//                        binding.tvShowPening.text = "No Pending Indent has Been Created"
-//                    }
-//                    // Handle error response
-//                }
+
             }
 
             override fun onFailure(call: Call<GetIndentsHome>, t: Throwable) {
@@ -309,7 +314,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun main() {
+   /* fun main() {
         // Get the current time
         val currentTime = Calendar.getInstance()
 
@@ -338,6 +343,67 @@ class HomeFragment : Fragment() {
 
         }
     }
+*/
+    private fun requestLocationPermissionn() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Permission already granted, proceed with location retrieval
+                getCurrentLocation()
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                // Explain the need for the permission if necessary
+                // For example, show a dialog explaining why location access is required
+            }
+            else -> {
+                // Request the permission from the user
+                locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+    }
 
+    private fun getCurrentLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 10000 // 10 seconds
+            fastestInterval = 5000 // 5 seconds
+        }
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                val lastLocation = locationResult.lastLocation
+                val latitude = lastLocation.latitude
+                val longitude = lastLocation.longitude
 
+                // Use the latitude and longitude values as needed
+                Log.d("TAG", "Latitude: $latitude, Longitude: $longitude")
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+
+    }
 }

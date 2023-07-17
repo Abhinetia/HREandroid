@@ -2,7 +2,6 @@ package com.android.hre.api
 
 import com.android.hre.response.*
 import com.android.hre.response.ApprovalPettyCash.AprrovalPettyCash
-import com.android.hre.response.NewLoginResponse.NewLogin
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.countupdate.CountList
@@ -91,7 +90,8 @@ interface Api {
         @Part("priority") priority: RequestBody,
         @Part("subject") subject: RequestBody,
         @Part("issue") issue: RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file : List<MultipartBody.Part>,
+       // @Part file: MultipartBody.Part
     ): Call<TicketCreated>
 
     @Multipart

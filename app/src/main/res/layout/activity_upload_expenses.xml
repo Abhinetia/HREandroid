@@ -401,17 +401,29 @@
                     android:textAllCaps="false"
                     android:textSize="13sp" />
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:id="@+id/imageview1"
-                    android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:textSize="13sp" />
 
 
             </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_marginRight="10dp"
+                android:overScrollMode="never"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_gridLevelSinglePiece"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
