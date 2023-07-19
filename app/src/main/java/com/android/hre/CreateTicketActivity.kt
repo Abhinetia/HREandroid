@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -20,7 +21,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCreateTicketBinding
@@ -41,6 +41,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CreateTicketActivity : AppCompatActivity() {
@@ -60,7 +61,10 @@ class CreateTicketActivity : AppCompatActivity() {
     val REQUEST_CODE = 100
     private var file: File? = null
     private var Imaagefile: File? = null
+    private val imageUriList = ArrayList<Uri>()
 
+    private val imgList = ArrayList<File>()
+    private val listOfImages = ArrayList<MultipartBody.Part>()
 
 
 
@@ -69,20 +73,8 @@ class CreateTicketActivity : AppCompatActivity() {
         supportActionBar?.hide()
         //  setContentView(R.layout.activity_create_ticket)
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-//            // If the app doesn't have permission, ask the user to grant it
-//            //val intent = Intent(Settings.ACTION_PERMISSION.READ_EXTERNAL_STORAGE)
-//            val uri = Uri.fromParts("package", packageName, null)
-//            intent.data = uri
-//            startActivity(intent)
-//        } else {
-//            // Permission is granted or device is not running Android 11 or higher
-//            // Do your work here, such as capturing an image from the camera or selecting an image from the gallery
-//        }
-
         binding = ActivityCreateTicketBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
 
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
@@ -108,20 +100,13 @@ class CreateTicketActivity : AppCompatActivity() {
         }
 
         binding.rvimage.setOnClickListener {
-//
-//        gallery
-//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-//            startActivityForResult(gallery, pickImage)
 
-// camera
-//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            startActivityForResult(cameraIntent, 200)
+            if(imageUriList.size == 4){
+                Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
-
-           // startDialog()
             selectImage()
-
-//
         }
 
         binding.ivBack.setOnClickListener {
@@ -191,9 +176,28 @@ class CreateTicketActivity : AppCompatActivity() {
             val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
            // val recipient = RequestBody.create(MediaType.parse("text/plain"), "$receiptEmployee")
 
-            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,image)
+         // single
+//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+//            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+           // Log.v("TAG","imglist is $imgList")
+
+            for (i in imgList){
+                Log.v("TAG","imglist is $i")
+                val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+
+               // val requestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+                val image =   MultipartBody.Part.createFormData("image[$i]", Imaagefile?.name, requestFile)
+                listOfImages.add(image)
+            }
+            Log.v("TAG","Multipartarray is $listOfImages")
+
+            // adding the image to array list
+//            val images: List<MultipartBody.Part> = imageFiles.mapIndexed { index, file ->
+//                val requestBody = RequestBody.create(MediaType.parse("image/*"), Imaagefile)
+//                MultipartBody.Part.createFormData("image[$index]", Imaagefile?.name, requestBody)
+//            }
+
+            val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,listOfImages)
             Log.v("TAG", "$receiptEmployee")
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
@@ -250,19 +254,13 @@ class CreateTicketActivity : AppCompatActivity() {
 
                     listEmployeeData = listMaterials?.data as ArrayList<EmployeeList.Data>
 
-                    //  listdata.add("ewfwef")
                     for (i in 0 until listEmployeeData?.size!!) {
                         val dataString: EmployeeList.Data = listEmployeeData.get(i)
 
                         Log.v("log", i.toString())
                         listdata1.add(dataString.name  + " : " +   dataString.role)
 
-                        //  listPCNdata.add(PCN.Data)
-
                     }
-
-
-
                     val arrayAdapter =
                         ArrayAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata1)
                    // binding.etSelctrecepitent.setAdapter(arrayAdapter)
@@ -305,9 +303,11 @@ class CreateTicketActivity : AppCompatActivity() {
             compressAndSaveImage(file.toString(),50)
 
             // Added This Functionality
-            binding.ivImagecapture.isVisible = true
-            binding.ivImagecapture.setImageURI(imageUri)
-            binding.ivCamera.isVisible = false
+//            binding.ivImagecapture.isVisible = true
+//            binding.ivImagecapture.setImageURI(imageUri)
+//            binding.ivCamera.isVisible = false
+            addImage("$imageUri")
+
 
         }
         if (resultCode == RESULT_OK && requestCode == 200 && data != null){
@@ -315,16 +315,20 @@ class CreateTicketActivity : AppCompatActivity() {
 
             val photo = data.extras!!["data"] as Bitmap?
             if (photo!= null){
-                binding.ivImagecapture.setImageBitmap(photo)
-                binding.ivImagecapture.visibility = View.VISIBLE
+//                binding.ivImagecapture.setImageBitmap(photo)
+//                binding.ivImagecapture.visibility = View.VISIBLE
                // binding.ivCamera.isVisible = false
+              //  addImage("$photo")
 
             }
-            val tempUri = this?.let { getImageUri(it, photo!!) }
-            file = tempUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            imageUri = this?.let { getImageUri(it, photo!!) }
+            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
             compressAndSaveImage(file.toString(),50)
 
-            Log.v("TAG","image path : $tempUri and $file")
+            addImage("$imageUri")
+
+
+            Log.v("TAG","image path : $imageUri and $file")
 
         }
     }
@@ -344,27 +348,13 @@ class CreateTicketActivity : AppCompatActivity() {
         val quality = quality // Adjust the quality value as needed (0-100)
 
         try {
-            // Create a bitmap from the original image file
             val originalBitmap = BitmapFactory.decodeFile(imgage)
-
-            // Create a new FileOutputStream to write the compressed bitmap to the file
             val fileOutputStream = FileOutputStream(compressedImagePath)
-
-            // Compress the bitmap with the specified quality into the FileOutputStream
             originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, fileOutputStream)
-
-            // Close the FileOutputStream
             fileOutputStream.close()
-
-            // Recycle the bitmap to free up memory
             originalBitmap.recycle()
-
-            // Image compression and saving completed successfully
-            // You can now use the compressed image file as needed
         } catch (e: IOException) {
             e.printStackTrace()
-            // Error occurred while compressing or saving the image
-            // Handle the error accordingly
         }
     }
 
@@ -382,6 +372,7 @@ class CreateTicketActivity : AppCompatActivity() {
         // Create a new file in the directory with a unique name
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
+        imgList.add(Imaagefile!!)
 
         return File(storageDir, imageFileName)
     }
@@ -421,13 +412,14 @@ class CreateTicketActivity : AppCompatActivity() {
                         AutoCompleteAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata)
                     binding.etSelctpcn.setAdapter(arrayAdapter)
 
-                    // binding.etpcnId.setThreshold(2)
+                     binding.etSelctpcn.setThreshold(1)
                     //  binding.etpcnId.threshold = 2
                     binding.etSelctpcn.setOnItemClickListener { adapterView, view, i, l ->
                         var data: PCN.Data = arrayList_details.get(i)
                         binding.carviewpcn.visibility = View.VISIBLE
                         binding.pcnClinet.text = data.client_name
                         binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
+                        binding.etSelctpcn.isEnabled = false
 
                     }
                 }
@@ -472,18 +464,14 @@ class CreateTicketActivity : AppCompatActivity() {
 
                         Log.v("log", i.toString())
                         listdata2.add(dataString.category)
-
-                        //  listPCNdata.add(PCN.Data)
-
                     }
-
-
+//                    val arrayAdapter =
+//                        ArrayAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata2)
 
                     val arrayAdapter =
-                        ArrayAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata2)
+                        AutoCompleteAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata2)
                     binding.etTickettitle.setAdapter(arrayAdapter)
-
-
+                    binding.etTickettitle.threshold = 1
                 } else {
                     // Handle error response
                 }
@@ -494,5 +482,19 @@ class CreateTicketActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun addImage(image: String) {
+
+        val infalot = LayoutInflater.from(this)
+        val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
+
+        val imageview = custrom.findViewById<ImageView>(R.id.iv_imagecapture)
+
+        imageUriList.add(imageUri!!) // adding the image to the list
+        imageview.setImageURI(imageUri) // setting the image view
+
+        binding.linearLayoutGridLevelSinglePiece.addView(custrom)
+    }
+
 
 }

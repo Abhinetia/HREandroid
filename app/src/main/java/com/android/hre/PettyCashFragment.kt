@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentPettyCashBinding
 import com.android.hre.response.pettycashDetails.PettyCashDetails
+import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Response
@@ -67,6 +68,11 @@ class PettyCashFragment : Fragment() {
 
             popupDialog.show()
         }
+        binding.linerUploadbill.setOnClickListener {
+            val intent = Intent(context,UploadExpensesActivity::class.java)
+            // intent.putExtra("PettyCashId",datax.pettycash_id)
+            startActivity(intent)
+        }
 
         pettycashFromServer()
 
@@ -78,27 +84,26 @@ class PettyCashFragment : Fragment() {
     private fun pettycashFromServer() {
 
         RetrofitClient.instance.getpettycashDetails(userid)
-            .enqueue(object: retrofit2.Callback<PettyCashDetails> {
-                override fun onFailure(call: Call<PettyCashDetails>, t: Throwable) {
+            .enqueue(object: retrofit2.Callback<PettyCashFirstScreen> {
+                override fun onFailure(call: Call<PettyCashFirstScreen>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<PettyCashDetails>, response: Response<PettyCashDetails>) {
+                override fun onResponse(call: Call<PettyCashFirstScreen>, response: Response<PettyCashFirstScreen>) {
                     Log.v("Sucess", response.body().toString())
-                    var listMaterials: PettyCashDetails? = response.body()
+                    var listMaterials: PettyCashFirstScreen? = response.body()
 
 
-                    var arrayList_details: List<PettyCashDetails.Data>? = listMaterials?.data
+                    var arrayList_details: List<PettyCashFirstScreen.Data>? = listMaterials?.data
 
                     for (i in 0 until arrayList_details?.size!!) {
-                        val dataString: PettyCashDetails.Data = arrayList_details.get(i)
-                        cashLogic(dataString)
+                        val dataString: PettyCashFirstScreen.Data = arrayList_details.get(i)
+                        binding.pcnClinet.text = dataString.issued_amount.toString()
+                        binding.tvexpense.text = dataString.balance_amount.toString()
+                        //cashLogic(dataString)
 
                     }
 
-                    binding.totalbalnce.text = totalBalance.toString()
-                    binding.pcnClinet.text = remaingCash.toString()
-                    binding.tvexpense.text = spendCash.toString()
                 }
 
             })
@@ -106,7 +111,7 @@ class PettyCashFragment : Fragment() {
     }
 
     @SuppressLint("MissingInflatedId")
-    private fun cashLogic(datax :PettyCashDetails.Data) {
+    private fun cashLogic(datax :PettyCashFirstScreen.Data) {
 
         val infalot = LayoutInflater.from(context)
         val custrom = infalot.inflate(R.layout.pettycashlist,null)
@@ -122,14 +127,14 @@ class PettyCashFragment : Fragment() {
       //  val  tvremaningCahs = custrom.findViewById<TextView>(R.id.tv_lotimee)  // remaing cash
        // val tvspendcash = custrom.findViewById<TextView>(R.id.tv_spendcash) // spendcash
 
-        totalBalance = totalBalance + datax.total_amount.toInt()
+      /*  totalBalance = totalBalance + datax.total_amount.toInt()
         remaingCash =remaingCash + datax.remaining_cash.toInt()
         spendCash = spendCash + datax.spended_cash.toInt()
 
         tvamount.text = datax.total_amount
         tvreason.text = datax.purpose
         tvcashpettyId.text = datax.pettycash_id
-
+*/
         //tvremaningCahs.text = datax.remaining_cash
         //tvspendcash.text = datax.spended_cash
 
@@ -144,19 +149,19 @@ class PettyCashFragment : Fragment() {
         }
         tvuoplodaExpense.setOnClickListener {
             val intent = Intent(context,UploadExpensesActivity::class.java)
-            intent.putExtra("PettyCashId",datax.pettycash_id)
+          //  intent.putExtra("PettyCashId",datax.pettycash_id)
             startActivity(intent)
 
         }
 
 
 
-        val inputDateString = datax.date
+      //  val inputDateString = datax.date
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val date = inputFormat.parse(inputDateString)
-        val outputDateString = outputFormat.format(date)
-        tvDate.text  = outputDateString
+     //   val date = inputFormat.parse(inputDateString)
+//        val outputDateString = outputFormat.format(date)
+//        tvDate.text  = outputDateString
 
 
 

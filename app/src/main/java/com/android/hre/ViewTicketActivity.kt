@@ -65,6 +65,7 @@ class ViewTicketActivity : AppCompatActivity() {
     var receiptEmployee: Int? = null
     var receiptId : Int ? = null
     var data : String ? = null
+    var username :String = ""
 
 
 
@@ -80,6 +81,7 @@ class ViewTicketActivity : AppCompatActivity() {
 
         val sharedPreferences =getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
+        username = sharedPreferences?.getString("username","")!!
 
         viewTicketAdapter = ViewTcketAdapter()
 
@@ -193,12 +195,20 @@ class ViewTicketActivity : AppCompatActivity() {
                     val responseBody = response.body()
                     maillistdata.clear()
                      maillistdata = responseBody?.data as ArrayList<Conversation.Data>
-                   // Log.v("dat", maillistdata.toString())
+                    Log.v("dat", maillistdata.toString())
 
                     if (maillistdata != null) {
                        //
-
+                       if(maillistdata.toString().contains(userid) && (maillistdata.toString().equals(receiptId))){   //Validating the user id and recipt id for the visible and
+                           binding.tvcompleted.visibility=View.VISIBLE
+                           binding.linearlayoutreply.visibility = View.VISIBLE
+                       } else{
+                           binding.tvcompleted.visibility=View.GONE
+                           binding.linearlayoutreply.visibility = View.GONE
+                       }
                         viewTicketAdapter.differ.submitList(maillistdata)
+
+
                     }
 
                     binding.rvRecylergrndata.apply {
@@ -262,6 +272,7 @@ class ViewTicketActivity : AppCompatActivity() {
                 // Handle network error
             }
         })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -340,9 +351,6 @@ class ViewTicketActivity : AppCompatActivity() {
 
         return File(storageDir, imageFileName)
     }
-
-
-
 
 
 

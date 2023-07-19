@@ -45,7 +45,7 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
                 if (dataX != null){
                     Log.v("TAG","data is $dataX")
                     tvmesage.text = dataX.message
-                    tvreceptient.text = dataX.recipient
+                    tvreceptient.text = dataX.sender +   " -> "  + dataX.recipient
 
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

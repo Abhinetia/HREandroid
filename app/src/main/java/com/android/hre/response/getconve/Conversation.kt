@@ -7,10 +7,12 @@ data class Conversation(
 ) {
     data class Data(
         val date: String,
-        val filename: String,
+        val filename: List<String>,
         val filepath: String,
         val message: String,
         val recipient: String,
+        val sender_id:String,
+        val recipient_id:String,
         val sender: String
     )
 }

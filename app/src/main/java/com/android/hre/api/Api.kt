@@ -14,6 +14,8 @@ import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.pcns.PCN
 import com.android.hre.response.pettycashDetails.PettyCashDetails
+import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
+import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
 import okhttp3.MultipartBody
@@ -108,13 +110,14 @@ interface Api {
     @POST("upload-pettycash_bill")
     fun uploadPettycashBill(
         @Part("user_id") userId:RequestBody,
-        @Part("pettycash_id") pettycash_id:RequestBody,
+        @Part("bill_number") bill_number:RequestBody,
         @Part("spent_amount")  spent_amount:RequestBody,
         @Part("comment") comment:RequestBody,
         @Part("bill_date") bill_date:RequestBody,
         @Part("purpose") purpose:RequestBody,
         @Part("pcn") pcn:RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file : List<MultipartBody.Part>,
+       // @Part file: MultipartBody.Part
     ) :Call<TicketCreated>
 
     @Multipart
@@ -138,7 +141,7 @@ interface Api {
     @POST("get-mypettycash")
     fun getpettycashDetails(
         @Field("user_id") user_id:String
-    ) :Call<PettyCashDetails>
+    ) :Call<PettyCashFirstScreen>
 
     @FormUrlEncoded
     @POST("get-pettycash_details")
@@ -187,6 +190,14 @@ interface Api {
         @Field("start_date") start_date:String,
         @Field("end_date") end_date:String
     ) :Call<AttendanceListData>
+
+    @FormUrlEncoded
+    @POST("get-pettycash_summary")
+    fun getStatmnet(
+        @Field("user_id") user_id:String,
+        @Field("from_date") start_date:String,
+        @Field("to_date") end_date:String
+    ) :Call<StatementListData>
 
 
     @Headers("Content-Type: application/json")

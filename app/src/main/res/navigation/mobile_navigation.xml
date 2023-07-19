@@ -68,5 +68,10 @@
         android:name="com.android.hre.PettyCashFragment"
         android:label="fragment_petty_cash"
         tools:layout="@layout/fragment_petty_cash" />
+    <fragment
+        android:id="@+id/pettyCashScreenFragment"
+        android:name="com.android.hre.PettyCashScreenFragment"
+        android:label="fragment_petty_cash_screen"
+        tools:layout="@layout/fragment_petty_cash_screen" />
 
 </navigation>

@@ -396,9 +396,6 @@
    </ScrollView>
 
 
-
-
-
     <RelativeLayout
         android:id="@+id/rvaddmaterial"
         android:layout_width="match_parent"

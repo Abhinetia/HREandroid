@@ -19,7 +19,7 @@
         android:id="@+id/rvbackname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
@@ -27,7 +27,8 @@
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
+            android:padding="2dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back" />
@@ -81,6 +82,21 @@
                 android:id="@+id/tvstatsus"
                 android:padding="10dp"
                 android:text="Open"
+                android:textColor="@color/black_text"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/tvstatsus"
+                android:background="@drawable/ic_greenbaby"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/tvcompleted"
+                android:padding="10dp"
+                android:text="Completed"
                 android:textColor="@color/black_text"
                 android:textSize="12dp" />
 
@@ -160,6 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:id="@+id/linearlayoutreply"
             android:weightSum="2"
             android:orientation="horizontal"
             android:padding="5dp">

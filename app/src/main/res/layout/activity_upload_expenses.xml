@@ -7,6 +7,12 @@
     app:cardUseCompatPadding="true"
     android:layout_height="wrap_content">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,9 +27,10 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivBack"
+                android:layout_marginLeft="-5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_back"/>
 
@@ -123,7 +130,7 @@
                         android:id="@+id/tvamount"
                         android:padding="12dp"
                         android:inputType="number"
-                        android:singleLine="false"
+                        android:singleLine="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -132,6 +139,46 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black_text"
+                    android:text="Bill number :"
+                    android:minWidth="105dp"
+                    android:textSize="13dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_gravity="start"
+                        android:gravity="start"
+                        android:textSize="12sp"
+                        android:maxLines="1"
+                        android:id="@+id/tv_billnumber"
+                        android:padding="12dp"
+                        android:singleLine="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -458,11 +505,11 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
 
     </RelativeLayout>
 
+    </ScrollView>
 
 
 </androidx.cardview.widget.CardView>

@@ -52,7 +52,7 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 //                    tvTicketstatus.setText("Open")
 
 //
-                    if (dataX.status.contains("Pending")){
+                    if (dataX.status.contains("Pending/Ongoing")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_babypinkboreder)
                         tvViewmore.visibility = View.VISIBLE
                         //tvMailcount.visibility = View.VISIBLE
@@ -71,7 +71,7 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
                         tvViewmore.visibility = View.GONE
-                       // tvMailcount.visibility = View.GONE
+                       //tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.VISIBLE
                     }
 

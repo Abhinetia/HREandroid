@@ -25,6 +25,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCaretingIndeNewBinding
 import com.android.hre.databinding.ActivityUploadExpensesBinding
@@ -59,7 +60,8 @@ class UploadExpensesActivity : AppCompatActivity() {
     val listdata: ArrayList<String> = arrayListOf()
     var selectedItem :String = ""
     private val imageUriList = java.util.ArrayList<Uri>()
-
+    private val imgList = ArrayList<File>()
+    private val listOfImages = ArrayList<MultipartBody.Part>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +76,7 @@ class UploadExpensesActivity : AppCompatActivity() {
         userid = sharedPreferences?.getString("user_id", "")!!
         username = sharedPreferences?.getString("username", "")!!
 
-        pettycashid = intent.getStringExtra("PettyCashId")!!
+     //   pettycashid = intent.getStringExtra("PettyCashId")!!
 
         binding.tiNamedispaly.setText(username.capitalize())
 
@@ -198,16 +200,24 @@ class UploadExpensesActivity : AppCompatActivity() {
 
             }
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
-            val pettycashid = RequestBody.create(MediaType.parse("text/plain"),pettycashid )
-            val spentamount = RequestBody.create(MediaType.parse("text/plain"), binding.tvamount.text.toString())  // extra added priority
+            val billnumber = RequestBody.create(MediaType.parse("text/plain"),binding.tvBillnumber.text.toString() )
+            val spentamount = RequestBody.create(MediaType.parse("text/plain"), binding.tvamount.text.toString()) // amount
             val comment = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
-            val billDate = RequestBody.create(MediaType.parse("text/plain"),binding.tvDate.text.toString())
+            val billDate = RequestBody.create(MediaType.parse("text/plain"),binding.tvDate.text.toString())  //ddate
             val purpose = RequestBody.create(MediaType.parse("text/plain"),binding.tvPurpose.text.toString())
             val pcn = RequestBody.create(MediaType.parse("text/plain"),binding.tvPcn.text.toString())
 
-            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-            val image = MultipartBody.Part.createFormData("bill", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.uploadPettycashBill(userId, pettycashid, spentamount, comment,billDate,purpose,pcn,image)
+//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+//            val image = MultipartBody.Part.createFormData("bill", Imaagefile?.name, requestFile)
+
+
+            for (i in imgList){
+                Log.v("TAG","imglist is $i")
+                val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+                val image =   MultipartBody.Part.createFormData("image[$i]", Imaagefile?.name, requestFile)
+                listOfImages.add(image)
+            }
+            val call = RetrofitClient.instance.uploadPettycashBill(userId, billnumber, spentamount, comment,billDate,purpose,pcn,listOfImages)
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
@@ -275,9 +285,15 @@ class UploadExpensesActivity : AppCompatActivity() {
                     }
 
 
+//                    val arrayAdapter =
+//                        ArrayAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
+
                     val arrayAdapter =
-                        ArrayAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
+                        AutoCompleteAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
+
+
                     binding.tvPcn.setAdapter(arrayAdapter)
+                    binding.tvPcn.threshold = 1
 
                     binding.tvPcn.setOnItemClickListener { adapterView, view, i, l ->
                         var data: PCN.Data = arrayList_details.get(i)
@@ -407,7 +423,7 @@ class UploadExpensesActivity : AppCompatActivity() {
         // Create a new file in the directory with a unique name
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
-
+        imgList.add(Imaagefile!!)
         return File(storageDir, imageFileName)
     }
 
