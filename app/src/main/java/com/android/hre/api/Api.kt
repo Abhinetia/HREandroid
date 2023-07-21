@@ -17,6 +17,7 @@ import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.tickets.TicketList
+import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -112,7 +113,7 @@ interface Api {
         @Part("user_id") userId:RequestBody,
         @Part("bill_number") bill_number:RequestBody,
         @Part("spent_amount")  spent_amount:RequestBody,
-        @Part("comment") comment:RequestBody,
+        @Part("comments") comment:RequestBody,
         @Part("bill_date") bill_date:RequestBody,
         @Part("purpose") purpose:RequestBody,
         @Part("pcn") pcn:RequestBody,
@@ -200,6 +201,11 @@ interface Api {
     ) :Call<StatementListData>
 
 
+    @FormUrlEncoded
+    @POST("get-pettycash_details")
+    fun getTranscationInfo(
+        @Field("user_id") user_id:String
+    ) : Call<TranscationInfoDetails>
     @Headers("Content-Type: application/json")
     @POST("create-indent")
      fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>

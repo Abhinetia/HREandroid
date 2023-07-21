@@ -104,10 +104,10 @@ class PettyCashScreenFragment : Fragment() {
             binding.rvRecylergrndata.visibility = View.GONE
             binding.etDate.setText("")
             binding.etMonth.setText("")
+            val Intent = Intent(context,TranscationInfoActivity::class.java)
+            startActivity(Intent)
 
         }
-        binding.linedate.visibility = View.GONE
-
 
         pettycashFromServer()
 
@@ -141,6 +141,7 @@ class PettyCashScreenFragment : Fragment() {
                 }
 
             })
+
 
     }
 
