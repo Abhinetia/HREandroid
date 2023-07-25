@@ -127,8 +127,9 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         val dataString: PCN.Data = arrayList_details.get(i)
 
                         Log.v("log", i.toString())
-                        listdata.add(dataString.pcn)
-                        //  listPCNdata.add(PCN.Data)
+                        listdata.add(dataString.pcn)// + "-" + dataString.client_name + "-" + dataString.brand + "-" + dataString.location + "-" + dataString.area
+
+                        //  listPCNdata.add(PCN.Data)   + "-" + dataString.city
 
 
                     }
@@ -152,7 +153,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         binding.carviewpcn.visibility = View.VISIBLE
                         binding.pcnClinet.text = data.client_name
                         //  binding.etpcnId.isEnabled = false
-                        binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
+                        binding.pcnAddress.text = data.brand+ "-"+ data.area + " -" + data.city + "- " + data.state
                         binding.etpcnId.isEnabled = false
 
 

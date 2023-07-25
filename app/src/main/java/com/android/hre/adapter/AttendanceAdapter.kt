@@ -2,7 +2,6 @@ package com.android.hre.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +9,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
-import com.android.hre.R
-
 import com.android.hre.databinding.AttendancelistBinding
 import com.android.hre.response.attendncelist.AttendanceListData
 import java.text.SimpleDateFormat
@@ -47,7 +44,20 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
 
 //                        tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
 
-                        tvLotimee.text = dataX.working_minutes
+                        //tvLotimee.text = dataX.working_minutes
+
+
+                        val timeSec: String = dataX.working_minutes
+
+                        val hours = timeSec.toInt() / 3600
+                        var temp = timeSec.toInt() - hours * 3600
+                        val mins = temp / 60
+                        temp = temp - mins * 60
+                        val secs = temp
+
+                        val requiredFormat = "$hours: $mins: $secs"
+
+                        tvLotimee.text = requiredFormat.toString()
 
                     }
 

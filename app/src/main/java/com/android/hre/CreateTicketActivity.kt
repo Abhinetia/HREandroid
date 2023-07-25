@@ -493,6 +493,8 @@ class CreateTicketActivity : AppCompatActivity() {
         imageUriList.add(imageUri!!) // adding the image to the list
         imageview.setImageURI(imageUri) // setting the image view
 
+        binding.btnCretaeticket.visibility= View.VISIBLE
+
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
 

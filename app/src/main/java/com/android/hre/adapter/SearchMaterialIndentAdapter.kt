@@ -80,14 +80,15 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
                     fun String.capitalizeWords(): String =
                         split(" ").map { it.capitalize() }.joinToString(" ")
 
-                    tvDisplay.setOnClickListener {
+                    tvDisplay.text = stringd.capitalizeWords()
+                   /* tvDisplay.setOnClickListener {
                         tvDisplay.text = stringd.capitalizeWords()
                         Log.v("text", stringd.toString())
                         tvqty.visibility = View.VISIBLE
                         description.visibility = View.VISIBLE
                         tvuser.visibility = View.VISIBLE
                         tvusu.visibility = View.VISIBLE
-                    }
+                    }*/
 
 
                 } else{

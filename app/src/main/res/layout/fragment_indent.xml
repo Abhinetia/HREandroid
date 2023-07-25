@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Pending"
+            android:text="Active"
             android:textSize="13dp"
             android:drawablePadding="5dp"
             android:drawableLeft="@drawable/ic_dot"
@@ -78,6 +78,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="5dp"
+            android:id="@+id/countof"
             android:background="@drawable/ic_roundd"
             android:text="29"
             android:textColor="@color/black_text"
@@ -87,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_line"/>
 
@@ -96,6 +98,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:textSize="13sp"
+            android:visibility="gone"
             android:text="Completed"
             android:textColor="@color/black_text"
             />

@@ -76,7 +76,7 @@ class IndentFragment : Fragment() {
                     } else {
                         // The list is not empty
                         homeAdapter.differ.submitList(dataList.reversed())
-
+                        binding.countof.text = dataList?.size.toString()
                         binding.rvRecylergrndata.apply {
                             layoutManager = LinearLayoutManager(context)
                             adapter = homeAdapter

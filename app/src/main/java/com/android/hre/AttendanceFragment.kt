@@ -33,6 +33,8 @@ class AttendanceFragment : Fragment() {
     private var toDate: Calendar = Calendar.getInstance()
 
     private lateinit var attedanceadapter: AttendanceAdapter
+    val attendanceListData: ArrayList<AttendanceListData.Data> = arrayListOf()
+
 
     private val fromDateClickListener = View.OnClickListener {
         showDatePickerDialog(true)
@@ -114,7 +116,16 @@ class AttendanceFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    attedanceadapter.differ.submitList(dataList)
+                    for(i  in 0 until dataList!!.size){
+                        val data  = dataList.get(i)
+                        if (data.working_minutes.contains("---") || data.login.contains("---")||
+                            data.logout.contains("---")){
+
+                        }else{
+                            attendanceListData.add(data)
+                        }
+                    }
+                    attedanceadapter.differ.submitList(attendanceListData)
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)

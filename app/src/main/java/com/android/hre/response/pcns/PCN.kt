@@ -11,6 +11,8 @@ data class PCN(
         val client_name: String,
         val pcn: String,
         val state: String,
+        val brand:String,
+        val location:String,
         val typeof_work: String
     )
 }
