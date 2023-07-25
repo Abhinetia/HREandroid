@@ -35,15 +35,15 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
                     tvCommnets.text = dataX.comment
 
 
-                    val inputDateString = dataX.transaction_date
-                    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+//                    val inputDateString = dataX.transaction_date
+//                    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//                    val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+//
+//
+//                    val date = inputFormat.parse(inputDateString)
+//                    val outputDateString = outputFormat.format(date)
 
-
-                    val date = inputFormat.parse(inputDateString)
-                    val outputDateString = outputFormat.format(date)
-
-                    tvTransdate.text  = outputDateString
+                    tvTransdate.text  = dataX.transaction_date
 
 
                     val inputDateStringg = dataX.bill_submission_date

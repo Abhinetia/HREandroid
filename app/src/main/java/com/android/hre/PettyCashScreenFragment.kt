@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.AttendanceAdapter
 import com.android.hre.adapter.StatementAdapter
@@ -91,7 +92,8 @@ class PettyCashScreenFragment : Fragment() {
 
         binding.lnStatment.setOnClickListener {
            binding.linedate.visibility = View.VISIBLE
-           binding.etDate.setOnClickListener {
+
+            binding.etDate.setOnClickListener {
                showDatePickerDialog(true)
            }
             binding.etMonth.setOnClickListener {
@@ -176,6 +178,11 @@ class PettyCashScreenFragment : Fragment() {
         } else {
             binding.etMonth.setText(formattedDate)
             toodate = binding.etMonth.text.toString()
+            if (binding.etMonth.toString().isEmpty()){
+                binding.rvRecylergrndata.visibility = View.GONE
+            }else{
+                binding.rvRecylergrndata.visibility = View.VISIBLE
+            }
             Log.v("Date","$toodate")
         }
 
@@ -199,6 +206,7 @@ class PettyCashScreenFragment : Fragment() {
                             layoutManager = LinearLayoutManager(context)
                             adapter = statmentadapter
                         }
+                      //  statmentadapter.notifyDataSetChanged()
 
                     } else {
 
