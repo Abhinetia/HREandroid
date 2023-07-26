@@ -35,10 +35,7 @@ class PettyCashScreenFragment : Fragment() {
     private lateinit var binding: FragmentPettyCashScreenBinding
     var userid :String = ""
     var name :String = ""
-    var totalBalance : Int = 0
-    var remaingCash :Int = 0
-    var spendCash :Int = 0
-    var PettyId : String = ""
+
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
     private var fromDate: Calendar = Calendar.getInstance()
@@ -46,6 +43,9 @@ class PettyCashScreenFragment : Fragment() {
     var frommdate :String = ""
     var toodate :String = ""
     private lateinit var statmentadapter: StatementAdapter
+    var issuedAm : String = ""
+    var balancecash :String = ""
+
 
 
     override fun onCreateView(
@@ -101,15 +101,6 @@ class PettyCashScreenFragment : Fragment() {
             }
         }
 
-        binding.lnTranscation.setOnClickListener {
-            binding.linedate.visibility = View.GONE
-            binding.rvRecylergrndata.visibility = View.GONE
-            binding.etDate.setText("")
-            binding.etMonth.setText("")
-            val Intent = Intent(context,TranscationInfoActivity::class.java)
-            startActivity(Intent)
-
-        }
 
         pettycashFromServer()
 
@@ -136,16 +127,28 @@ class PettyCashScreenFragment : Fragment() {
                         val dataString: PettyCashFirstScreen.Data = arrayList_details.get(i)
                         binding.pcnClinet.text = dataString.issued_amount.toString()
                         binding.tvexpense.text = dataString.balance_amount.toString()
-                        //cashLogic(dataString)
+
+
 
                     }
-
                 }
 
             })
+             binding.lnTranscation.setOnClickListener {
+                binding.linedate.visibility = View.GONE
+                binding.rvRecylergrndata.visibility = View.GONE
+                binding.etDate.setText("")
+                binding.etMonth.setText("")
+                val Intent = Intent(context,TranscationInfoActivity::class.java)
+
+                startActivity(Intent)
+
+        }
 
 
     }
+
+
 
     private fun showDatePickerDialog(isFromDate: Boolean) {
         val calendar = if (isFromDate) fromDate else toDate

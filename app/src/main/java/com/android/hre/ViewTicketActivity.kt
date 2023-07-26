@@ -197,18 +197,23 @@ class ViewTicketActivity : AppCompatActivity() {
                      maillistdata = responseBody?.data as ArrayList<Conversation.Data>
                     Log.v("dat", maillistdata.toString())
 
-                    if (maillistdata != null) {
-                       //
-                       if(maillistdata.toString().contains(userid) && (maillistdata.toString().equals(receiptId))){   //Validating the user id and recipt id for the visible and
-                           binding.tvcompleted.visibility=View.VISIBLE
-                           binding.linearlayoutreply.visibility = View.VISIBLE
-                       } else{
-                           binding.tvcompleted.visibility=View.GONE
-                           binding.linearlayoutreply.visibility = View.GONE
-                       }
+                    if (!maillistdata.isEmpty()) {
+                        val replyData : Conversation.Data = maillistdata.last()
+                        if(replyData.recipient_id.equals(userid)){
+                            binding.tvcompleted.visibility=View.VISIBLE
+                            binding.linearlayoutreply.visibility = View.VISIBLE
+                        }else{
+                            binding.tvcompleted.visibility=View.GONE
+                            binding.linearlayoutreply.visibility = View.GONE
+                        }
+//                       if(maillistdata.toString().contains(userid) && (maillistdata.toString().equals(receiptId))){   //Validating the user id and recipt id for the visible and
+//                           binding.tvcompleted.visibility=View.VISIBLE
+//                           binding.linearlayoutreply.visibility = View.VISIBLE
+//                       } else{
+//                           binding.tvcompleted.visibility=View.GONE
+//                           binding.linearlayoutreply.visibility = View.GONE
+//                       }
                         viewTicketAdapter.differ.submitList(maillistdata)
-
-
                     }
 
                     binding.rvRecylergrndata.apply {

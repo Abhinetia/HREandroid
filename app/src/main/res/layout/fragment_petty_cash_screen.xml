@@ -28,17 +28,15 @@
                 android:src="@drawable/ic_back"/>
 
             <TextView
+                android:id="@+id/tvheadername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/ivBack"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/tvheadername"
+                android:layout_toRightOf="@+id/ivBack"
                 android:text="Petty Cash"
-                android:textSize="15dp"
                 android:textColor="@color/black"
-                />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/btn_materials"
