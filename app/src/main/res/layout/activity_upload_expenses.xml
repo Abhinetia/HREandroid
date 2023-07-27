@@ -110,7 +110,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:textColor="@color/black_text"
-                    android:text="Amount :"
+                    android:text="Amount* :"
                     android:minWidth="105dp"
                     android:textSize="13dp"
                     android:layout_height="wrap_content"/>
@@ -149,7 +149,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:textColor="@color/black_text"
-                    android:text="Bill number :"
+                    android:text="Bill number* :"
                     android:minWidth="105dp"
                     android:textSize="13dp"
                     android:layout_height="wrap_content"/>
@@ -189,7 +189,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:textColor="@color/black_text"
-                    android:text="Purpose :"
+                    android:text="Purpose* :"
                     android:layout_gravity="center"
                     android:minWidth="105dp"
                     android:textSize="13dp"
@@ -235,7 +235,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:textColor="@color/black_text"
-                    android:text="PCN :"
+                    android:text="PCN* :"
                     android:layout_gravity="center"
                     android:minWidth="105dp"
                     android:textSize="13dp"
@@ -359,7 +359,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:textColor="@color/black_text"
-                    android:text="Date of Bill :"
+                    android:text="Date of Bill* :"
                     android:layout_gravity="center"
                     android:minWidth="105dp"
                     android:textSize="13dp"
