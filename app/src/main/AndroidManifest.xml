@@ -33,6 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".UploadExpensesActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
         <activity
             android:name=".UpdateTicketActivity"
@@ -53,6 +54,7 @@
         </activity>
         <activity
             android:name=".CaretingIndeNewActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -114,6 +116,7 @@
         </activity>
         <activity
             android:name=".CreateTicketActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -136,6 +139,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -143,6 +147,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
