@@ -123,12 +123,14 @@ class PettyCashScreenFragment : Fragment() {
 
                     var arrayList_details: List<PettyCashFirstScreen.Data>? = listMaterials?.data
 
-                    for (i in 0 until arrayList_details?.size!!) {
-                        val dataString: PettyCashFirstScreen.Data = arrayList_details.get(i)
-                        binding.pcnClinet.text = dataString.issued_amount.toString()
-                        binding.tvexpense.text = dataString.balance_amount.toString()
+                    if (arrayList_details!!.isEmpty()){
+                        binding.pcnClinet.visibility = View.GONE
+                        for (i in 0 until arrayList_details?.size!!) {
+                            val dataString: PettyCashFirstScreen.Data = arrayList_details.get(i)
+                            binding.pcnClinet.text = dataString.issued_amount.toString()
+                            binding.tvexpense.text = dataString.balance_amount.toString()
 
-
+                        }
 
                     }
                 }

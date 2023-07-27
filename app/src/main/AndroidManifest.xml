@@ -37,9 +37,11 @@
             android:exported="false" />
         <activity
             android:name=".UpdateTicketActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
         <activity
             android:name=".viewmoreindent.ViewMoreIndentActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -47,6 +49,7 @@
         </activity>
         <activity
             android:name=".grn.DisplayGrnActivity"
+            android:theme="@style/AppTheme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

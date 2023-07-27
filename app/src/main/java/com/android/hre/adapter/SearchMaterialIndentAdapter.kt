@@ -97,6 +97,7 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
 
 
                     tvViewmore.setOnClickListener {
+                        Log.v("TAG",dataX.material_id)
                         val  qty = tvqty.text.toString()
                         val desc = description.text.toString()
                         if (qty.isEmpty()){

@@ -105,7 +105,7 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
 
                     binding.etMaterial.setOnItemClickListener { adapterView, view, i, l ->
 
-                        binding.etMaterial.isEnabled = false
+                       // binding.etMaterial.isEnabled = false
 
 
                     }
