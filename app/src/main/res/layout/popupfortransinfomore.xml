@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comments"
+                android:text="Description"
                 android:minWidth="120dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
@@ -151,7 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bill Submit Date"
+                android:text="Entry Date"
                 android:minWidth="120dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
@@ -202,7 +202,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="IsApproved"
+                android:text="Approval Status"
                 android:minWidth="120dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />

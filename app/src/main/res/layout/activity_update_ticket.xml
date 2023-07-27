@@ -29,7 +29,7 @@
             />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/ivnotification"
             android:layout_centerVertical="true"

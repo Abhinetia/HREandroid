@@ -113,6 +113,10 @@ class UpdateTicketActivity : AppCompatActivity() {
             validationPart()
         }
 
+
+        binding.ivnotification.setOnClickListener {
+            finish()
+        }
     }
 
     private fun validationPart() {

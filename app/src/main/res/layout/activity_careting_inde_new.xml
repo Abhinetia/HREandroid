@@ -413,7 +413,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
-            android:text="Add Intend Material"
+            android:text="Add Indent Material"
             android:textColor="@color/black_text"
             android:textSize="13sp" />
 

@@ -76,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="IsApproved"
+                android:text="Approval Status"
                 android:minWidth="120dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
