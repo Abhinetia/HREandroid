@@ -419,7 +419,7 @@ class CreateTicketActivity : AppCompatActivity() {
                         binding.carviewpcn.visibility = View.VISIBLE
                         binding.pcnClinet.text = data.client_name
                         binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
-                        binding.etSelctpcn.isEnabled = false
+                       // binding.etSelctpcn.isEnabled = false
 
                     }
                 }

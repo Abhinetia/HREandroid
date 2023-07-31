@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ivnotification"
             android:layout_centerVertical="true"
+            android:visibility="invisible"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_notification"/>
 
@@ -64,105 +65,102 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choose PCN"
                 android:layout_marginTop="30dp"
+                android:text="Choose PCN"
                 android:textColor="@color/black_text"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="3dp"
                 android:layout_marginTop="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
                 <AutoCompleteTextView
+                    android:id="@+id/etpcnId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/etpcnId"
-                    android:hint="PCN_001"
-                    android:singleLine="true"
-                    android:textSize="13sp"
-                    android:drawableRight="@drawable/ic_dropdown"
-                    android:padding="13dp"
                     android:background="@color/white"
-                    />
+                    android:hint="PCN_001"
+                    android:padding="13dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/carviewpcn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="3dp"
-                android:visibility="gone"
-                android:padding="2sp"
-                android:id="@+id/carviewpcn"
                 android:layout_marginTop="5dp"
-                app:cardCornerRadius="10dp">
+                android:padding="2sp"
+                android:visibility="gone"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textSize="13dp"
-                        android:minWidth="100dp"
-                        android:padding="2sp"
-                        android:layout_marginLeft="5dp"
-                        android:text="Client Name "
-                        android:layout_height="wrap_content">
-
-                    </TextView>
                         <TextView
-                            android:layout_width="match_parent"
-                            android:id="@+id/pcn_clinet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
                             android:layout_marginTop="5dp"
-                            android:textSize="13dp"
+                            android:minWidth="100dp"
                             android:padding="2sp"
-                            android:text=" "
-                            android:layout_height="wrap_content">
+                            android:text="Client Name "
+                            android:textSize="13dp">
 
                         </TextView>
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/pcn_clinet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:padding="2sp"
+                            android:text=" "
+                            android:textSize="13dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:layout_height="wrap_content">
+                        </TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textSize="13dp"
-                        android:minWidth="100dp"
-                        android:layout_marginLeft="5dp"
-                        android:padding="2sp"
-                        android:text="Address"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:id="@+id/pcn_address"
-                        android:layout_marginTop="5dp"
-                        android:textSize="13dp"
-                        android:padding="2sp"
-                        android:text=""
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:minWidth="100dp"
+                            android:padding="2sp"
+                            android:text="Address"
+                            android:textSize="13dp"></TextView>
+
+                        <TextView
+                            android:id="@+id/pcn_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:padding="2sp"
+                            android:text=""
+                            android:textSize="13dp"></TextView>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

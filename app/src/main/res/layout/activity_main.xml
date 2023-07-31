@@ -43,6 +43,8 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/idsidenavigation"
+                android:layout_margin="5dp"
+                android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_sidenavigation"/>
 

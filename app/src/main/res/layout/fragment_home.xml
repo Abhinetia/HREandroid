@@ -29,6 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/idsidenavigation"
+            android:layout_margin="5dp"
+            android:padding="5dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_sidenavigation"/>
 
@@ -43,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ivnotification"
+            android:visibility="invisible"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_notification"/>
