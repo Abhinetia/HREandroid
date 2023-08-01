@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -17,21 +16,17 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.hre.adapter.TicketAdapter
 import com.android.hre.adapter.ViewTcketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityViewTicketBinding
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
-import com.android.hre.response.tickets.TicketList
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,7 +38,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ViewTicketActivity : AppCompatActivity() {
 
@@ -89,7 +83,9 @@ class ViewTicketActivity : AppCompatActivity() {
         ticketno = intentUser!!.getStringExtra("TicketNo").toString()
         status = intentUser.getStringExtra("Stauts").toString()
         subject = intentUser.getStringExtra("Subject").toString()
-        ticketid = intentUser.getStringExtra("TicketId").toString()
+        //ticketid = intentUser.getStringExtra("ticketid")
+        ticketid = intent.extras!!.getInt("ticketid").toString()
+
 
 
         binding.tvticketno.text = ticketno

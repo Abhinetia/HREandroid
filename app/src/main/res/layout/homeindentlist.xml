@@ -69,12 +69,29 @@
                 android:layout_marginBottom="20dp"
                 android:src="@drawable/ic_linehoriz" />
 
+            <TextView
+                android:id="@+id/tvdpcndatapcn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:marqueeRepeatLimit= "marquee_forever"
+                android:layout_marginTop="60dp"
+                android:text="PCN852"
+                android:textColor="@color/black_text"
+                android:textSize="12sp" />
+
+
             <RelativeLayout
                 android:id="@+id/rrrr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="55dp"
+                android:layout_marginTop="75dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp">
 
@@ -108,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="95dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp">
 
@@ -144,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="120dp"
                 android:padding="5dp"
                 android:minWidth="150dp"
                 android:id="@+id/tv_viewindents"

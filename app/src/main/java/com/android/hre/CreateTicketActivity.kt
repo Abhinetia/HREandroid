@@ -1,9 +1,11 @@
 package com.android.hre
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,8 +21,11 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCreateTicketBinding
@@ -29,6 +34,8 @@ import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.pcns.PCN
 import com.bumptech.glide.Glide
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,7 +48,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
+
+private const val PERMISSION_REQUEST_CODE = 1001
 
 
 class CreateTicketActivity : AppCompatActivity() {
@@ -65,6 +74,7 @@ class CreateTicketActivity : AppCompatActivity() {
 
     private val imgList = ArrayList<File>()
     private val listOfImages = ArrayList<MultipartBody.Part>()
+
 
 
 
@@ -106,7 +116,8 @@ class CreateTicketActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            selectImage()
+            checkTheRunTimePermissions()
+
         }
 
         binding.ivBack.setOnClickListener {
@@ -496,6 +507,89 @@ class CreateTicketActivity : AppCompatActivity() {
         binding.btnCretaeticket.visibility= View.VISIBLE
 
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
+    }
+
+    private fun checkTheRunTimePermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // You have the required permissions, so you can proceed to capture the image.
+            selectImage()
+        } else {
+            // If the user has denied the permissions previously, show an explanation.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.CAMERA
+                )
+                || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            ) {
+                // Show an explanation to the user about why the permissions are needed.
+                AlertDialog.Builder(this)
+                    .setTitle("Permission Needed")
+                    .setMessage("We need camera and storage permissions to capture and save images.")
+                    .setPositiveButton("OK") { _, _ ->
+                        // Request the permissions again.
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ),
+                            PERMISSION_REQUEST_CODE
+                        )
+                    }
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        // You can handle the cancel action here, e.g., show a message to the user.
+                        Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+
+                    }
+                    .show()
+            } else {
+                // Request the permissions if it's the first time or "Never ask again" was checked.
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    PERMISSION_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.size == 2 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Both permissions were granted, you can proceed to capture the image.
+                selectImage()
+            } else {
+
+                checkTheRunTimePermissions()
+                // Permission request was denied.
+               // Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
 

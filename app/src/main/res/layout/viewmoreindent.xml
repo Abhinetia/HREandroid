@@ -70,6 +70,63 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PCN"
+                    android:minWidth="120dp"
+                    android:textColor="#FF9797"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_pcn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GRN"
+                    android:minWidth="120dp"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PCN Details"
+                    android:minWidth="120dp"
+                    android:textColor="#FF9797"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_pcndetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GRN"
+                    android:ellipsize="marquee"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:marqueeRepeatLimit= "marquee_forever"
+                    android:minWidth="120dp"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

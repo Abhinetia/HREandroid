@@ -12,6 +12,8 @@ import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
 import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.listmaterial.ListMaterials
+import com.android.hre.response.newindentrepo.NewIndents
+import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.android.hre.response.pcns.PCN
 import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
@@ -64,11 +66,19 @@ interface Api {
        @Field("rejected") rejected:String
    ) :Call<CountList>
 
+/*
    @FormUrlEncoded
    @POST("get-indents")
    fun getIndents(
        @Field("user_id") user_id :String
    ) :Call<GetIndentsHome>
+*/
+
+    @FormUrlEncoded
+    @POST("get-indents")
+    fun getIndents(
+        @Field("user_id") user_id :String
+    ) :Call<NewIndents>
 
 
     @FormUrlEncoded
@@ -155,7 +165,7 @@ interface Api {
     @POST("get-tickets")
     fun getTickets(
         @Field("user_id") user_id :String
-    )  :Call<TicketList>
+    )  :Call<TikcetlistNew>
 
 
     @FormUrlEncoded

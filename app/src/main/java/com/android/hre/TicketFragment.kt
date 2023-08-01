@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.TicketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentTicketBinding
+import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.android.hre.response.tickets.TicketList
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,8 +55,35 @@ class TicketFragment : Fragment() {
 
     private fun fetchtheTicketList() {
         val call = RetrofitClient.instance.getTickets(userid)
-        call.enqueue(object : Callback<TicketList> {
-            override fun onResponse(call: Call<TicketList>, response: Response<TicketList>) {
+        call.enqueue(object : Callback<TikcetlistNew> {
+            override fun onResponse(call: Call<TikcetlistNew>, response: Response<TikcetlistNew>) {
+
+
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+
+                    if (indentResponse != null && indentResponse.status == 1) {
+                        val myIndents = indentResponse.data.tickets
+
+                        ticketAdapter.differ.submitList(myIndents)   //now added reverse function in android @5.53 pm need to check while debugging
+
+                        binding.tvCount.text = myIndents?.size.toString()
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = ticketAdapter
+                        }
+
+                    }
+                    else {
+                        binding.tvShowPening.visibility = View.VISIBLE
+                        binding.tvShowPening.text = "No Pending Indents"
+                        // Handle error or unexpected response
+                    }
+                } else {
+                    // Handle API call failure
+                }
+
+/*
                 if (response.isSuccessful) {
                     val indentResponse = response.body()
                     val dataList = indentResponse?.data
@@ -73,9 +101,10 @@ class TicketFragment : Fragment() {
 
                     // Handle error response
                 }
+*/
             }
 
-            override fun onFailure(call: Call<TicketList>, t: Throwable) {
+            override fun onFailure(call: Call<TikcetlistNew>, t: Throwable) {
                 // Handle network error
             }
         })
@@ -106,7 +135,7 @@ class TicketFragment : Fragment() {
 //            }
 
             binding.ivBack.setOnClickListener {
-                activity?.finish()
+                requireActivity().onBackPressed()
             }
 
 

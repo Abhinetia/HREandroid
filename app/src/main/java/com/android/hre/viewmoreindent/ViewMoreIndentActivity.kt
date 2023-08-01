@@ -22,6 +22,8 @@ class ViewMoreIndentActivity : AppCompatActivity() {
     var userid :String = ""
     private lateinit var viewindentadapter : ViewIndnetAdapter
     var id :String = ""
+    var pcn :String = ""
+    var pcndetails :String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,9 @@ class ViewMoreIndentActivity : AppCompatActivity() {
         viewindentadapter = ViewIndnetAdapter()
 
          id = intent.getStringExtra("indentid")!!
+        pcn = intent.getStringExtra("pcn")!!
+        pcndetails = intent.getStringExtra("pcndetails")!!
+
         Log.v("TAG","id : $id")
 
 

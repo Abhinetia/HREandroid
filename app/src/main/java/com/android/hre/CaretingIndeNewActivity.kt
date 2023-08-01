@@ -217,9 +217,18 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                     // Handle successful response
                     val apiResponse = response.body()
                     if (apiResponse?.status == 1){
-                        showAlertDialogOkAndCloseAfter(apiResponse.message.toString())
+//                        showAlertDialogOkAndCloseAfter(apiResponse.message.toString()+ " " + " IndentNo : " )
+                        val responseString = apiResponse.message.toString()
 
-                }
+                        val parts = responseString.split("\\s+".toRegex())
+
+                        val number = parts[1].trim()
+
+                        showAlertDialogOkAndCloseAfter(parts.toString())
+
+
+
+                    }
             }
 
             override fun onFailure(call: Call<IndentResponse>, t: Throwable) {

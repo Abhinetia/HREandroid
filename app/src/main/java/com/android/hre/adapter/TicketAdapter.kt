@@ -25,6 +25,7 @@ import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.TicketDetailsBinding
 import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.homeindents.GetIndentsHome
+import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.viewmoreindent.ViewMoreIndentActivity
 import com.google.android.material.textfield.TextInputEditText
@@ -42,11 +43,12 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
     inner class ViewHolder :RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n", "SuspiciousIndentation")
-        fun bind(dataX: TicketList.Data?) {
+        fun bind(dataX: TikcetlistNew.Ticket?) {
             binding.apply {
                 if (dataX != null){
                     tvticketno.text = dataX.ticket_no
                     tvTicketstatus.text = dataX.status
+
                     val open = dataX.status
 //                    tvTicketstatus.text = "$open"
 //                    tvTicketstatus.setText("Open")
@@ -92,10 +94,11 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
                     binding.tvViewmore.setOnClickListener {
                         val Intent = Intent(context, ViewTicketActivity::class.java)
-                        Intent.putExtra("TicketId",dataX.ticket_id)
+//                        Intent.putExtra("TicketId",dataX.ticket_id)
                         Intent.putExtra("TicketNo",dataX.ticket_no)
                         Intent.putExtra("Subject",dataX.category)
                         Intent.putExtra("Stauts",dataX.status)
+                        Intent.putExtra("ticketid",dataX.ticket_id)
                         context.startActivity(Intent)
 
                     }
@@ -138,12 +141,12 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private val differCallback = object : DiffUtil.ItemCallback<TicketList.Data>(){
-        override fun areItemsTheSame(oldItem: TicketList.Data, newItem: TicketList.Data): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<TikcetlistNew.Ticket>(){
+        override fun areItemsTheSame(oldItem: TikcetlistNew.Ticket, newItem: TikcetlistNew.Ticket): Boolean {
             return oldItem.ticket_no == newItem.ticket_no
         }
 
-        override fun areContentsTheSame(oldItem: TicketList.Data, newItem: TicketList.Data): Boolean {
+        override fun areContentsTheSame(oldItem: TikcetlistNew.Ticket, newItem: TikcetlistNew.Ticket): Boolean {
             return oldItem == newItem
         }
     }

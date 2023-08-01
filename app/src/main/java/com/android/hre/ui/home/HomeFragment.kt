@@ -43,7 +43,7 @@ import java.util.*
 import kotlin.random.Random
 import com.google.android.gms.location.*
 import android.os.Looper
-
+import com.android.hre.response.newindentrepo.NewIndents
 
 
 class HomeFragment : Fragment() {
@@ -96,8 +96,10 @@ class HomeFragment : Fragment() {
          sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
         editor = sharedPreferences.edit()
         var name = sharedPreferences?.getString("username", "")
+        var empId = sharedPreferences?.getString("employee_id","")
         userid = sharedPreferences?.getString("user_id", "")!!
         binding.tvDisplay.text = name
+        binding.namedisplay.text = "Name/EmpId :" + name + "  " + empId
 
         Log.v("Sharedpref", sharedPreferences?.getBoolean(Constants.ISLOGGEDIN,false).toString())
         if (sharedPreferences.getBoolean("isLoggedIn",false)){
@@ -133,14 +135,13 @@ class HomeFragment : Fragment() {
 
     private fun fetchTheIndentList() {
         val call = RetrofitClient.instance.getIndents(userid)
-        call.enqueue(object : Callback<GetIndentsHome> {
-            override fun onResponse(call: Call<GetIndentsHome>, response: Response<GetIndentsHome>) {
-                if (response.isSuccessful) {
-                    val indentResponse = response.body()
-                    val dataList = indentResponse?.data
-                    Log.v("dat", dataList.toString())
+        call.enqueue(object : Callback<NewIndents> {
+            override fun onResponse(call: Call<NewIndents>, response: Response<NewIndents>) {
+//                    val indentResponse = response.body()
+//                    val dataList = indentResponse?.data
+                  //  Log.v("dat", dataList.toString())
 
-                    if (dataList.isNullOrEmpty()) {
+                  /*  if (dataList.isNullOrEmpty()) {
                         // The list is empty
                         binding.tvShowPening.visibility = View.VISIBLE
                         binding.tvShowPening.text = "No Pending Indents"
@@ -152,23 +153,43 @@ class HomeFragment : Fragment() {
                             layoutManager = LinearLayoutManager(context)
                             adapter = homeAdapter
                         }
+                    }*/
+
+                    if (response.isSuccessful) {
+                        val indentResponse = response.body()
+
+                        if (indentResponse != null && indentResponse.status == 1) {
+                            val myIndents = indentResponse.data.myindents
+                            homeAdapter.differ.submitList(myIndents.reversed())
+
+                            binding.rvRecylergrndata.apply {
+                                layoutManager = LinearLayoutManager(context)
+                                adapter = homeAdapter
+                            }                        }
+                        else {
+                            binding.tvShowPening.visibility = View.VISIBLE
+                            binding.tvShowPening.text = "No Pending Indents"
+                            // Handle error or unexpected response
+                        }
+                    } else {
+                        // Handle API call failure
                     }
-//                    homeAdapter.differ.submitList(dataList?.reversed())
-//
-//                    binding.rvRecylergrndata.apply {
-//                        layoutManager = LinearLayoutManager(context)
-//                        adapter = homeAdapter
-//                    }
+                 /*   homeAdapter.differ.submitList(dataList?.reversed())
 
-                   // var dataList = dataList?.reversed()
-//                        homeAdapterNew = HomeAdapterNew(context!!,dataList?.reversed())
-//                    binding.rvRecylergrndata.adapter = homeAdapterNew
+                    binding.rvRecylergrndata.apply {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = homeAdapter
+                    }
 
-               }
+                    var dataList = dataList?.reversed()
+                        homeAdapterNew = HomeAdapterNew(context!!,dataList?.reversed())
+                    binding.rvRecylergrndata.adapter = homeAdapterNew
+*/
+
 
             }
 
-            override fun onFailure(call: Call<GetIndentsHome>, t: Throwable) {
+            override fun onFailure(call: Call<NewIndents>, t: Throwable) {
                 // Handle network error
             }
         })
