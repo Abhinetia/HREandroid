@@ -13,6 +13,7 @@ data class PCN(
         val state: String,
         val brand:String,
         val location:String,
+        val status:String,
         val typeof_work: String
     )
 }

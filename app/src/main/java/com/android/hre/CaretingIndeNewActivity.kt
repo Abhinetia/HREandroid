@@ -1,11 +1,12 @@
 package com.android.hre
 
+import android.R.attr.autoText
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.text.InputFilter
-import android.text.Spanned
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
     var userid : String = ""
     val listdata: ArrayList<String> = arrayListOf()
     val listPCNdata: ArrayList<PCN> = arrayListOf()
+    var isSelectedText :Boolean = true
 
     var  pcnnumber :String =""
     private var actualitemcodeTextList: List<TextView>? = null
@@ -97,6 +99,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         }
 
         binding.etpcnId.setOnClickListener {
+
             dropdwonfromServer()
         }
 
@@ -149,17 +152,40 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
 //
                     binding.etpcnId.setOnItemClickListener { adapterView, view, i, l ->
-                        var data: PCN.Data = arrayList_details.get(i)
-                        binding.carviewpcn.visibility = View.VISIBLE
-                        binding.pcnClinet.text = data.client_name
-                        //  binding.etpcnId.isEnabled = false
-                        binding.pcnAddress.text = data.brand+ "-"+ data.area + " -" + data.city + "- " + data.state
-                       // binding.etpcnId.isEnabled = false
+                        var position : Int = listdata.indexOf(binding.etpcnId.text.toString())
+                        var data: PCN.Data = arrayList_details.get(position)
+                        isSelectedText = true
+                        if (data.status.contains("Active")){
+                            binding.carviewpcn.visibility = View.VISIBLE
+                            binding.pcnClinet.text = data.client_name
+                            binding.pcnAddress.text = data.brand+ "-"+ data.area + " -" + data.city + "- " + data.state
 
-
+                        } else if (data.status.contains("Completed")){
+                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                            binding.btnMaterials.visibility = View.GONE
+                        }
                     }
                    // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+                    binding.etpcnId.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(
+                            charSequence: CharSequence,
+                            i: Int,
+                            i1: Int,
+                            i2: Int
+                        ) {
+                        }
 
+                        override fun onTextChanged(
+                            charSequence: CharSequence,
+                            i: Int,
+                            i1: Int,
+                            i2: Int
+                        ) {
+                            isSelectedText = false
+                        }
+
+                        override fun afterTextChanged(editable: Editable) {}
+                    })
 
 
                 }
