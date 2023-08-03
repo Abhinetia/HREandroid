@@ -123,7 +123,7 @@
                             android:layout_marginTop="5dp"
                             android:minWidth="100dp"
                             android:padding="2sp"
-                            android:text="Client Name "
+                            android:text="Brand Name "
                             android:textSize="13dp">
 
                         </TextView>
@@ -293,7 +293,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:text="Add Images"
+                    android:text="Add Images*"
                     android:textColor="@color/black_text">
 
                 </TextView>

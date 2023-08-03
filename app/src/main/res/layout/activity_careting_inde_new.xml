@@ -117,7 +117,7 @@
                             android:layout_marginTop="5dp"
                             android:minWidth="100dp"
                             android:padding="2sp"
-                            android:text="Client Name "
+                            android:text="Brand Name "
                             android:textSize="13dp">
 
                         </TextView>

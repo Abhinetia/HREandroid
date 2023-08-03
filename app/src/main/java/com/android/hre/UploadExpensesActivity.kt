@@ -298,7 +298,7 @@ class UploadExpensesActivity : AppCompatActivity() {
                     binding.tvPcn.setOnItemClickListener { adapterView, view, i, l ->
                         var data: PCN.Data = arrayList_details.get(i)
                         binding.carviewpcn.visibility = View.VISIBLE
-                        binding.pcnClinet.text = data.client_name
+                        binding.pcnClinet.text = data.brand
                         binding.pcnAddress.text = data.area + " " + data.city + " " + data.state
 
                     }
