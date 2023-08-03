@@ -71,6 +71,11 @@ class NotificationsFragment : Fragment() {
        binding.etDate.setOnClickListener(fromDateClickListener)
         binding.etMonth.setOnClickListener(toDateClickListener)
 
+        binding.ivBack.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
+
         attedanceadapter = AttendanceAdapter()
 
 
