@@ -1,27 +1,32 @@
 package com.android.hre
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.Manifest
+import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.android.hre.api.Convertion
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityLoginBinding
 import com.android.hre.storage.SharedPrefManager
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
-import java.lang.reflect.Type
 
 
 class LoginActivity :AppCompatActivity() {
@@ -31,6 +36,9 @@ class LoginActivity :AppCompatActivity() {
 
 
     private lateinit var binding: ActivityLoginBinding
+    private val REQUEST_READ_PHONE_STATE = 123
+    var deviceId :String = ""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,21 +58,61 @@ class LoginActivity :AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPreferences=getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        sharedPreferences=getSharedPreferences(Constants.PREFS_KEY, MODE_PRIVATE)
         editor=sharedPreferences.edit()
+
 
 
         binding.btnlogin.setOnClickListener {
             loginUpUser()
         }
 
+        checkPermissionsAndRetrieveDeviceId()
 
+
+    }
+
+    private fun checkPermissionsAndRetrieveDeviceId() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), REQUEST_READ_PHONE_STATE)
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                getDeviceId()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_READ_PHONE_STATE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    getDeviceId()
+                }
+            } else {
+                // Handle permission denied case
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDeviceId() {
+        val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+            // Use deviceId (Note: ANDROID_ID is not guaranteed to be unique across all devices)
+            Log.v("IMEI","$deviceId")
+        } else {
+            deviceId = telephonyManager.imei
+            Log.v("IMEI","$deviceId")
+            // Use deviceId
+        }
     }
 
 
     private fun loginUpUser() {
         val email =  binding.etEmployeeId.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
+        val deviceid = deviceId.toString()
 
         if(email.isEmpty()){
             binding.etEmployeeId.error = "Email required"
@@ -78,7 +126,7 @@ class LoginActivity :AppCompatActivity() {
             binding.etPassword.requestFocus()
             return
         }
-        RetrofitClient.instance.userLogin(email, password)
+        RetrofitClient.instance.userLogin(email, password,deviceid)
             .enqueue(object: retrofit2.Callback<Any> {
                 override fun onFailure(call: Call<Any>, t: Throwable) {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
@@ -95,10 +143,12 @@ class LoginActivity :AppCompatActivity() {
 
 //                    val stringStringMap: Type = object : TypeToken<Map<String?, String?>?>() {}.type
 //                    val map: Map<String, String> = gson.fromJson(json, stringStringMap)
+                    Log.v("TAG","Status is $JsonObject")
 
 
 
-                    val status =JsonObject.getString("status").toString()
+                    var status =JsonObject.getString("status")
+
 
                     Log.v("TAG","Status is $status")
 
@@ -195,6 +245,7 @@ class LoginActivity :AppCompatActivity() {
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
+
 
 
 }

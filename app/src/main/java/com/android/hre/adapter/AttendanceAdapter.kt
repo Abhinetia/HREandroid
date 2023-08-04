@@ -55,7 +55,7 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                         temp = temp - mins * 60
                         val secs = temp
 
-                        val requiredFormat = "$hours: $mins: $secs"
+                        val requiredFormat = "$hours Hr: $temp Min"
 
                         tvLotimee.text = requiredFormat.toString()
 

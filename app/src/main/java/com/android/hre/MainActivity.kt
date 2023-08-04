@@ -18,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.android.hre.adapter.FullScreenBottomSheetDialogMenu
 import com.android.hre.databinding.ActivityMainBinding
 import com.android.hre.grn.DisplayGrnActivity
 import com.google.android.material.navigation.NavigationView
@@ -106,8 +107,12 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.fab.setOnClickListener {
-            val Intent = Intent(this@MainActivity,CaretingIndeNewActivity::class.java)
-            startActivity(Intent)
+
+            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialogMenu(this)
+            fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialogMenu::class.simpleName)
+
+//            val Intent = Intent(this@MainActivity,CaretingIndeNewActivity::class.java)
+//            startActivity(Intent)
         }
 
         binding.idsidenavigation.setOnClickListener {

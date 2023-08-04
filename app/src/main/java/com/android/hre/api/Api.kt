@@ -34,7 +34,8 @@ interface Api {
     @POST("validate-login")
     fun userLogin(
         @Field("email") email: String,
-        @Field("password") password:String
+        @Field("password") password:String,
+        @Field("device_id") device_id:String
     ) :Call<Any>
 
     @FormUrlEncoded
