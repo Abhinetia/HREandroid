@@ -8,6 +8,7 @@ import com.android.hre.response.countupdate.CountList
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
+import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
 import com.android.hre.response.homeindents.GetIndentsHome
@@ -20,6 +21,7 @@ import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
+import com.android.hre.response.vaults.VaultDetails
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -210,6 +212,19 @@ interface Api {
         @Field("from_date") start_date:String,
         @Field("to_date") end_date:String
     ) :Call<StatementListData>
+
+
+    @FormUrlEncoded
+    @POST("vault")
+    fun getVault(
+        @Field("user_id") user_id:String
+    ) : Call<VaultDetails>
+
+    @FormUrlEncoded
+    @POST("get-app-data")
+    fun getappData(
+        @Field("user_id") user_id:String
+    ) :Call<AppDetails>
 
 
     @FormUrlEncoded

@@ -118,8 +118,7 @@ class AttendanceFragment : Fragment() {
 
                     for(i  in 0 until dataList!!.size){
                         val data  = dataList.get(i)
-                        if (data.working_minutes.contains("---") || data.login.contains("---")||
-                            data.logout.contains("---")){
+                        if ( data.login.contains("---")){
 
                         }else{
                             attendanceListData.add(data)

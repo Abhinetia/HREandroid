@@ -29,12 +29,6 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     tvTmee.text = dataX.login
                     tvTimee.text = dataX.logout
 
-                    if (dataX.working_minutes.contains("---") || dataX.login.contains("---")||
-                            dataX.logout.contains("---")){
-                        tvLotimee.text = "---"
-                        tvTmee.text = "---"
-                        tvTimee.text = "---"
-                    }else{
 
 //                        val myDividend = dataX.working_minutes.toInt()
 //                        val myDivisor = 60
@@ -59,7 +53,7 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
 
                         tvLotimee.text = requiredFormat.toString()
 
-                    }
+
 
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

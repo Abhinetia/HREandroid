@@ -138,8 +138,7 @@ class NotificationsFragment : Fragment() {
 
                     for(i  in 0 until dataList!!.size){
                         val data  = dataList.get(i)
-                        if (data.working_minutes.contains("---") || data.login.contains("---")||
-                            data.logout.contains("---")){
+                        if (data.login.startsWith("--")){
 
                         }else{
                             attendanceListData.add(data)

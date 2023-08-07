@@ -22,10 +22,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityLoginBinding
+import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.storage.SharedPrefManager
 import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 
@@ -155,23 +157,26 @@ class LoginActivity :AppCompatActivity() {
 
                     if (JsonObject.getString("status")  == "TRUE" ){
                         var JsonArray = JsonObject.getJSONArray("data")
-                        for (i in 0  until JsonArray.length()){
-                            JsonObject1 = JsonArray.getJSONObject(i)
-                        }
-                        Log.v("TAG","$JsonObject1")
-                        editor.putBoolean(Constants.ISLOGGEDIN,true)
-                        editor.putString("user_id", JsonObject1.getString("user_id"))
-                        editor.putString("employee_id", JsonObject1.getString("employee_id"))
-                        editor.putString("username", JsonObject1.getString("username"))
-                        editor.putString("role", JsonObject1.getString("role"))
-                        editor.putString("role_name",JsonObject1.getString("role_name"))
+//                        for (i in 0  until JsonArray.length()){
+//                        }
+                        JsonObject1 = JsonArray.getJSONObject(0)
 
-                        editor.apply()
-                        editor.commit()
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else if (JsonObject.getString("status")  == "FALSE"){
+                        fetchtheappData(JsonObject1.getString("user_id"),JsonObject1)
+
+//                        Log.v("TAG","$JsonObject1")
+//                        editor.putBoolean(Constants.ISLOGGEDIN,true)
+//                        editor.putString("user_id", JsonObject1.getString("user_id"))
+//                        editor.putString("employee_id", JsonObject1.getString("employee_id"))
+//                        editor.putString("username", JsonObject1.getString("username"))
+//                        editor.putString("role", JsonObject1.getString("role"))
+//                        editor.putString("role_name",JsonObject1.getString("role_name"))
+
+//                        editor.apply()
+//                        editor.commit()
+//                        val intent = Intent(applicationContext, MainActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+                    } else {
                         showAlertDialogOkAndCloseAfter(JsonObject.getString("message"))
                     }
 
@@ -221,6 +226,84 @@ class LoginActivity :AppCompatActivity() {
 
 
     }
+
+
+    private fun fetchtheappData(userid:String,jsonObject: JSONObject) {
+        val call = RetrofitClient.instance.getappData(userid)
+        call.enqueue(object : Callback<AppDetails> {
+            override fun onResponse(call: Call<AppDetails>, response: Response<AppDetails>) {
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    val dataList = indentResponse?.data
+                    Log.v("dat", dataList.toString())
+
+                    val version = getAppVersion(applicationContext)
+                    println("App version: $version")
+
+                    if (!dataList!!.need_update.equals("No")){
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        return
+                    }
+                    if(!dataList!!.app_version.equals(version)){
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        return
+                    }
+
+                    if (dataList!!.isloggedin.equals("true")){
+                        openDashboard(jsonObject)
+                    } else {
+                        showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
+                        return
+                    }
+
+                    val isLoggedIn = dataList!!.isloggedin
+                    val appVersion = dataList!!.app_version
+                    val needUpdate = dataList!!.need_update
+
+                } else  {
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<AppDetails>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
+    fun openDashboard(JsonObject1: JSONObject){
+
+        Log.v("TAG","$JsonObject1")
+        editor.putBoolean(Constants.ISLOGGEDIN,true)
+        editor.putString("user_id", JsonObject1.getString("user_id"))
+        editor.putString("employee_id", JsonObject1.getString("employee_id"))
+        editor.putString("username", JsonObject1.getString("username"))
+        editor.putString("role", JsonObject1.getString("role"))
+        editor.putString("role_name",JsonObject1.getString("role_name"))
+        editor.apply()
+        editor.commit()
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+
+//        var intent =  Intent(this,MainActivity::class.java)
+//        startActivity(intent)
+//        finish()
+    }
+
+    fun getAppVersion(context: Context): String {
+        try {
+            val packageName = context.packageName
+            val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+            return packageInfo.versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        return "Unknown"
+    }
+
+
+
     override fun onStart() {
         super.onStart()
 
