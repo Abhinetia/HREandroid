@@ -45,6 +45,10 @@ class ViewMoreIndentActivity : AppCompatActivity() {
 
         Log.v("TAG","id : $id")
 
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+
 
         fetchTheListOfIndents()
     }

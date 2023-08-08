@@ -184,7 +184,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
             "OK"
         ) { dialogInterface, i ->
             (context as Activity).setResult(Activity.RESULT_OK)
-            (context as Activity).finish() }   // (context as Activity).finish()
+            (context as Activity)?.onBackPressed() }   // (context as Activity).finish()
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()

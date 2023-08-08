@@ -10,7 +10,9 @@ data class GrnList(
         val grn: String,
         val indent_details: List<IndentDetail>,
         val indent_no: String,
-        val pcn: String
+        val pcn: String,
+        val pcn_detail :String,
+        val status :String
     )
     data class IndentDetail(
         val brand: String,

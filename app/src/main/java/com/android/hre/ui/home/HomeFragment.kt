@@ -137,24 +137,7 @@ class HomeFragment : Fragment() {
         val call = RetrofitClient.instance.getIndents(userid)
         call.enqueue(object : Callback<NewIndents> {
             override fun onResponse(call: Call<NewIndents>, response: Response<NewIndents>) {
-//                    val indentResponse = response.body()
-//                    val dataList = indentResponse?.data
-                  //  Log.v("dat", dataList.toString())
-
-                  /*  if (dataList.isNullOrEmpty()) {
-                        // The list is empty
-                        binding.tvShowPening.visibility = View.VISIBLE
-                        binding.tvShowPening.text = "No Pending Indents"
-                    } else {
-                        // The list is not empty
-                        homeAdapter.differ.submitList(dataList.reversed())
-
-                        binding.rvRecylergrndata.apply {
-                            layoutManager = LinearLayoutManager(context)
-                            adapter = homeAdapter
-                        }
-                    }*/
-
+//
                     if (response.isSuccessful) {
                         val indentResponse = response.body()
 
@@ -174,17 +157,7 @@ class HomeFragment : Fragment() {
                     } else {
                         // Handle API call failure
                     }
-                 /*   homeAdapter.differ.submitList(dataList?.reversed())
 
-                    binding.rvRecylergrndata.apply {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = homeAdapter
-                    }
-
-                    var dataList = dataList?.reversed()
-                        homeAdapterNew = HomeAdapterNew(context!!,dataList?.reversed())
-                    binding.rvRecylergrndata.adapter = homeAdapterNew
-*/
 
 
             }

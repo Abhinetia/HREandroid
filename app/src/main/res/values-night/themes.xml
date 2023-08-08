@@ -25,7 +25,7 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/hre_background</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#FDF2DF</item>
+        <item name="android:statusBarColor">#E6DDCD</item>
 
         <item name="text_color">#fff</item>
         <item name="android:windowBackground">@color/hre_background</item>

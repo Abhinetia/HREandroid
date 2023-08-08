@@ -3,9 +3,11 @@ package com.android.hre
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var editor : SharedPreferences.Editor
     var name :String = ""
     var role :String = ""
+    var empId :String = ""
+    var version :String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         editor = sharedPreferences.edit()
         name = sharedPreferences?.getString("username", "")!!
         role = sharedPreferences?.getString("role_name","")!!
+        empId = sharedPreferences?.getString("employee_id","")!!
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -59,8 +64,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
         //  val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        version = getAppVersion(this)
+        println("App version: $version")
+
 
 
 
@@ -87,6 +94,9 @@ class MainActivity : AppCompatActivity() {
         binding.hello.text = "Hello"
         binding.name.text = name
         binding.Role.text = role
+        binding.empid.text = empId
+        binding.tvVersion.text = "Version : " +  version
+
         binding.logout.setOnClickListener {
             //Toast.makeText(this, "Logout",Toast.LENGTH_SHORT).show()
             logout()
@@ -108,11 +118,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
 
-            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialogMenu(this)
-            fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialogMenu::class.simpleName)
+//            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialogMenu(this)
+//            fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialogMenu::class.simpleName)
+//
+//            binding.fab.visibility = View.INVISIBLE
 
-//            val Intent = Intent(this@MainActivity,CaretingIndeNewActivity::class.java)
-//            startActivity(Intent)
+            val Intent = Intent(this@MainActivity,CaretingIndeNewActivity::class.java)
+            startActivity(Intent)
         }
 
         binding.idsidenavigation.setOnClickListener {
@@ -158,4 +170,16 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    fun getAppVersion(context: Context): String {
+        try {
+            val packageName = context.packageName
+            val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+            return packageInfo.versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        return "Unknown"
+    }
+
 }

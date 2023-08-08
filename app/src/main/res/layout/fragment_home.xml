@@ -26,13 +26,17 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/idsidenavigation"
-            android:layout_margin="5dp"
-            android:padding="5dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_sidenavigation"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:visibility="visible"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_sidenavigation" />
 
         <ImageView
             android:id="@+id/logo"
@@ -116,6 +120,7 @@
             android:id="@+id/rv_recylergrndata"
             android:layout_width="match_parent"
             android:visibility="visible"
+            android:background="#EDEDEB"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
             android:scrollbarThumbHorizontal="@null"

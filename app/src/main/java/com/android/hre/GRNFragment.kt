@@ -40,7 +40,7 @@ class GRNFragment : Fragment() {
         fetchTheGRNDetails()
 
         binding.ivBack.setOnClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
 
         return root
