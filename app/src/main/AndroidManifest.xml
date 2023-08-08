@@ -18,8 +18,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
 
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -34,37 +32,41 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".GRNCommpleteLkistActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".TranscationInfoActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".UploadExpensesActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".UpdateTicketActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".viewmoreindent.ViewMoreIndentActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".grn.DisplayGrnActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".CaretingIndeNewActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -97,8 +99,8 @@
         </activity>
         <activity
             android:name=".AddMaterialActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -112,24 +114,24 @@
         </activity>
         <activity
             android:name=".ViewTicketActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".DetailActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".CreateTicketActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -151,16 +153,16 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

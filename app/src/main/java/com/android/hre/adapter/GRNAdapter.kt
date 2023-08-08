@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
+import com.android.hre.GRNCommpleteLkistActivity
 import com.android.hre.R
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.GrnlistBinding
@@ -41,15 +43,15 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                 if (dataX != null) {
                     tvgrnnumber.text = dataX.grn
                     tvPcnno.text = dataX.pcn
-                    tvIndentnogen.text = dataX.indent_no
-                    tvDispatched.text = dataX.dispatched
+                    tvIndentnogen.text = dataX.status
+                   // tvDispatched.text = dataX.dispatched
                     var intendDetailList = dataX.indent_details
                     var intendDetail = intendDetailList.get(0)
-                    tvMatrildispaly.text = intendDetail.material_name
-                    tvBrnddispaly.text = intendDetail.brand
-                    tvPening.text = intendDetail.quantity_pending
-                    tvQtyrecved.text = intendDetail.quantity_received
-                    tvQtytotal.text = intendDetail.quantity_raised
+//                                        intendDetail.material_name
+//                    intendDetail.brand
+//                    intendDetail.quantity_pending
+//                    intendDetail.quantity_received
+//                   intendDetail.quantity_raised
 
                     val info = intendDetail.information
 
@@ -75,11 +77,12 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
 
                         fun String.capitalizeWords(): String = split(" ").map { it.capitalize() }.joinToString(" ")
 
-                        tvInfo.text = stringd.capitalizeWords()
+                       // tvInfo.text = stringd.capitalizeWords()
 
                         Log.v("data", dataX.indent_details.toString())
                     }
 
+/*
                     binding.tvViewdteuils.setOnClickListener {
                         val inflater = LayoutInflater.from(context)
                         val popupView = inflater.inflate(R.layout.popupwindow, null)
@@ -87,6 +90,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                         val textViewtotalqusntityy = popupView.findViewById<TextInputEditText>(R.id.ti_qtyoperpr)
                         val tvupdate = popupView.findViewById<TextView>(R.id.tv_update)
                         val tvcancel = popupView.findViewById<TextView>(R.id.tv_cancel)
+
 
 
                         tvupdate.setOnClickListener {
@@ -142,6 +146,22 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                             popupDialog.dismiss()
                         }
                         popupDialog.show()
+                    }
+*/
+
+                    binding.viemore.setOnClickListener {
+                        val intent = Intent(context,GRNCommpleteLkistActivity::class.java)
+                        intent.putExtra("PCN",dataX.pcn)
+                        intent.putExtra("GRN",dataX.grn)
+                        intent.putExtra("PCNDetails",dataX.pcn_detail)
+                        intent.putExtra("IndentNo",dataX.indent_no)
+                        intent.putExtra("Dispatched",dataX.dispatched)
+                        intent.putExtra("Status",dataX.status)
+                        intent.putExtra("MaterialName",intendDetail.material_name)
+                        intent.putExtra("Brand", intendDetail.brand)
+                        intent.putExtra("Info",stringd)
+                        intent.putExtra("Recvied",intendDetail.quantity_received)
+                        context.startActivity(intent)
                     }
                 }
             }
