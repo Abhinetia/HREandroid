@@ -44,10 +44,14 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                     tvgrnnumber.text = dataX.grn
                     tvPcnno.text = dataX.pcn
                     tvIndentnogen.text = dataX.status
+                    tvInedntnumber.text = dataX.indent_no
+                    tvDispatchenumber.text = dataX.dispatched
+
                    // tvDispatched.text = dataX.dispatched
                     var intendDetailList = dataX.indent_details
                     var intendDetail = intendDetailList.get(0)
-//                                        intendDetail.material_name
+                    tvMaterialName.text = intendDetail.material_name
+//
 //                    intendDetail.brand
 //                    intendDetail.quantity_pending
 //                    intendDetail.quantity_received
@@ -149,7 +153,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                     }
 */
 
-                    binding.viemore.setOnClickListener {
+                    binding.btnCretaeTicket.setOnClickListener {
                         val intent = Intent(context,GRNCommpleteLkistActivity::class.java)
                         intent.putExtra("PCN",dataX.pcn)
                         intent.putExtra("GRN",dataX.grn)

@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="GRN"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PCN"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PCN"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Indent no"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Material Name"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -153,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brand"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -177,8 +177,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dispatched"
-                android:minWidth="120dp"
+                android:text="Dispatched No"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -203,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Status"
-                android:minWidth="120dp"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -228,8 +228,135 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Information"
+                android:text="Qty Recieved"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_qtyrecved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
                 android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Qty Dispatched"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_qtydispatched"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Qty Pending"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_qtypening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dispatch Comment"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_dispatchcomnet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Receiver Comment"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_recvievercomnet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Information"
+                android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
 
@@ -309,45 +436,6 @@
                         android:layout_marginLeft="1dp"
                         android:layout_marginTop="5dp"
                         android:padding="5dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textSize="12dp"
-                            android:minWidth="100dp"
-                            android:layout_gravity="center"
-                            android:text="Recieved : "
-                            android:textColor="#3E3E3E"
-                            />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:layout_gravity="center"
-                            android:layout_alignParentStart="true"
-                            android:textAllCaps="true"
-                            android:gravity="center"
-                            android:background="@drawable/ic_greenbaby"
-                            android:id="@+id/tv_qtyrecved"
-                            android:textSize="11dp"
-                            android:text="0"
-                            android:textColor="@color/black_text"
-                            />
-
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginTop="5dp"
-                        android:padding="5dp"
                         android:visibility="gone"
                         android:layout_weight="1"
                         android:orientation="vertical"
@@ -421,7 +509,7 @@
                         android:layout_gravity="center"
                         android:textSize="13dp"
                         android:background="@drawable/icveiwdetails"
-                        android:text="Update Details"
+                        android:text="Receive Quantity"
                         android:textColor="@color/white"
                         />
 

@@ -128,8 +128,9 @@ class SplashScreenAtivity :AppCompatActivity(){
                     if (dataList!!.isloggedin.equals("true")){
                         openDashboard()
                     } else {
-                        showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
-                        return
+                        openDataLogin()
+                        /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
+                        return*/
                     }
 
                     val isLoggedIn = dataList!!.isloggedin
@@ -149,6 +150,12 @@ class SplashScreenAtivity :AppCompatActivity(){
 
     fun openDashboard(){
         var intent =  Intent(this,MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    fun openDataLogin(){
+        var intent =  Intent(this,LoginActivity::class.java)
         startActivity(intent)
         finish()
     }

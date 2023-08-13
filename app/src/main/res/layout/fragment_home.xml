@@ -104,7 +104,7 @@
         android:layout_marginBottom="10dp"
         android:textColor="#FF5E5E"
         android:layout_above="@+id/rv_recvyler"
-        android:text="Name /EmpId"
+        android:text=""
         android:layout_height="wrap_content"/>
 
 

@@ -44,6 +44,7 @@ class UpdateTicketActivity : AppCompatActivity() {
     var body :String = ""
     var subject :String = ""
     var pcn :String = ""
+    var pcndetails :String = ""
     var priority :String = ""
     val listdata: ArrayList<String> = arrayListOf()
     val listdata2 :ArrayList<String> = arrayListOf()
@@ -78,6 +79,7 @@ class UpdateTicketActivity : AppCompatActivity() {
         body = intentUser.getStringExtra("Body").toString()
         pcn = intentUser.getStringExtra("PCN").toString()
         priority = intentUser.getStringExtra("Priority").toString()
+        pcndetails = intentUser.getStringExtra("PCN_Detilas").toString()
 
 
 //        binding.etTickettitle.text = ticketno
@@ -88,6 +90,7 @@ class UpdateTicketActivity : AppCompatActivity() {
         binding.etDescrtiption.setText(body)
         binding.etSelctpcn.setText(pcn)
         binding.etPriority.setText(priority)
+        binding.tvdpcndatapcn.text = pcndetails
 
 
         dropdownDepartmentDetails()

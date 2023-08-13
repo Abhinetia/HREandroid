@@ -48,6 +48,8 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                 if (dataX != null){
                     tvticketno.text = dataX.ticket_no
                     tvTicketstatus.text = dataX.status
+                    tvPcn.text = dataX.pcn
+                    tvdpcndatapcn.text = dataX.pcn_detail
 
                     val open = dataX.status
 //                    tvTicketstatus.text = "$open"
@@ -72,9 +74,13 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                         tvAssigned.visibility = View.VISIBLE
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
-                        tvViewmore.visibility = View.GONE
                        //tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.VISIBLE
+                        tvViewmore.text = "Update Ticket"
+                    } else if (dataX.status.contains("Resolved")){
+                        tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
+                        tvAssigned.visibility = View.VISIBLE
+
                     }
 
                     tvTicketsubject.text = dataX.category
@@ -93,13 +99,38 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                     tvDate.text  = outputDateString
 
                     binding.tvViewmore.setOnClickListener {
-                        val Intent = Intent(context, ViewTicketActivity::class.java)
+                        if (dataX.status.contains("Created")){
+                              if (tvViewmore.text.contains("Update Ticket")){
+                                  val Intent = Intent(context,UpdateTicketActivity::class.java)
+                                  Intent.putExtra("TicketId",dataX.ticket_id)
+                                  Intent.putExtra("TicketNo",dataX.ticket_no)
+                                  Intent.putExtra("Subject",dataX.category)
+                                  Intent.putExtra("Body",dataX.message)
+                                  Intent.putExtra("PCN",dataX.pcn)
+                                  Intent.putExtra("PCN_Detilas",dataX.pcn_detail)
+                                  Intent.putExtra("Priority",dataX.priority)
+                                  context.startActivity(Intent)
+                              }
+                        } else if (dataX.status.equals("Pending/Ongoing") || dataX.status.equals("Completed") || dataX.status.equals("Resolved")){
+                            if (tvViewmore.text.contains("View Convo")){
+                                val Intent = Intent(context, ViewTicketActivity::class.java)
 //                        Intent.putExtra("TicketId",dataX.ticket_id)
-                        Intent.putExtra("TicketNo",dataX.ticket_no)
-                        Intent.putExtra("Subject",dataX.category)
-                        Intent.putExtra("Stauts",dataX.status)
-                        Intent.putExtra("ticketid",dataX.ticket_id)
-                        context.startActivity(Intent)
+                                Intent.putExtra("TicketNo",dataX.ticket_no)
+                                Intent.putExtra("Subject",dataX.category)
+                                Intent.putExtra("Stauts",dataX.status)
+                                Intent.putExtra("ticketid",dataX.ticket_id)
+                                context.startActivity(Intent)
+                            }
+
+
+                        }
+//                        val Intent = Intent(context, ViewTicketActivity::class.java)
+////                        Intent.putExtra("TicketId",dataX.ticket_id)
+//                        Intent.putExtra("TicketNo",dataX.ticket_no)
+//                        Intent.putExtra("Subject",dataX.category)
+//                        Intent.putExtra("Stauts",dataX.status)
+//                        Intent.putExtra("ticketid",dataX.ticket_id)
+//                        context.startActivity(Intent)
 
                     }
 

@@ -66,7 +66,8 @@ interface Api {
        @Field("user_id") user_id: String,
        @Field("grn") grn :String,
        @Field("approved") approved:String,
-       @Field("rejected") rejected:String
+       @Field("rejected") rejected:String,
+       @Field("comment") comment:String
    ) :Call<CountList>
 
 /*
@@ -226,6 +227,16 @@ interface Api {
         @Field("user_id") user_id:String
     ) :Call<AppDetails>
 
+   @Multipart
+    @POST("update-ticket-status")
+    fun CompletTicket(
+        @Part("ticket_id") ticket_id:RequestBody,
+        @Part("ticket_no") ticket_no: RequestBody,
+        @Part("message") message :RequestBody,
+        @Part("user_id") user_id:RequestBody,
+        @Part("action") recipient:RequestBody,
+        @Part file: MultipartBody.Part
+    ) :Call<Completelist>
 
     @FormUrlEncoded
     @POST("get-pettycash_details")

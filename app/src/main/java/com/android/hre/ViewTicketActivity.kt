@@ -1,8 +1,11 @@
 package com.android.hre
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,22 +14,30 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.ViewTcketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityViewTicketBinding
+import com.android.hre.response.Completelist
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -61,9 +72,11 @@ class ViewTicketActivity : AppCompatActivity() {
     var data : String ? = null
     var username :String = ""
 
+    private val imageUriList = ArrayList<Uri>()
 
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -93,12 +106,19 @@ class ViewTicketActivity : AppCompatActivity() {
         binding.tvsubject.text = "Subject : "  + subject
 
 
+
+
         fetchthemailList()
         dropdownEmployeeDetails()
+
+
+
 
         binding.ivBack.setOnClickListener {
             finish()
         }
+
+
 
         binding.ivimageupload.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -166,7 +186,98 @@ class ViewTicketActivity : AppCompatActivity() {
 
             })
         }
+
+
+        binding.tvcompleted.setOnClickListener {
+
+
+            val inflater = LayoutInflater.from(this)
+            val popupView = inflater.inflate(R.layout.popupforcompleted, null)
+
+
+
+            val subjecc = popupView.findViewById<TextView>(R.id.tv_subject)
+            val ticketnoe = popupView.findViewById<TextView>(R.id.tv_tno)
+            val description = popupView.findViewById<TextInputEditText>(R.id.description)
+            val submit = popupView.findViewById<TextView>(R.id.tv_update)
+            val cancel = popupView.findViewById<TextView>(R.id.tv_cancel)
+            val imageupload = popupView.findViewById<LinearLayout>(R.id.rvimage)
+            val imageview = popupView.findViewById<ImageView>(R.id.imageview)
+
+            subjecc.text = subject
+            ticketnoe.text = ticketno
+
+
+
+            submit.setOnClickListener {
+
+                if (description.text.toString().isEmpty()) {
+                    description.error = "Description required"
+                    description.requestFocus()
+                    return@setOnClickListener
+                }
+                Log.v("Data", "$receiptEmployee")
+                Log.v("Data", "abcd $binding.etpcnId.text.toString()")
+                var msg = binding.etpcnId.text.toString().replace(data!!, "")
+                val action: String = "Completed"
+
+
+                val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
+                val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
+                val message = RequestBody.create(MediaType.parse("text/plain"), msg)
+                val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
+                val actionCompl = RequestBody.create(MediaType.parse("text/plain"), action)
+
+
+                // Image From Gallery File path
+                val requestFile: RequestBody =
+                    RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+                val image =
+                    MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+                val call = RetrofitClient.instance.CompletTicket(
+                    ticketid,
+                    ticketno,
+                    message,
+                    userId,
+                    actionCompl,
+                    image
+                )
+
+                call.enqueue(object : retrofit2.Callback<Completelist> {
+                    override fun onResponse(
+                        call: Call<Completelist>,
+                        response: Response<Completelist>
+                    ) {
+                        Log.v("TAG", response.body().toString())
+                        Log.v("TAG", "message " + response.body()?.message.toString())
+                        showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                    }
+
+                    override fun onFailure(call: Call<Completelist>, t: Throwable) {
+
+                        Log.v("TAG", t.toString())
+                    }
+
+                })
+
+            }
+
+
+            val popupDialog = AlertDialog.Builder(this)
+                .setView(popupView)
+                .create()
+
+              cancel.setOnClickListener {
+                popupDialog.dismiss()
+            }
+            popupDialog.show()
+
+        }
+
     }
+
+
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
         val builder = AlertDialog.Builder(this)
@@ -198,6 +309,10 @@ class ViewTicketActivity : AppCompatActivity() {
                         if(replyData.recipient_id.equals(userid)){
                             binding.tvcompleted.visibility=View.VISIBLE
                             binding.linearlayoutreply.visibility = View.VISIBLE
+                            if (status.contains("Resolved")){
+                                binding.tvcompleted.visibility=View.GONE
+                                binding.linearlayoutreply.visibility = View.GONE
+                            }
                         }else{
                             binding.tvcompleted.visibility=View.GONE
                             binding.linearlayoutreply.visibility = View.GONE

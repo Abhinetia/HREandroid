@@ -48,60 +48,60 @@
     </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/rvstatus_showing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tvticketno"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rvstatus_showing"
-            android:layout_centerInParent="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            android:padding="5dp">
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:text="#21223"
+            android:textColor="#FF9797"
+            android:textSize="12dp" />
 
-            <TextView
-                android:id="@+id/tvticketno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="#21223"
-                android:textColor="#FF9797"
-                android:textSize="12dp" />
+        <TextView
+            android:id="@+id/tvstatsus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tvticketno"
+            android:background="@drawable/ic_openrectan"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Open"
+            android:textColor="@color/black_text"
+            android:textSize="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/tvticketno"
-                android:background="@drawable/ic_openrectan"
-                android:gravity="center"
-                android:id="@+id/tvstatsus"
-                android:padding="10dp"
-                android:text="Open"
-                android:textColor="@color/black_text"
-                android:textSize="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/tvstatsus"
-                android:background="@drawable/ic_greenbaby"
-                android:gravity="center"
-                android:visibility="gone"
-                android:id="@+id/tvcompleted"
-                android:padding="10dp"
-                android:text="Completed"
-                android:textColor="@color/black_text"
-                android:textSize="12dp" />
+        <TextView
+            android:id="@+id/tvcompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tvstatsus"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Completed"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            android:visibility="gone" />
 
 
-        </RelativeLayout>
+    </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginLeft="20dp"

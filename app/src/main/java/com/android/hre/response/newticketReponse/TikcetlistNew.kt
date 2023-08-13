@@ -22,6 +22,7 @@ data class TikcetlistNew(
         val filepath: String,
         val message: String,
         val pcn: String,
+        val pcn_detail :String,
         val priority: String,
         val status: String,
         val ticket_creator: String,

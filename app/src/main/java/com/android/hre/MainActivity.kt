@@ -1,5 +1,6 @@
 package com.android.hre
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -21,9 +23,14 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.android.hre.adapter.FullScreenBottomSheetDialogMenu
+import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityMainBinding
 import com.android.hre.grn.DisplayGrnActivity
+import com.android.hre.response.getappdata.AppDetails
 import com.google.android.material.navigation.NavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +45,8 @@ class MainActivity : AppCompatActivity() {
     var role :String = ""
     var empId :String = ""
     var version :String = ""
+    var userid : String = ""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
         editor = sharedPreferences.edit()
+        userid = sharedPreferences?.getString("user_id", "")!!
+
         name = sharedPreferences?.getString("username", "")!!
         role = sharedPreferences?.getString("role_name","")!!
         empId = sharedPreferences?.getString("employee_id","")!!
+
+
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -122,6 +135,9 @@ class MainActivity : AppCompatActivity() {
 //            fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialogMenu::class.simpleName)
 //
 //            binding.fab.visibility = View.INVISIBLE
+            if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+                fetchtheappData()
+            }
 
             val Intent = Intent(this@MainActivity,CaretingIndeNewActivity::class.java)
             startActivity(Intent)
@@ -181,5 +197,72 @@ class MainActivity : AppCompatActivity() {
         }
         return "Unknown"
     }
+
+    private fun fetchtheappData() {
+        val call = RetrofitClient.instance.getappData(userid)
+        call.enqueue(object : Callback<AppDetails> {
+            override fun onResponse(call: Call<AppDetails>, response: Response<AppDetails>) {
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    val dataList = indentResponse?.data
+                    Log.v("dat", dataList.toString())
+
+                    val version = getAppVersion(applicationContext)
+                    println("App version: $version")
+
+                    if (!dataList!!.need_update.equals("No")){
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        return
+                    }
+                    if(!dataList!!.app_version.equals(version)){
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        return
+                    }
+
+                    if (dataList!!.isloggedin.equals("true")){
+                        // openDashboard()
+                    } else {
+                        openDataLogin()
+                        /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
+                        return*/
+                    }
+
+                    val isLoggedIn = dataList!!.isloggedin
+                    val appVersion = dataList!!.app_version
+                    val needUpdate = dataList!!.need_update
+
+                } else  {
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<AppDetails>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
+    fun openDashboard(){
+        var intent =  Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openDataLogin(){
+        var intent =  Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->  }  // LoginActivity::class.java
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
 }

@@ -59,6 +59,20 @@
                     android:textColor="@color/black_text"
                     android:textSize="12dp" />
 
+                <TextView
+                    android:id="@+id/tv_pcn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/tv_ticketstatus"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="PCN"
+                    android:textColor="#FF9797"
+                    android:textSize="12dp" />
+
+
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -83,14 +97,32 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="25dp"
                 android:src="@drawable/ic_linehoriz" />
+            <TextView
+                android:id="@+id/tvdpcndatapcn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="60dp"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:marqueeRepeatLimit= "marquee_forever"
+                android:text="PCN852"
+                android:textColor="@color/black_text"
+                android:textSize="12sp" />
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="55dp"
+                android:layout_marginTop="75dp"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content">
+
 
                 <TextView
                     android:id="@+id/tv_ticketsubject"
@@ -112,11 +144,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="75dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp">
 
                 <TextView
+                    android:id="@+id/tv_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -125,10 +158,9 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
                     android:minWidth="150dp"
-                    android:id="@+id/tv_body"
                     android:text="I have Received Defective 15 Ply Sheet with different size and color."
                     android:textColor="@color/black_text"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
 
             </RelativeLayout>
@@ -140,11 +172,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="150dp"
                 android:padding="5dp"
                 android:minWidth="150dp"
                 android:id="@+id/tv_viewmore"
-                android:text="View Replies"
+                android:text="View Convo"
                 android:textColor="#FF5E5E"
                 android:textSize="12dp" />
 
@@ -153,9 +185,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="7dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginLeft="120dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginBottom="5dp"
                 android:gravity="right"
                 android:id="@+id/tv_assigned"

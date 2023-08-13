@@ -84,9 +84,10 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         binding.tvQtyrecved.text = recvied
         binding.tvStstu.text = stauts
 
-        /* if (stauts.equals("Received")){
+         if (stauts.equals("Received")){
              binding.tvViewdteuils.visibility = View.INVISIBLE
-         }*/
+             binding.tvpending.visibility = View.INVISIBLE
+         }
 
         binding.tvpending.setOnClickListener {
             onBackPressed()
@@ -98,6 +99,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
             val popupView = inflater.inflate(R.layout.popupwindow, null)
 
             val textViewtotalqusntityy = popupView.findViewById<TextInputEditText>(R.id.ti_qtyoperpr)
+            val desc = popupView.findViewById<TextInputEditText>(R.id.description)
             val tvupdate = popupView.findViewById<TextView>(R.id.tv_update)
             val tvcancel = popupView.findViewById<TextView>(R.id.tv_cancel)
 
@@ -107,6 +109,13 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
 
                 val count = dispatched
                 val enteredValue = textViewtotalqusntityy.text.toString().toIntOrNull()
+                val grncommnet = desc.text.toString()
+
+                if (grncommnet.isEmpty()){
+                    desc.error = "Please enter the comments"
+                    desc.requestFocus()
+                    return@setOnClickListener
+                }
 
 
 
@@ -124,7 +133,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
 
 
 
-                    RetrofitClient.instance.updateGrn(userid,grn,enteredValue.toString(),rejected.toString())
+                    RetrofitClient.instance.updateGrn(userid,grn,enteredValue.toString(),rejected.toString(),grncommnet)
                         .enqueue(object : retrofit2.Callback<CountList> {
                             override fun onResponse(call: Call<CountList>, response: Response<CountList>) {
                                 val updateResponse = response.body()
