@@ -12,6 +12,7 @@ import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
 import com.android.hre.response.homeindents.GetIndentsHome
+import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.newindentrepo.NewIndents
 import com.android.hre.response.newticketReponse.TikcetlistNew
@@ -226,6 +227,12 @@ interface Api {
     fun getappData(
         @Field("user_id") user_id:String
     ) :Call<AppDetails>
+
+    @FormUrlEncoded
+    @POST("my-dashboard-details")
+    fun getDashbaordDetais(
+        @Field("user_id") user_id:String
+    ) :Call<DashbardData>
 
    @Multipart
     @POST("update-ticket-status")

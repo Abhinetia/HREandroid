@@ -46,13 +46,13 @@
             android:src="@drawable/hre_logo" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivnotification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/logoeut"
             android:visibility="invisible"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_notification"/>
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_logout"/>
 
 
     </RelativeLayout>
@@ -77,40 +77,359 @@
         app:text_size="14sp" />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/framela"
-        android:layout_marginTop="-30dp"
-        android:layout_marginLeft="20dp"
-        android:minWidth="120dp"
-        android:padding="1dp"
-        android:id="@+id/tv_pending"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/black_text"
-        android:layout_above="@+id/rv_recvyler"
-        android:text="Pending Indent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/framela"
-        android:layout_marginTop="-30dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/tv_pending"
-        android:gravity="right"
-        android:minWidth="120dp"
-        android:id="@+id/namedisplay"
-        android:padding="1dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="#FF5E5E"
-        android:layout_above="@+id/rv_recvyler"
-        android:text=""
-        android:layout_height="wrap_content"/>
+        android:layout_marginStart="10dp"
+        android:id="@+id/namedis"
+        android:layout_marginTop="-40dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello Welcome To HRE "
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_marginBottom="2dp"
+                android:id="@+id/hellodat"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abhishek Shetty "
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:layout_below="@+id/hellodat"
+                android:id="@+id/nameee"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supervisior"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_below="@+id/nameee"
+                android:id="@+id/empiddd"/>
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+          android:layout_width="match_parent"
+          android:orientation="horizontal"
+          android:weightSum="3"
+          android:background="@color/hre_background"
+          android:id="@+id/linear1"
+          android:layout_below="@+id/namedis"
+          android:layout_height="wrap_content">
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginBottom="2dp"
+              android:layout_gravity="center"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+                  android:id="@+id/linearattendance"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:padding="5dp"
+                      android:background="@drawable/ic_attend"
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:id="@+id/tv_aattendd"
+                      android:layout_gravity="center"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:text="Attendance"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginBottom="2dp"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+                  android:id="@+id/indentdata"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/ic_indent"
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:id="@+id/indentcount"
+                      android:layout_gravity="center"
+                      android:text="Indent"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="2dp"
+              android:layout_gravity="center"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:id="@+id/ticketdata"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/ic_ticket"
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:layout_gravity="center"
+                      android:text="Ticket"
+                      android:id="@+id/tvticketcount"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:orientation="horizontal"
+          android:weightSum="3"
+          android:layout_marginBottom="10dp"
+          android:id="@+id/linear2"
+          android:layout_below="@+id/linear1"
+          android:background="@color/hre_background"
+          android:layout_height="wrap_content">
+
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginBottom="2dp"
+              android:layout_gravity="center"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:id="@+id/grndata"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/ic_grn"
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:layout_gravity="center"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:id="@+id/tvgrncount"
+                      android:text="GRN"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginBottom="2dp"
+              android:layout_gravity="center"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:id="@+id/pettydata"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/ic_pettycash"
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:layout_gravity="center"
+                      android:text="Petty Cash"
+                      android:id="@+id/pettycashcount"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="2dp"
+              android:layout_gravity="center"
+              app:cardUseCompatPadding="true"
+              app:cardCornerRadius="10dp"
+              >
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:padding="5dp"
+                  android:id="@+id/vaultdata"
+                  android:orientation="vertical"
+                  android:layout_height="wrap_content">
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/ic_vault"
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="5dp"
+                      android:layout_gravity="center"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="12dp"
+                      android:id="@+id/tvvaultt"
+                      android:text="Vault"
+                      android:textColor="#3E3E3E"
+                      />
+
+
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+
+      </LinearLayout>
+
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/rv_recvyler"
+        android:visibility="gone"
         android:layout_below="@+id/framela"
         android:layout_height="wrap_content">
 

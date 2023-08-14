@@ -1,56 +1,45 @@
 package com.android.hre
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.TicketAdapter
 import com.android.hre.api.RetrofitClient
-import com.android.hre.databinding.FragmentTicketBinding
+import com.android.hre.databinding.ActivityTicketBinding
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.newticketReponse.TikcetlistNew
+import com.android.hre.response.tickets.TicketList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+class TicketActivity : AppCompatActivity(),TicketAdapter.ViewMoreClickListener {
 
-class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
-    private lateinit var binding: FragmentTicketBinding
+    private lateinit var binding: ActivityTicketBinding
 
-    lateinit var cretaeTicket: TextView
-    lateinit var createviewReplies :TextView
     var userid :String = ""
     private lateinit var ticketAdapter: TicketAdapter
     lateinit var globalList :List<TikcetlistNew.Ticket>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
+        //setContentView(R.layout.activity_ticket)
 
+        binding = ActivityTicketBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    @SuppressLint("SuspiciousIndentation")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-      //  return inflater.inflate(R.layout.fragment_ticket, container, false)
-
-
-        binding = FragmentTicketBinding.inflate(layoutInflater)
-        val root: View = binding.root
-
-        val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
         fetchtheTicketList()
         ticketAdapter = TicketAdapter(this)
@@ -60,9 +49,19 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
         }
 
         fetchtheTicketList()
-            return root
-    }
 
+        binding.btnCretaeTicket.setOnClickListener {
+            val intent = Intent(
+                this,
+                CreateTicketActivity::class.java
+            )
+            startActivity(intent)
+        }
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+
+    }
     private fun fetchtheTicketList() {
         val call = RetrofitClient.instance.getTickets(userid)
         call.enqueue(object : Callback<TikcetlistNew> {
@@ -73,17 +72,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                     val indentResponse = response.body()
 
                     if (indentResponse != null && indentResponse.status == 1) {
-                       /* val myIndents = indentResponse.data.tickets
-
-                        ticketAdapter.differ.submitList(myIndents)   //now added reverse function in android @5.53 pm need to check while debugging
-
-                        binding.tvCount.text = myIndents?.size.toString()
-                        binding.rvRecylergrndata.apply {
-                            layoutManager = LinearLayoutManager(context)
-                            adapter = ticketAdapter
-                        }
-*/
-
+                       // val myIndents = indentResponse.data.tickets
                         globalList = indentResponse.data.tickets
                         ticketAdapter.differ.submitList(globalList)   //now added reverse function in android @5.53 pm need to check while debugging
 
@@ -92,6 +81,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                             layoutManager = LinearLayoutManager(context)
                             adapter = ticketAdapter
                         }
+
                     }
                     else {
                         binding.tvShowPening.visibility = View.VISIBLE
@@ -102,25 +92,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                     // Handle API call failure
                 }
 
-/*
-                if (response.isSuccessful) {
-                    val indentResponse = response.body()
-                    val dataList = indentResponse?.data
-                    Log.v("dat", dataList.toString())
 
-                    ticketAdapter.differ.submitList(dataList)   //now added reverse function in android @5.53 pm need to check while debugging
-
-                    binding.tvCount.text = dataList?.size.toString()
-                    binding.rvRecylergrndata.apply {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = ticketAdapter
-                    }
-
-                } else  {
-
-                    // Handle error response
-                }
-*/
             }
 
             override fun onFailure(call: Call<TikcetlistNew>, t: Throwable) {
@@ -128,49 +100,6 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
             }
         })
     }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        activity?.let{
-            cretaeTicket = it.findViewById(R.id.btn_cretae_ticket)
-          //  createviewReplies = it.findViewById(R.id.tv_viewmore)
-
-
-            cretaeTicket.setOnClickListener {
-                val intent = Intent(
-                    context,
-                    CreateTicketActivity::class.java
-                )
-                mStartForResult.launch(intent)
-
-            }
-
-//            createviewReplies.setOnClickListener {
-//                val Intent = Intent(view.context,ViewTicketActivity::class.java)
-//                startActivity(Intent)
-//            }
-
-            binding.ivBack.setOnClickListener {
-                requireActivity().onBackPressed()
-            }
-
-
-        }
-
-    }
-
-    var mStartForResult = registerForActivityResult<Intent, ActivityResult>(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            fetchtheTicketList()
-        }
-    }
-
-
     private fun fetchtheappData() {
         val call = RetrofitClient.instance.getappData(userid)
         call.enqueue(object : Callback<AppDetails> {
@@ -180,7 +109,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    val version = getAppVersion(context!!)
+                    val version = getAppVersion(this@TicketActivity)
                     println("App version: $version")
 
                     if (!dataList!!.need_update.equals("No")){
@@ -215,17 +144,17 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
         })
     }
     fun openDashboard(){
-        var intent =  Intent(context, MainActivity::class.java)
+        var intent =  Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
     fun openDataLogin(){
-        var intent =  Intent(context, LoginActivity::class.java)
+        var intent =  Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
-        val builder = AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(this)
         builder.setMessage(alertMessage)
         builder.setPositiveButton(
             "OK"
@@ -246,7 +175,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
     }
 
     override fun onBtnClick(position: Int, dataX: TikcetlistNew.Ticket?) {
-        val Intent = Intent(context, ViewTicketActivity::class.java)
+        val Intent = Intent(this@TicketActivity, ViewTicketActivity::class.java)
         if (dataX != null) {
             Intent.putExtra("TicketNo",dataX.ticket_no)
             Intent.putExtra("Subject",dataX.category)
@@ -267,7 +196,7 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                 //globalList.find { it.ticket_id == dataX.ticket_id }?.status == "Completed"
                 globalList.filter { it.ticket_id == dataX.ticket_id }.forEach { it.status = "Completed" }
                 ticketAdapter.notifyItemChanged(position)
-                // position.let { ticketAdapter.notifyItemChanged(it) }
+               // position.let { ticketAdapter.notifyItemChanged(it) }
             }
             // Handle the Intent
         }

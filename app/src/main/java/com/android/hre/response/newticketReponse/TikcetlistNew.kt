@@ -24,7 +24,7 @@ data class TikcetlistNew(
         val pcn: String,
         val pcn_detail :String,
         val priority: String,
-        val status: String,
+        var status: String,
         val ticket_creator: String,
         val ticket_id: Int,
         val ticket_no: String

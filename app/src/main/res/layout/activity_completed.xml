@@ -1,40 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
-    app:cardCornerRadius="10dp"
     android:layout_gravity="center"
+    app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Add your comments and documents"
-        android:layout_marginLeft="10dp"
-        android:padding="2sp"
-        android:gravity="center"
-        android:textSize="16dp"
-        android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_margin="5dp"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:padding="5dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:id="@+id/rvbackname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
+            android:padding="5dp">
+
+
+            <TextView
+                android:id="@+id/tvheadername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Complete"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:text="Add your comments and documents"
             android:layout_marginLeft="10dp"
             android:padding="2sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:textSize="16dp"
+            android:textSize="13dp"
             android:layout_height="wrap_content"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,6 +107,35 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status :"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -167,14 +211,15 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:visibility="visible"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:id="@+id/imageview"
             android:src="@drawable/ic_menud"
             android:layout_centerVertical="true"
-           />
+            />
 
 
 

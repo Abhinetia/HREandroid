@@ -1,18 +1,16 @@
 package com.android.hre.adapter
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,30 +18,24 @@ import com.android.hre.Constants
 import com.android.hre.R
 import com.android.hre.UpdateTicketActivity
 import com.android.hre.ViewTicketActivity
-import com.android.hre.api.RetrofitClient
-
 import com.android.hre.databinding.TicketDetailsBinding
-import com.android.hre.response.departement.GetDepartment
-import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.newticketReponse.TikcetlistNew
-import com.android.hre.response.tickets.TicketList
-import com.android.hre.viewmoreindent.ViewMoreIndentActivity
-import com.google.android.material.textfield.TextInputEditText
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
+class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
     private lateinit var binding: TicketDetailsBinding
     private lateinit var context: Context
     var userid : String = ""
+    
+    companion object{
+        var moreClickListener:ViewMoreClickListener? = null
+    }
 
     inner class ViewHolder :RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n", "SuspiciousIndentation")
-        fun bind(dataX: TikcetlistNew.Ticket?) {
+        fun bind(dataX: TikcetlistNew.Ticket?,position: Int) {
             binding.apply {
                 if (dataX != null){
                     tvticketno.text = dataX.ticket_no
@@ -71,15 +63,15 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                         tvTicketstatus.setBackgroundResource(R.drawable.round_corner)
                         tvViewmore.visibility = View.GONE
                        // tvMailcount.visibility = View.GONE
-                        tvAssigned.visibility = View.VISIBLE
+                        tvAssigned.visibility = View.GONE
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
                        //tvMailcount.visibility = View.GONE
-                        tvAssigned.visibility = View.VISIBLE
+                        tvAssigned.visibility = View.GONE
                         tvViewmore.text = "Update Ticket"
                     } else if (dataX.status.contains("Resolved")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
-                        tvAssigned.visibility = View.VISIBLE
+                        tvAssigned.visibility = View.GONE
 
                     }
 
@@ -113,13 +105,20 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
                               }
                         } else if (dataX.status.equals("Pending/Ongoing") || dataX.status.equals("Completed") || dataX.status.equals("Resolved")){
                             if (tvViewmore.text.contains("View Convo")){
-                                val Intent = Intent(context, ViewTicketActivity::class.java)
-//                        Intent.putExtra("TicketId",dataX.ticket_id)
-                                Intent.putExtra("TicketNo",dataX.ticket_no)
-                                Intent.putExtra("Subject",dataX.category)
-                                Intent.putExtra("Stauts",dataX.status)
-                                Intent.putExtra("ticketid",dataX.ticket_id)
-                                context.startActivity(Intent)
+
+                                moreClickListener = btnlistner
+                                moreClickListener?.onBtnClick(position,dataX)
+////
+//                                val Intent = Intent(context, ViewTicketActivity::class.java)
+//                                Intent.putExtra("TicketId",dataX.ticket_id)
+//                                Intent.putExtra("TicketNo",dataX.ticket_no)
+//                                Intent.putExtra("Subject",dataX.category)
+//                                Intent.putExtra("Stauts",dataX.status)
+//                                Intent.putExtra("TicketId",dataX.ticket_id)
+//                                context.startActivity(Intent)
+
+
+
                             }
 
 
@@ -149,12 +148,15 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
             }
         }
-
-
-
+        
+    }
+    
+    open interface ViewMoreClickListener{
+        fun onBtnClick(position: Int,dataX: TikcetlistNew.Ticket?)
     }
 
 
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         binding = TicketDetailsBinding.inflate(inflater, parent, false)
@@ -167,7 +169,7 @@ class TicketAdapter : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        holder.bind(differ.currentList[position],position)
     }
 
     override fun getItemCount(): Int = differ.currentList.size

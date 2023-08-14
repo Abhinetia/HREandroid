@@ -2,6 +2,7 @@ package com.android.hre
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -23,6 +24,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -71,8 +74,9 @@ class ViewTicketActivity : AppCompatActivity() {
     var receiptId : Int ? = null
     var data : String ? = null
     var username :String = ""
-
+    val action: String = "Completed"
     private val imageUriList = ArrayList<Uri>()
+    var position : Int ? = null
 
 
 
@@ -97,8 +101,8 @@ class ViewTicketActivity : AppCompatActivity() {
         status = intentUser.getStringExtra("Stauts").toString()
         subject = intentUser.getStringExtra("Subject").toString()
         //ticketid = intentUser.getStringExtra("ticketid")
-        ticketid = intent.extras!!.getInt("ticketid").toString()
-
+        ticketid = intent.extras!!.getInt("TicketId").toString()
+        position = intent.extras!!.getInt("pos")
 
 
         binding.tvticketno.text = ticketno
@@ -190,91 +194,29 @@ class ViewTicketActivity : AppCompatActivity() {
 
         binding.tvcompleted.setOnClickListener {
 
-
-            val inflater = LayoutInflater.from(this)
-            val popupView = inflater.inflate(R.layout.popupforcompleted, null)
-
-
-
-            val subjecc = popupView.findViewById<TextView>(R.id.tv_subject)
-            val ticketnoe = popupView.findViewById<TextView>(R.id.tv_tno)
-            val description = popupView.findViewById<TextInputEditText>(R.id.description)
-            val submit = popupView.findViewById<TextView>(R.id.tv_update)
-            val cancel = popupView.findViewById<TextView>(R.id.tv_cancel)
-            val imageupload = popupView.findViewById<LinearLayout>(R.id.rvimage)
-            val imageview = popupView.findViewById<ImageView>(R.id.imageview)
-
-            subjecc.text = subject
-            ticketnoe.text = ticketno
-
-
-
-            submit.setOnClickListener {
-
-                if (description.text.toString().isEmpty()) {
-                    description.error = "Description required"
-                    description.requestFocus()
-                    return@setOnClickListener
-                }
-                Log.v("Data", "$receiptEmployee")
-                Log.v("Data", "abcd $binding.etpcnId.text.toString()")
-                var msg = binding.etpcnId.text.toString().replace(data!!, "")
-                val action: String = "Completed"
-
-
-                val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
-                val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
-                val message = RequestBody.create(MediaType.parse("text/plain"), msg)
-                val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
-                val actionCompl = RequestBody.create(MediaType.parse("text/plain"), action)
-
-
-                // Image From Gallery File path
-                val requestFile: RequestBody =
-                    RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-                val image =
-                    MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-                val call = RetrofitClient.instance.CompletTicket(
-                    ticketid,
-                    ticketno,
-                    message,
-                    userId,
-                    actionCompl,
-                    image
-                )
-
-                call.enqueue(object : retrofit2.Callback<Completelist> {
-                    override fun onResponse(
-                        call: Call<Completelist>,
-                        response: Response<Completelist>
-                    ) {
-                        Log.v("TAG", response.body().toString())
-                        Log.v("TAG", "message " + response.body()?.message.toString())
-                        showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
-
-                    }
-
-                    override fun onFailure(call: Call<Completelist>, t: Throwable) {
-
-                        Log.v("TAG", t.toString())
-                    }
-
-                })
-
-            }
-
-
-            val popupDialog = AlertDialog.Builder(this)
-                .setView(popupView)
-                .create()
-
-              cancel.setOnClickListener {
-                popupDialog.dismiss()
-            }
-            popupDialog.show()
+            val Intent = Intent(this@ViewTicketActivity,CompletedActivity::class.java)
+            Intent.putExtra("TicketNo",ticketno)
+            Intent.putExtra("Subject",subject)
+            Intent.putExtra("Stauts",status)
+            Intent.putExtra("TicketId",ticketid)
+            Intent.putExtra("Action",action)
+            startForResult.launch(Intent)
 
         }
 
+    }
+
+
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            val intent2=  Intent()
+            intent2.putExtra("pos",position)
+            setResult(Activity.RESULT_OK,intent2)
+            finish()
+
+            // Handle the Intent
+        }
     }
 
 

@@ -45,10 +45,18 @@ import kotlin.random.Random
 import com.google.android.gms.location.*
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
+import com.android.hre.AttendanceFragment
+import com.android.hre.GRnActivity
+import com.android.hre.IndentActivity
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
+import com.android.hre.PettyCashActivity
+import com.android.hre.TicketActivity
+import com.android.hre.VaultActivity
 import com.android.hre.response.getappdata.AppDetails
+import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
+import com.android.hre.response.vaults.VaultDetails
 
 
 class HomeFragment : Fragment() {
@@ -69,6 +77,7 @@ class HomeFragment : Fragment() {
     lateinit var sharedPreferences :SharedPreferences
     lateinit var editor : SharedPreferences.Editor
     private lateinit var locationHelper: LocationHelper
+    var version :String = ""
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -104,7 +113,19 @@ class HomeFragment : Fragment() {
         var empId = sharedPreferences?.getString("employee_id","")
         userid = sharedPreferences?.getString("user_id", "")!!
         binding.tvDisplay.text = name
-        binding.namedisplay.text = name +  "\n"  + empId
+//        binding.tvEmpId.text = empId
+//        binding.tvusername.text = name
+//        binding.tvVersion.text= version
+
+        val simpleDate = SimpleDateFormat("dd/M/yyyy ")
+        val currentDate = simpleDate.format(Date())
+        println(" Current Date is: " +currentDate)
+      //  binding.tvPending.text = "Date : " + currentDate
+
+//        binding.tvPending.text = "Name" + name
+        binding.hellodat.text = "Hello, Welcome To HRE "
+        binding.nameee.text = name
+        binding.empiddd.text = empId
 
         Log.v("Sharedpref", sharedPreferences?.getBoolean(Constants.ISLOGGEDIN,false).toString())
         if (sharedPreferences.getBoolean("isLoggedIn",false)){
@@ -132,11 +153,35 @@ class HomeFragment : Fragment() {
 
         fetchTheIndentList()
 
+        fetchDashboardData()
+
+
 
         if (checkLocationPermission()) {
             getLastLocation()
         } else {
             requestLocationPermission()
+        }
+
+        binding.indentdata.setOnClickListener {
+            val intent = Intent(context,IndentActivity::class.java)
+            startActivity(intent)
+        }
+        binding.ticketdata.setOnClickListener {
+            val intent = Intent(context,TicketActivity::class.java)
+            startActivity(intent)
+        }
+        binding.grndata.setOnClickListener {
+            val intent = Intent(context,GRnActivity::class.java)
+            startActivity(intent)
+        }
+        binding.pettydata.setOnClickListener {
+            val intent = Intent(context,PettyCashActivity::class.java)
+            startActivity(intent)
+        }
+        binding.vaultdata.setOnClickListener {
+            val intent = Intent(context,VaultActivity::class.java)
+            startActivity(intent)
         }
 
         return root
@@ -209,7 +254,7 @@ class HomeFragment : Fragment() {
                    editor.apply()
                    editor.commit()
                    loginattendance(action)
-                   fetchtheappData()
+                   //fetchtheappData()
                } else{
                    attendanceOn = false
                    binding.slider.isReversed = false
@@ -421,7 +466,7 @@ class HomeFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    val version = getAppVersion(context!!)
+                     version = getAppVersion(context!!)
                     println("App version: $version")
 
                     if (!dataList!!.need_update.equals("No")){
@@ -486,5 +531,39 @@ class HomeFragment : Fragment() {
         }
         return "Unknown"
     }
+
+    private fun fetchDashboardData() {
+        val call = RetrofitClient.instance.getDashbaordDetais(userid)
+        call.enqueue(object : Callback<DashbardData> {
+            override fun onResponse(call: Call<DashbardData>, response: Response<DashbardData>) {
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    val dataList = indentResponse?.data
+                    Log.v("dat", dataList.toString())
+
+                    binding.tvAattendd.text = "Attendance :" + "  " + dataList!!.attendance
+                    binding.indentcount.text = "Indent : " + "  " +dataList!!.indents_count.toString()
+                    binding.tvgrncount.text = "GRN :" + " " + dataList!!.grn_count
+                    binding.tvticketcount.text = "Ticket :" + " " + dataList!!.tickets_count
+
+
+
+
+                    val isLoggedIn = dataList!!.attendance
+                    val appVersion = dataList!!.grn_count
+                    val needUpdate = dataList!!.tickets_count
+                    dataList.indents_count
+
+                } else  {
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<DashbardData>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
 
 }
