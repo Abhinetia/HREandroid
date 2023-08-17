@@ -6,6 +6,7 @@ data class GetDepartment(
     val status: Int
 ) {
     data class Data(
-        val category: String
+        val category: String,
+        val department :String
     )
 }

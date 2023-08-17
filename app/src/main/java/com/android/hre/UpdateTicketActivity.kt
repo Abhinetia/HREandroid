@@ -191,7 +191,8 @@ class UpdateTicketActivity : AppCompatActivity() {
                     for (i in 0 until listDepartmetData?.size!!) {
                         val dataString: GetDepartment.Data = listDepartmetData.get(i)
                         Log.v("log", i.toString())
-                        listdata2.add(dataString.category)
+                      //  listdata2.add(dataString.category)
+                        listdata2.add(dataString.department)
 
                     }
                     val arrayAdapter =
