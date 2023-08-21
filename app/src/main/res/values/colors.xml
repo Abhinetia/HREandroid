@@ -9,9 +9,15 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black_text">#000000</color>
     <color name="hre_header">#FDF2DF</color>
-    <color name="hre_background">#FFF9F4</color>
+    <color name="hre_background">#5A5A5A</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorbaackgoun">#DDEFF4F3</color>
+
+    <color name="colororange">#F10909</color>
+    <color name="colordarkgrey">#5A5A5A</color>
+    <color name="lightgrey">#F2F2F2</color>
+
+
 </resources>

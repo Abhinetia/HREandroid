@@ -42,7 +42,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="50dp"
-            android:src="@drawable/hre_logo" />
+            android:src="@drawable/hrenewlogo" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Project"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="management"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="made easy"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Save time with automations"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
 
             </LinearLayout>

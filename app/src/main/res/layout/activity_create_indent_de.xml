@@ -76,16 +76,14 @@
                 app:cardCornerRadius="10dp">
 
                 <AutoCompleteTextView
+                    android:id="@+id/etpcnId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/etpcnId"
-                    android:hint="PCN852"
-                    android:singleLine="true"
-                    android:textSize="13sp"
-                    android:drawableRight="@drawable/ic_dropdown"
-                    android:padding="13dp"
                     android:background="@color/white"
-                    />
+                    android:hint="PCN852"
+                    android:padding="13dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
 
             </androidx.cardview.widget.CardView>
 

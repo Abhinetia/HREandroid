@@ -8,9 +8,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:id="@+id/framela"
-        android:background="@color/hre_header">
+        android:background="@color/colordarkgrey">
 
     </FrameLayout>
 
@@ -32,7 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp"
@@ -40,10 +40,10 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="31dp"
-            android:layout_height="33dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/hre_logo" />
+            android:src="@drawable/hrenewlogo" />
 
         <ImageView
             android:layout_width="30dp"
@@ -63,7 +63,6 @@
         android:layout_height="70dp"
         android:layout_below="@+id/rld"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:elevation="6dp"
@@ -73,71 +72,76 @@
         app:inner_color="#FFFFFF"
         app:outer_color="#3EBA26"
         app:slider_locked="false"
-        app:text="Slide To Login"
+        app:text="Attendance Login"
         app:text_size="14sp" />
 
-
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/framela"
-        android:layout_marginStart="10dp"
-        android:id="@+id/namedis"
-        android:layout_marginTop="-40dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="true">
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:id="@+id/name"
+        android:layout_below="@+id/slider"
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="20dp"
+            android:layout_height="wrap_content"
+            android:text="Hello Welcome To HRE "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"
+            android:id="@+id/hellodat"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2"
+            android:layout_below="@+id/hellodat"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hello Welcome To HRE "
-                android:textColor="#000000"
-                android:textSize="15sp"
-                android:layout_marginBottom="2dp"
-                android:id="@+id/hellodat"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Abhishek Shetty "
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                android:layout_weight="1"
                 android:textAllCaps="true"
                 android:textSize="17sp"
-                android:layout_below="@+id/hellodat"
                 android:id="@+id/nameee"/>
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Supervisior"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                android:gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="center|right"
+                android:layout_weight="1"
                 android:textSize="17sp"
-                android:layout_below="@+id/nameee"
                 android:id="@+id/empiddd"/>
 
-
-        </RelativeLayout>
-
+        </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+
 
     <LinearLayout
           android:layout_width="match_parent"
           android:orientation="horizontal"
           android:weightSum="3"
-          android:background="@color/hre_background"
+          android:background="@color/lightgrey"
           android:id="@+id/linear1"
-          android:layout_below="@+id/namedis"
+          android:layout_below="@+id/name"
           android:layout_height="wrap_content">
 
           <androidx.cardview.widget.CardView
@@ -177,7 +181,7 @@
                       android:id="@+id/tv_aattendd"
                       android:layout_gravity="center"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:text="Attendance"
                       android:textColor="#3E3E3E"
                       />
@@ -221,10 +225,10 @@
                       android:layout_height="wrap_content"
                       android:padding="5dp"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:id="@+id/indentcount"
                       android:layout_gravity="center"
-                      android:text="Indent"
+                      android:text="My Indent"
                       android:textColor="#3E3E3E"
                       />
 
@@ -263,9 +267,9 @@
                       android:layout_height="wrap_content"
                       android:padding="5dp"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:layout_gravity="center"
-                      android:text="Ticket"
+                      android:text="My Ticket"
                       android:id="@+id/tvticketcount"
                       android:textColor="#3E3E3E"
                       />
@@ -286,7 +290,7 @@
           android:layout_marginBottom="10dp"
           android:id="@+id/linear2"
           android:layout_below="@+id/linear1"
-          android:background="@color/hre_background"
+          android:background="@color/lightgrey"
           android:layout_height="wrap_content">
 
 
@@ -323,9 +327,9 @@
                       android:padding="5dp"
                       android:layout_gravity="center"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:id="@+id/tvgrncount"
-                      android:text="GRN"
+                      android:text="My GRN"
                       android:textColor="#3E3E3E"
                       />
 
@@ -365,9 +369,9 @@
                       android:layout_height="wrap_content"
                       android:padding="5dp"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:layout_gravity="center"
-                      android:text="Petty Cash"
+                      android:text="My Petty Cash"
                       android:id="@+id/pettycashcount"
                       android:textColor="#3E3E3E"
                       />
@@ -410,7 +414,7 @@
                       android:padding="5dp"
                       android:layout_gravity="center"
                       android:layout_marginBottom="10dp"
-                      android:textSize="12dp"
+                      android:textSize="13dp"
                       android:id="@+id/tvvaultt"
                       android:text="Vault"
                       android:textColor="#3E3E3E"
@@ -426,10 +430,12 @@
 
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/rv_recvyler"
         android:visibility="gone"
+        android:background="@color/lightgrey"
         android:layout_below="@+id/framela"
         android:layout_height="wrap_content">
 

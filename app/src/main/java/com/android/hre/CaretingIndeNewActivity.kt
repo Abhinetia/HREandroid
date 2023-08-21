@@ -147,8 +147,11 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                     binding.etpcnId.setAdapter(arrayAdapter)
                     binding.etpcnId.setThreshold(1)
 
+                    arrayAdapter.notifyDataSetChanged()
 
-                  //  binding.etpcnId.threshold = 2
+
+
+                    //  binding.etpcnId.threshold = 2
 
 //
                     binding.etpcnId.setOnItemClickListener { adapterView, view, i, l ->
@@ -158,7 +161,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         if (data.status.contains("Active")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
-                            binding.pcnAddress.text =  data.area + " -" + data.city + "- " + data.state
+                            binding.pcnAddress.text =  data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
                             showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")

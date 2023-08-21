@@ -3,19 +3,19 @@
     android:shape="rectangle">
 
     <solid
-        android:color="#FF5E5E"/>
+        android:color="#F10909"/>
 
     <stroke
         android:width="4dp"
-        android:color="#FF5E5E"
+        android:color="#F10909"
        />
 
     <corners android:radius="360dp"/>
 
     <gradient android:angle="270"
-        android:centerColor="#FF5E5E"
-        android:endColor="#FF5E5E"
-        android:startColor="#FF5E5E" />
+        android:centerColor="#F10909"
+        android:endColor="#F10909"
+        android:startColor="#F10909" />
 
     <padding
         android:left="20dp"

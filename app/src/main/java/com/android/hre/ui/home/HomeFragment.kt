@@ -45,9 +45,13 @@ import kotlin.random.Random
 import com.google.android.gms.location.*
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.android.hre.AttendanceActivity
 import com.android.hre.AttendanceFragment
 import com.android.hre.GRnActivity
 import com.android.hre.IndentActivity
+import com.android.hre.IndentFragment
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
 import com.android.hre.PettyCashActivity
@@ -164,8 +168,14 @@ class HomeFragment : Fragment() {
         }
 
         binding.indentdata.setOnClickListener {
-            val intent = Intent(context,IndentActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(context,IndentActivity::class.java)
+//            startActivity(intent)
+
+//            val ft: FragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction()
+//            ft.replace(com.android.hre.R.id.nav_host_fragment_activity_main, IndentFragment())
+//            ft.addToBackStack(null)
+//            ft.commit()
+            replaceFragment(IndentFragment())
         }
         binding.ticketdata.setOnClickListener {
             val intent = Intent(context,TicketActivity::class.java)
@@ -183,8 +193,26 @@ class HomeFragment : Fragment() {
             val intent = Intent(context,VaultActivity::class.java)
             startActivity(intent)
         }
+       binding.linearattendance.setOnClickListener {
+           val intent = Intent(context,AttendanceActivity::class.java)
+           startActivity(intent)
+       }
 
         return root
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+         val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+
+         // Replace the current fragment with the new fragment
+         transaction.replace(com.android.hre.R.id.nav_host_fragment_activity_main, fragment)
+
+         // Add the transaction to the back stack
+         transaction.addToBackStack(null)
+
+         // Commit the transaction
+         transaction.commit()
     }
 
     private fun fetchTheIndentList() {
@@ -247,7 +275,7 @@ class HomeFragment : Fragment() {
                     simpleDateFormat = SimpleDateFormat("HH:mm")
                     currentDateAndTime = simpleDateFormat.format(Date())
                    Log.v("location","$currentDateAndTime")
-                   binding.slider.text = "Slide To Logout"
+                   binding.slider.text = "Attendance Logout"
                    getLastLocation()
                     var action = "login"
                    editor.putBoolean("isLoggedIn",true)
@@ -261,7 +289,7 @@ class HomeFragment : Fragment() {
                    binding.slider.resetSlider()
                    simpleDateFormat = SimpleDateFormat("HH:mm")
                    currentDateAndTime = simpleDateFormat.format(Date())
-                   binding.slider.text = "Slide To Login"
+                   binding.slider.text = "Attendance Login"
                    getLastLocation()
                    var action = "logout"
                    editor.putBoolean("isLoggedIn",false)
@@ -269,7 +297,7 @@ class HomeFragment : Fragment() {
                    editor.commit()
                    loginattendance(action)
                    Log.v("location","$currentDateAndTime")
-                   fetchtheappData()
+                   //fetchtheappData()
                }
 
            }
@@ -541,10 +569,9 @@ class HomeFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                    binding.tvAattendd.text = "Attendance :" + "  " + dataList!!.attendance
-                    binding.indentcount.text = "Indent : " + "  " +dataList!!.indents_count.toString()
-                    binding.tvgrncount.text = "GRN :" + " " + dataList!!.grn_count
-                    binding.tvticketcount.text = "Ticket :" + " " + dataList!!.tickets_count
+                    binding.indentcount.text = "My Indent : " + "  " +dataList!!.indents_count.toString()
+                    binding.tvgrncount.text = "My GRN :" + " " + dataList!!.grn_count
+                    binding.tvticketcount.text = "My Ticket :" + " " + dataList!!.tickets_count
 
 
 

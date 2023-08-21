@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +64,8 @@ class UploadExpensesActivity : AppCompatActivity() {
     private val imageUriList = java.util.ArrayList<Uri>()
     private val imgList = ArrayList<File>()
     private val listOfImages = ArrayList<MultipartBody.Part>()
+    var isSelectedText :Boolean = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +89,10 @@ class UploadExpensesActivity : AppCompatActivity() {
         }
 
         dropdwonfromServer()
+
+        binding.tvPcn.setOnClickListener {
+            dropdwonfromServer()
+        }
 
 
 
@@ -259,6 +267,7 @@ class UploadExpensesActivity : AppCompatActivity() {
     }
 
 
+/*
     private fun dropdwonfromServer() {
 
         RetrofitClient.instance.getAllPcns(userid)
@@ -306,6 +315,96 @@ class UploadExpensesActivity : AppCompatActivity() {
 
             })
     }
+*/
+
+    private fun dropdwonfromServer() {
+
+        RetrofitClient.instance.getAllPcns(userid)
+            .enqueue(object: retrofit2.Callback<PCN> {
+                override fun onFailure(call: Call<PCN>, t: Throwable) {
+                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<PCN>, response: Response<PCN>) {
+                    Log.v("Sucess", response.body().toString())
+                    var listMaterials: PCN? = response.body()
+                    listdata.clear()
+
+                    var arrayList_details: List<PCN.Data>? = listMaterials?.data
+
+                    //  listdata.add("ewfwef")
+                    for (i in 0 until arrayList_details?.size!!) {
+                        val dataString: PCN.Data = arrayList_details.get(i)
+
+                        Log.v("log", i.toString())
+                        listdata.add(dataString.pcn)// + "-" + dataString.client_name + "-" + dataString.brand + "-" + dataString.location + "-" + dataString.area
+
+                        //  listPCNdata.add(PCN.Data)   + "-" + dataString.city
+
+
+                    }
+
+
+//                    val arrayAdapter =
+//                        ArrayAdapter(this@CaretingIndeNewActivity, R.layout.dropdwon_item, listdata)
+                    val arrayAdapter =
+                        AutoCompleteAdapter(this@UploadExpensesActivity, R.layout.dropdwon_item, listdata)
+
+
+                    binding.tvPcn.setAdapter(arrayAdapter)
+                    binding.tvPcn.setThreshold(1)
+
+                    arrayAdapter.notifyDataSetChanged()
+
+
+                    //  binding.etpcnId.threshold = 2
+
+//
+                    binding.tvPcn.setOnItemClickListener { adapterView, view, i, l ->
+                        var position : Int = listdata.indexOf(binding.tvPcn.text.toString())
+                        var data: PCN.Data = arrayList_details.get(position)
+                        isSelectedText = true
+                        if (data.status.contains("Active")){
+                            binding.carviewpcn.visibility = View.VISIBLE
+                            binding.pcnClinet.text = data.brand
+                            binding.pcnAddress.text =  data.area + " -" + data.city
+
+                        } else if (data.status.contains("Completed")){
+                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                        }
+                    }
+                    // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+                    binding.tvPcn.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(
+                            charSequence: CharSequence,
+                            i: Int,
+                            i1: Int,
+                            i2: Int
+                        ) {
+                        }
+
+                        override fun onTextChanged(
+                            charSequence: CharSequence,
+                            i: Int,
+                            i1: Int,
+                            i2: Int
+                        ) {
+                            isSelectedText = false
+                        }
+
+                        override fun afterTextChanged(editable: Editable) {}
+                    })
+
+
+                }
+
+
+
+            })
+
+
+    }
+
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
         val builder = AlertDialog.Builder(this)

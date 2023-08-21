@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityUpdateTicketBinding
 import com.android.hre.databinding.ActivityViewTicketBinding
@@ -232,10 +233,17 @@ class UpdateTicketActivity : AppCompatActivity() {
                         listdata.add(dataString.pcn)
 
                     }
+//                    val arrayAdapter =
+//                        ArrayAdapter(this@UpdateTicketActivity, R.layout.dropdwon_item, listdata)
+
                     val arrayAdapter =
-                        ArrayAdapter(this@UpdateTicketActivity, R.layout.dropdwon_item, listdata)
+                        AutoCompleteAdapter(this@UpdateTicketActivity, R.layout.dropdwon_item, listdata)
+
                     binding.etSelctpcn.setAdapter(arrayAdapter)
                      binding.etSelctpcn.threshold = 1
+
+                    arrayAdapter.notifyDataSetChanged()
+
 
                 }
 

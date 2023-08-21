@@ -388,6 +388,7 @@ class CreateTicketActivity : AppCompatActivity() {
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
         imgList.add(Imaagefile!!)
+        Toast.makeText(applicationContext, "Image Upload successful", Toast.LENGTH_LONG).show()
 
         return File(storageDir, imageFileName)
     }
@@ -483,6 +484,7 @@ class CreateTicketActivity : AppCompatActivity() {
 
                     binding.etSelctpcn.setAdapter(arrayAdapter)
                     binding.etSelctpcn.setThreshold(1)
+                    arrayAdapter.notifyDataSetChanged()
 
 
                     //  binding.etpcnId.threshold = 2
@@ -495,7 +497,7 @@ class CreateTicketActivity : AppCompatActivity() {
                         if (data.status.contains("Active")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
-                            binding.pcnAddress.text =  data.area + " -" + data.city + "- " + data.state
+                            binding.pcnAddress.text =  data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
                             showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")

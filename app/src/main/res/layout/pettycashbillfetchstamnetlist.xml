@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_chosepcn"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_margin="2dp"
+                android:id="@+id/rvstatus_showing"
+                android:layout_marginBottom="2dp"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/lineafrmdate"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:id="@+id/tv_displaydaee"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="17dp"
+                        android:text="09-05-2023"
+                        android:textColor="@color/black_text"
+                        />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/lineafrmdate"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_alignParentRight="true"
+                    android:visibility="visible"
+                    android:id="@+id/lineafromdate"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:id="@+id/tvore"
+                        android:textSize="16dp"
+                        android:text="50000"
+                        android:textColor="@color/black_text"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:id="@+id/tv_tmee"
+                        android:textSize="13dp"
+                        android:text="Dr"
+                        android:textColor="@color/black_text"
+                        />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/lineafrmdate"
+                    android:visibility="visible"
+                    android:id="@+id/purpose"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:singleLine="false"
+                        android:id="@+id/tv_timee"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="13dp"
+                        android:text="Amount given"
+                        android:textColor="@color/black_text"
+                        />
+
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

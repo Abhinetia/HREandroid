@@ -1,114 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="#fff"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/rv_cosepcn"
-        >
-
-        <LinearLayout
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:id="@+id/rld"
+            android:visibility="gone"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            >
 
-            <TextView
+            <ImageView
+                android:id="@+id/idsidenavigation"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_sidenavigation" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:src="@drawable/hre_logo" />
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvgrnnumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOGIN"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:minWidth="80dp"
-                android:gravity="center"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Working Time"
-                android:minWidth="80dp"
-                android:gravity="center"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
+                android:id="@+id/ivnotification"
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_notification"/>
 
 
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_displaydaee"
-                android:minWidth="80dp"
-                android:textSize="14dp"
-                android:text="09-05-2023"
-                android:textColor="@color/black_text" />
-
-            <TextView
-                android:id="@+id/tv_tmee"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:24 am"
-                android:minWidth="80dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_timee"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:24 am"
-                android:minWidth="80dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-            <TextView
-                android:id="@+id/tv_lotimee"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:24 am"
-                android:minWidth="80dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
+        </RelativeLayout>
 
     </LinearLayout>
 
 
-</androidx.cardview.widget.CardView>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fabCradleMargin="10dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:fabCradleRoundedCornerRadius="20dp"
+            android:layout_gravity="center|bottom"
+            tools:ignore="BottomAppBar">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/white"
+                app:menu="@menu/bottom_nav_menu"/>
+
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <fragment
+            android:id="@+id/nav_host_fragment_activity_main"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="false"
+            app:navGraph="@navigation/mobile_navigation"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF5E5E"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_addd"
+            app:layout_anchor="@id/bottomAppBar" />
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</RelativeLayout>
+
+

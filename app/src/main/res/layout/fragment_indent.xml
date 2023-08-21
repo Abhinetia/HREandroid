@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/hre_header">
+        android:background="@color/colordarkgrey">
 
     </FrameLayout>
 
@@ -65,7 +66,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:text="Active"
             android:padding="5dp"
             android:id="@+id/tv_active"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:id="@+id/countof"
             android:gravity="center"
@@ -90,7 +90,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="Completed"
             android:padding="5dp"
             android:id="@+id/tv_complted"
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:gravity="center"
             android:id="@+id/countcompl"
@@ -113,24 +113,18 @@
             android:textColor="@color/black_text"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_line"/>
 
         <TextView
+            android:id="@+id/btn_cretae_ticket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:textSize="13sp"
-            android:visibility="gone"
-            android:text="Completed"
-            android:textColor="@color/black_text"
-            />
+            android:background="@drawable/round_corner"
+            android:text="Create Indent"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentEnd="true"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

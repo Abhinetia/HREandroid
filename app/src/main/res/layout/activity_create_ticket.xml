@@ -243,7 +243,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
-                    android:drawableRight="@drawable/ic_dropdown"
                     android:focusable="false"
                     android:hint="Select Priority"
                     android:padding="13dp"
