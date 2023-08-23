@@ -256,9 +256,9 @@ class HomeFragment : Fragment() {
             findNavController().navigate(com.android.hre.R.id.action_navigation_home_to_ticketFragment)
         }
 
-        binding.logo.setOnClickListener {
-            findNavController().navigate(com.android.hre.R.id.action_navigation_home_to_indentFragment2)
-        }
+//        binding.logo.setOnClickListener {
+//            findNavController().navigate(com.android.hre.R.id.action_navigation_home_to_indentFragment2)
+//        }
 
         binding.tvGrn.setOnClickListener {
             val Intent = Intent(context, DisplayGrnActivity::class.java)

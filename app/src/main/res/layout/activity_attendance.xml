@@ -23,6 +23,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/ivBack"
+            android:padding="5dp"
             android:layout_centerVertical="true"
             android:src="@drawable/icwhitearrow"/>
 

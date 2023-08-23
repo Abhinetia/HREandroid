@@ -27,6 +27,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivBack"
+                android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icwhitearrow"/>
 
@@ -48,6 +49,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivsearch"
+                android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_search"/>

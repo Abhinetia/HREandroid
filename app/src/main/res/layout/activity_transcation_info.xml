@@ -13,6 +13,13 @@
         android:layout_height="wrap_content"
         >
 
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="50dp"
+            android:padding="5dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icwhitearrow" />
 
         <TextView
             android:id="@+id/tvheadername"

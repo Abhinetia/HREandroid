@@ -61,8 +61,9 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
         fun bind(dataX: TranscationInfoDetails.Data?) {
             binding.apply {
                 if (dataX != null){
-                    tvAmountutilized.text = dataX.utilised_amount
+                    tvAmountutilized.text = "₹" + dataX.utilised_amount
                     tvIsApproved.text = dataX.isapproved
+                    tvPiurpose.text = dataX.purpose
 
 
 

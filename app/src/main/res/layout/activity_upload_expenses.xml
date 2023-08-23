@@ -30,6 +30,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivBack"
+                android:padding="5dp"
                 android:layout_marginLeft="-5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_back"/>
@@ -264,6 +265,31 @@
                         android:textSize="12sp" />
 
                 </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/carviewpcn_doesnt_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="2sp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="3dp">
+
+
+                    <TextView
+                        android:id="@+id/tv_pcn_does_not_exit"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center"
+                        android:text="PCN Does't Exist!!"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+
+                </androidx.cardview.widget.CardView>
+
 
 
             </LinearLayout>

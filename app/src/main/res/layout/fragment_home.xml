@@ -34,7 +34,6 @@
             >
 
             <ImageView
-                android:id="@+id/idsidenavigation"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -47,7 +46,6 @@
                 android:src="@drawable/ic_sidenavigation" />
 
             <ImageView
-                android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_centerInParent="true"
@@ -57,7 +55,6 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/logoeut"
                 android:visibility="invisible"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"

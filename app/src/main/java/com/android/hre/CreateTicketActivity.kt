@@ -582,7 +582,7 @@ class CreateTicketActivity : AppCompatActivity() {
                         if (data.status.contains("Active")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
-                            binding.pcnAddress.text =  data.area + " -" + data.city
+                            binding.pcnAddress.text = data.location + data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
                             showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information","")
@@ -605,6 +605,12 @@ class CreateTicketActivity : AppCompatActivity() {
                             i2: Int
                         ) {
                             isSelectedText = false
+                            if(!listdata.contains(binding.etSelctpcn.text.toString()) && charSequence.toString().length > 1){
+                                binding.carviewpcn.visibility = View.GONE
+                                binding.carviewpcnDoesntExit.visibility = View.VISIBLE
+                            }else{
+                                binding.carviewpcnDoesntExit.visibility = View.GONE
+                            }
                         }
 
                         override fun afterTextChanged(editable: Editable) {}
