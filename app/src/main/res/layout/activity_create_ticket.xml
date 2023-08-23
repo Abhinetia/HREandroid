@@ -91,6 +91,8 @@
                     android:background="@color/white"
                     android:hint="Type PCN"
                     android:padding="13dp"
+
+                    android:focusable="true"
                     android:singleLine="true"
                     android:textSize="12sp" />
 

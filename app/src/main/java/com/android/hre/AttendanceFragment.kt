@@ -74,7 +74,7 @@ class AttendanceFragment : Fragment() {
         attedanceadapter = AttendanceAdapter()
 
         binding.ivBack.setOnClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
 //        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
 //            fetchtheappData()

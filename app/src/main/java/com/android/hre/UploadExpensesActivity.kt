@@ -1,15 +1,16 @@
 package com.android.hre
 
-import android.app.Activity
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -18,23 +19,20 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
-import com.android.hre.databinding.ActivityCaretingIndeNewBinding
 import com.android.hre.databinding.ActivityUploadExpensesBinding
-import com.android.hre.databinding.FragmentPettyCashBinding
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.pcns.PCN
-import com.bumptech.glide.Glide
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,12 +46,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class UploadExpensesActivity : AppCompatActivity() {
 
@@ -106,10 +98,6 @@ class UploadExpensesActivity : AppCompatActivity() {
         }
 
         dropdwonfromServer()
-
-        binding.tvPcn.setOnClickListener {
-            dropdwonfromServer()
-        }
 
 
 
@@ -238,11 +226,16 @@ class UploadExpensesActivity : AppCompatActivity() {
                 }
 
             }
+            val initDate = SimpleDateFormat("dd-MM-yyyy").parse(binding.tvDate.text.toString())
+            val formatter = SimpleDateFormat("yyyy-MM-dd")
+            val parsedDate = formatter.format(initDate)
+            println(parsedDate)
+
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val billnumber = RequestBody.create(MediaType.parse("text/plain"),binding.tvBillnumber.text.toString() )
             val spentamount = RequestBody.create(MediaType.parse("text/plain"), binding.tvamount.text.toString()) // amount
             val comment = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
-            val billDate = RequestBody.create(MediaType.parse("text/plain"),binding.tvDate.text.toString())  //ddate
+            val billDate = RequestBody.create(MediaType.parse("text/plain"),parsedDate)  //ddate
             val purpose = RequestBody.create(MediaType.parse("text/plain"),binding.tvPurpose.text.toString())
             val pcn = RequestBody.create(MediaType.parse("text/plain"),binding.tvPcn.text.toString())
 

@@ -39,6 +39,10 @@ class VaultFragment : Fragment() {
         vaultAdapter = VaultAdapter()
         vaultInfoDatails()
 
+        binding.ivBack.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         return root
     }
 

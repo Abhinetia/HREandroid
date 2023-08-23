@@ -1,6 +1,7 @@
 package com.android.hre
 
 import android.R.attr.autoText
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -60,6 +61,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
     private lateinit var binding: ActivityCaretingIndeNewBinding
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // setContentView(R.layout.activity_careting_inde_new)
@@ -116,10 +118,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
             sendDataToServer()
         }
 
-        binding.etpcnId.setOnClickListener {
 
-            dropdwonfromServer()
-        }
 
         binding.tvcategoryMaterial.text = materialCategory
         binding.tvmaterialnameselection.text = materialName
@@ -182,7 +181,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                             binding.pcnAddress.text =  data.location + data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information","")
+                            showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
                             binding.btnMaterials.visibility = View.GONE
                         }
                     }
@@ -436,6 +435,20 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
+
+    private fun showAlertDialogOkAndCloseAr(message:String, alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message + "\n"+ alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+            setResult(Activity.RESULT_OK)
+        }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
 
 }
