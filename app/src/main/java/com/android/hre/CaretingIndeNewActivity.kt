@@ -76,8 +76,12 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
        // Log.v(usr)
 
         dropdwonfromServer()
+      //  binding.btnMaterials.visibility = View.GONE
+
+      binding.btnMaterials.visibility = View.GONE
 
         binding.btnMaterials.setOnClickListener {
+
             val email =  binding.etpcnId.text.toString().trim()
 
             if(email.isEmpty()){
@@ -85,6 +89,16 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                 binding.etpcnId.requestFocus()
                 return@setOnClickListener
             }
+
+//            if (!listdata.contains(binding.etpcnId.text.toString()) ){
+//                binding.carviewpcnDoesntExit.visibility = View.VISIBLE
+//                if (binding.tvPcnDoesNotExit.text.contains("PCN Does't Exist!!")){
+//                    binding.btnMaterials.visibility = View.GONE
+//                } else{
+//                    binding.btnMaterials.visibility = View.VISIBLE
+//                }
+//            }
+
 
             val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this)
             fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialog::class.simpleName)
@@ -192,8 +206,11 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                             if(!listdata.contains(binding.etpcnId.text.toString()) && charSequence.toString().length > 1){
                                 binding.carviewpcn.visibility = View.GONE
                                 binding.carviewpcnDoesntExit.visibility = View.VISIBLE
+                                binding.btnMaterials.visibility = View.GONE
                             }else{
                                 binding.carviewpcnDoesntExit.visibility = View.GONE
+                                binding.btnMaterials.visibility = View.VISIBLE
+
                             }
                         }
 
@@ -267,6 +284,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
                         var display :String = "$indentNo\n$pcn\n$pcnDetails"
                         Log.v("display",display)
+
 
                         showAlertDialogOkAndCloseAfter(indentResponse.message.toString(),display)
 
