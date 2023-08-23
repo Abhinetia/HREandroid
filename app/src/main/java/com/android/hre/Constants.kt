@@ -6,5 +6,6 @@ object Constants {
     const val AP_NAME = "HRE"
     const val ISLOGGEDIN = "isloggedin"
     const val EMPLOYEEID = "employee_id"
+    const val isEmployeeLoggedIn = "isEmployeeLoggedIn"
 
 }

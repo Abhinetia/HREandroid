@@ -102,7 +102,7 @@
                         android:padding="5dp"
                         android:singleLine="false"
                         android:id="@+id/tv_timee"
-                        android:gravity="center"
+                        android:gravity="center|start"
                         android:layout_marginBottom="5dp"
                         android:textSize="13dp"
                         android:text="Amount given"
@@ -115,8 +115,14 @@
 
 
             </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:background="#5A5A5A"
+                android:layout_height="1dp"/>
+
 
         </LinearLayout>
+
     </RelativeLayout>
 
 

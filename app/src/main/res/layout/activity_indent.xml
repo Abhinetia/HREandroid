@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ivBack"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back"/>
+            android:src="@drawable/icwhitearrow"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:id="@+id/tv_active"
             android:textSize="13dp"
             android:drawablePadding="2dp"
-            android:drawableLeft="@drawable/ic_dot"
+            android:drawableLeft="@drawable/rounddot"
             android:textColor="@color/black_text"
             />
 
@@ -96,7 +96,7 @@
             android:id="@+id/tv_complted"
             android:textSize="13dp"
             android:drawablePadding="2dp"
-            android:drawableLeft="@drawable/ic_dot"
+            android:drawableLeft="@drawable/rounddot"
             android:textColor="@color/black_text"
             />
 

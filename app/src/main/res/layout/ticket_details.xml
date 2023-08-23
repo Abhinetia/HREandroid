@@ -45,19 +45,6 @@
                     android:textColor="#FF9797"
                     android:textSize="12dp" />
 
-                <TextView
-                    android:id="@+id/tv_ticketstatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/tvticketno"
-                    android:background="@drawable/ic_openrectan"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Open"
-                    android:textColor="@color/black_text"
-                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/tv_pcn"
@@ -65,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/tv_ticketstatus"
+                    android:layout_toRightOf="@+id/tvticketno"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="PCN"
@@ -97,6 +84,24 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="25dp"
                 android:src="@drawable/ic_linehoriz" />
+
+            <TextView
+                android:id="@+id/tv_ticketstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/tv_pcn"
+                android:background="@drawable/ic_openrectan"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="25dp"
+                android:padding="5dp"
+                android:text="Open"
+                android:textColor="@color/black_text"
+                android:textSize="12dp" />
+
+
+
             <TextView
                 android:id="@+id/tvdpcndatapcn"
                 android:layout_width="match_parent"
@@ -104,7 +109,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="90dp"
                 android:ellipsize="marquee"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
@@ -117,7 +122,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="75dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
                 android:layout_marginEnd="10dp"
@@ -144,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="125dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp">
 
@@ -172,7 +177,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="170dp"
+                android:layout_marginBottom="10dp"
                 android:padding="5dp"
                 android:minWidth="150dp"
                 android:id="@+id/tv_viewmore"

@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.AttendanceAdapter
@@ -23,7 +25,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -72,14 +76,65 @@ class AttendanceFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             activity?.finish()
         }
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-            fetchtheappData()
+//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+//            fetchtheappData()
+//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val todaydate = LocalDate.now()
+            val sdf = SimpleDateFormat("dd-MM-yyyy")
+            val currentDate = sdf.format(Date())
+            println("Months first date in yyyy-mm-dd: " + todaydate.withDayOfMonth(1) + "  " + currentDate)
+
+            val fdate = todaydate.withDayOfMonth(1)
+
+            fetchtheattendanceListt(fdate.toString(),currentDate)
+
+        } else{
+            fetchtheattendanceList()
         }
 
 
-
-        return root
+    return root
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchtheattendanceListt(fdate: String, currentDate: String) {
+        attendanceListData.clear()
+        val call = RetrofitClient.instance.getattendance(userid,fdate,currentDate)
+        call.enqueue(object : Callback<AttendanceListData> {
+            override fun onResponse(call: Call<AttendanceListData>, response: Response<AttendanceListData>) {
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    val dataList = indentResponse?.data
+                    Log.v("dat", dataList.toString())
+
+                    for(i  in 0 until dataList!!.size){
+                        val data  = dataList.get(i)
+                        if ( data.login.contains("---")){
+
+                        }else{
+                            attendanceListData.add(data)
+                        }
+                    }
+                    attedanceadapter.differ.submitList(attendanceListData)
+
+                    binding.rvRecylergrndata.apply {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = attedanceadapter
+                    }
+
+                } else  {
+
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<AttendanceListData>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
+
     private fun showDatePickerDialog(isFromDate: Boolean) {
         val calendar = if (isFromDate) fromDate else toDate
 
@@ -117,6 +172,7 @@ class AttendanceFragment : Fragment() {
         fetchtheattendanceList()
     }
     private fun fetchtheattendanceList() {
+        attendanceListData.clear()
         val call = RetrofitClient.instance.getattendance(userid,frommdate,toodate)
         call.enqueue(object : Callback<AttendanceListData> {
             override fun onResponse(call: Call<AttendanceListData>, response: Response<AttendanceListData>) {

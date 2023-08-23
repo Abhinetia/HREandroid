@@ -2,6 +2,7 @@ package com.android.hre.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
+import com.android.hre.databinding.PettycashbillfetchstamnetlistBinding
 import com.android.hre.databinding.StatmentlistBinding
 import com.android.hre.response.statment.StatementListData
 import java.text.SimpleDateFormat
@@ -16,7 +18,7 @@ import java.util.Locale
 
 class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
 
-    private lateinit var binding: StatmentlistBinding
+    private lateinit var binding: PettycashbillfetchstamnetlistBinding
     private lateinit var context: Context
     var userid : String = ""
 
@@ -27,13 +29,21 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
             binding.apply {
                 if (dataX != null){
                    // tvTransdate.text = dataX.transaction_date
-                    tvModecashoronline.text = dataX.mode
-                    tvTypecreditordebit.text = dataX.type
-                    tvAmount.text = dataX.amount
+                   // tvModecashoronline.text = dataX.mode
+                    tvTmee.text = dataX.type
+                    tvore.text = dataX.amount
                    // tvEntrydate.text = dataX.bill_submission_date
-                    tvRefernceno.text = dataX.ref
-                    tvCommnets.text = dataX.comment
+                    tvTimee.text = dataX.ref
+                   // tvCommnets.text = dataX.comment
 
+                    if (dataX.type.equals("Debit")) {
+                        tvTmee.text = "Dr"
+                        tvTmee.setTextColor(Color.parseColor("#F10909"))
+                    }else {
+                        tvTmee.text = "Cr"
+                        tvTmee.setTextColor(Color.parseColor("#FF03DAC5"))
+
+                    }
 
 //                    val inputDateString = dataX.transaction_date
 //                    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -43,7 +53,7 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
 //                    val date = inputFormat.parse(inputDateString)
 //                    val outputDateString = outputFormat.format(date)
 
-                    tvTransdate.text  = dataX.transaction_date
+                    tvDisplaydaee.text  = dataX.transaction_date
 
 
                     val inputDateStringg = dataX.bill_submission_date
@@ -54,7 +64,7 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
                     val datee = inputFormatt.parse(inputDateStringg)
                     val outputDateStrineg = outputFormatt.format(datee)
 
-                    tvEntrydate.text  = outputDateStrineg
+                   // tvEntrydate.text  = outputDateStrineg
 
 
 
@@ -67,9 +77,8 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatementAdapter.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = StatmentlistBinding.inflate(inflater, parent, false)
+        binding = PettycashbillfetchstamnetlistBinding.inflate(inflater, parent, false)
         context = parent.context
-
 
         val sharedPreferences = context.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!

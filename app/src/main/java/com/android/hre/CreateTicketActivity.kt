@@ -10,6 +10,7 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -35,6 +36,7 @@ import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.departement.GetDepartment
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.pcns.PCN
+import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -77,9 +79,18 @@ class CreateTicketActivity : AppCompatActivity() {
     private val imgList = ArrayList<File>()
     private val listOfImages = ArrayList<MultipartBody.Part>()
     var isSelectedText :Boolean = true
+    var ticket_no :String = ""
 
 
+    companion object {
+        const val CAMERA_PERMISSION_REQUEST = 101
+        const val GALLERY_PERMISSION_REQUEST = 102
 
+    }
+
+    private val cameraPermission = Manifest.permission.CAMERA
+    private val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+    private val galleryPermission1 = Manifest.permission.READ_MEDIA_IMAGES
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +131,19 @@ class CreateTicketActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            checkTheRunTimePermissions()
+            val currentVersion = Build.VERSION.SDK_INT
+
+            // Now you can use the version to conditionally run different methods
+            if (currentVersion >= Build.VERSION_CODES.TIRAMISU) {
+                checkIfPermissionGrantedAndroid13()
+            } else if (currentVersion >= Build.VERSION_CODES.O) {
+                checkIfPermissionGranted()
+                // Run methods for versions earlier than Android 9.0
+                // For example:
+                // yourMethodForVersionsBeforePie()
+            }
+
+          //  checkTheRunTimePermissions()
 
         }
 
@@ -215,15 +238,31 @@ class CreateTicketActivity : AppCompatActivity() {
             val call = RetrofitClient.instance.uploadData(userId, pcn, priority, subject, issue,listOfImages)
             Log.v("TAG", "$receiptEmployee")
 
-            call.enqueue(object : retrofit2.Callback<TicketCreated> {
-                override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+            call.enqueue(object : retrofit2.Callback<TicketReposneNewCreated> {
+                override fun onResponse(call: Call<TicketReposneNewCreated>, response: Response<TicketReposneNewCreated>) {
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG","message "+ response.body()?.message.toString())
-                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+                   // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                    if (response.isSuccessful) {
+                        val indentResponse = response.body()
+                        indentResponse?.let {
+
+                            ticket_no = it.data.ticket_no
+
+                            var display :String = "$ticket_no"
+                            Log.v("display",display)
+
+                            showAlertDialogOkAndCloseAfter(indentResponse.message.toString(),display)
+
+                        }
+                    } else {
+                        // Handle error cases
+                    }
 
                 }
 
-                override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
+                override fun onFailure(call: Call<TicketReposneNewCreated>, t: Throwable) {
 
                     Log.v("TAG", t.toString())
                 }
@@ -234,18 +273,61 @@ class CreateTicketActivity : AppCompatActivity() {
 
     }
 
+    fun  checkIfPermissionGrantedAndroid13(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission1) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission1),
+                UploadExpensesActivity.CAMERA_PERMISSION_REQUEST
+            )
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+
+    fun  checkIfPermissionGranted(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission),
+                UploadExpensesActivity.CAMERA_PERMISSION_REQUEST
+            )
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == UploadExpensesActivity.CAMERA_PERMISSION_REQUEST || requestCode == UploadExpensesActivity.GALLERY_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // Permissions granted, you can proceed with the actions
+                selectImage()
+            } else {
+                // Permissions denied, handle accordingly (e.g., show a message)
+                Toast.makeText(this,"Please allow all the permissions",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+
     private fun selectImage() {
         val items = arrayOf<CharSequence>(
-            "Take Photo", "Choose from Library",
+             "Choose from Library",
             "Cancel"
-        )
+        ) //"Take Photo",
         val builder = AlertDialog.Builder(this@CreateTicketActivity)
         builder.setTitle("Add Photo!")
         builder.setItems(items) { dialog, item ->
-            if (items[item] == "Take Photo") {
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(cameraIntent, 200)
-            } else if (items[item] == "Choose from Library") {
+//            if (items[item] == "Take Photo") {
+//                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(cameraIntent, 200)
+//            } else
+            if (items[item] == "Choose from Library") {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, pickImage)
             } else if (items[item] == "Cancel") {
@@ -388,7 +470,7 @@ class CreateTicketActivity : AppCompatActivity() {
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
         imgList.add(Imaagefile!!)
-        Toast.makeText(applicationContext, "Image Upload successful", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "Bill Uploaded successful", Toast.LENGTH_LONG).show()
 
         return File(storageDir, imageFileName)
     }
@@ -478,6 +560,9 @@ class CreateTicketActivity : AppCompatActivity() {
 
 //                    val arrayAdapter =
 //                        ArrayAdapter(this@CaretingIndeNewActivity, R.layout.dropdwon_item, listdata)
+
+                  //  Toast.makeText(this@CreateTicketActivity,listdata.size,Toast.LENGTH_SHORT).show()
+                    Log.v("TAG","$listdata")
                     val arrayAdapter =
                         AutoCompleteAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata)
 
@@ -500,7 +585,7 @@ class CreateTicketActivity : AppCompatActivity() {
                             binding.pcnAddress.text =  data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information","")
                         }
                     }
                     // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
@@ -527,8 +612,7 @@ class CreateTicketActivity : AppCompatActivity() {
 
 
                 }
-
-
+                
 
             })
 
@@ -536,9 +620,9 @@ class CreateTicketActivity : AppCompatActivity() {
     }
 
 
-    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+    private fun showAlertDialogOkAndCloseAfter(message:String, alertMessage: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(alertMessage)
+        builder.setMessage(message + "\n"+ alertMessage)
         builder.setPositiveButton(
             "OK"
         ) { dialogInterface, i ->
@@ -666,7 +750,7 @@ class CreateTicketActivity : AppCompatActivity() {
     }
 
 
-    override fun onRequestPermissionsResult(
+    /*override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
@@ -688,6 +772,6 @@ class CreateTicketActivity : AppCompatActivity() {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
-
+*/
 
 }

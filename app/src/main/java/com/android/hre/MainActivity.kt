@@ -1,5 +1,6 @@
 package com.android.hre
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -13,7 +14,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +28,7 @@ import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityMainBinding
 import com.android.hre.grn.DisplayGrnActivity
 import com.android.hre.response.getappdata.AppDetails
+import com.android.hre.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
@@ -39,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
    // private lateinit var toggle: ActionBarDrawerToggle
     lateinit var navController: NavController
-  //  lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
     var name :String = ""
@@ -50,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    @SuppressLint("StringFormatInvalid")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,10 +78,21 @@ class MainActivity : AppCompatActivity() {
         empId = sharedPreferences?.getString("employee_id","")!!
 
 
-        navController = findNavController(R.id.nav_host_fragment_activity_main)
+     //   navController = findNavController(R.id.nav_host_fragment_activity_main)
       //  val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
        // val navVieww = findViewById<NavigationView>(R.id.nav_vview)
        // val navItem = navVieww.menu.findItem(R.id.grntv)
+
+
+        //replaceFragment(HomeFragment())
+
+        if (savedInstanceState == null) {
+            val initialFragment = HomeFragment() // Replace with your initial fragment
+            replaceFragment(initialFragment)
+
+            // Set the first icon as selected
+            binding.navView.selectedItemId = R.id.navigation_home
+        }
 
 
 
@@ -93,11 +111,11 @@ class MainActivity : AppCompatActivity() {
 //        )
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-//        appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-//            ),  // binding.drawerLayout
-//        )
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+            ),  // binding.drawerLayout
+        )
 
 //        findViewById<ImageView>(R.id.idsidenavigation).setOnClickListener {
 //            drawerLayout.openDrawer(GravityCompat.START)
@@ -153,15 +171,36 @@ class MainActivity : AppCompatActivity() {
 //            }
         }
 
-        navView.background = null
-        navView.menu.getItem(1).isEnabled = false    //        android:icon="@drawable/ic_home_black_24dp"
-       // setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+//        navView.background = null
+        navView.menu.getItem(1).isEnabled = false    //
+        navView.menu.getItem(2).isEnabled = false    //        android:icon="@drawable/ic_home_black_24dp"
+//      android:icon="@drawable/ic_home_black_24dp"
+//       // setupActionBarWithNavController(navController, appBarConfiguration)
+//        navView.setupWithNavController(navController)
 
         val todaydate = LocalDate.now()
         val sdf = SimpleDateFormat("dd/MM/yyyy")
         val currentDate = sdf.format(Date())
         println("Months first date in yyyy-mm-dd: " + todaydate.withDayOfMonth(1) + "  " + currentDate)
+
+        binding.navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> replaceFragment(HomeFragment())
+               // R.id.navigation_notifications -> replaceFragment(AttendanceFragment()).
+               // navView.getCheckedItem().setTitle(".")
+               // R.id.navigation_notifications -> setTitle(empId)
+
+            }
+            true
+        }
+
+        val item : MenuItem = binding.navView.menu.findItem(R.id.navigation_notifications)
+        item.title = "$empId"
+
+
+
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -172,8 +211,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+      //  val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(binding.framelayout.id)
+        if (currentFragment is HomeFragment) {
+            finish() // Close the activity if FragmentA is displayed
+        } else {
+            when (currentFragment) {
+                is AttendanceFragment -> binding.navView.selectedItemId = R.id.navigation_notifications
+                // Handle other fragments
+            }
+            super.onBackPressed()
+        }
+    }
+
+
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager: FragmentManager = this@MainActivity.supportFragmentManager
+        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+
+        // Replace the current fragment with the new fragment
+        transaction.replace(binding.framelayout.id, fragment)
+
+        // Add the transaction to the back stack
+        transaction.addToBackStack(null)
+
+        // Commit the transaction
+        transaction.commit()
     }
 
 

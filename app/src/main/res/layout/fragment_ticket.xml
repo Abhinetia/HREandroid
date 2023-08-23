@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/hre_header">
+        android:background="@color/colordarkgrey">
 
     </FrameLayout>
 
@@ -28,7 +28,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/icwhitearrow" />
 
         <TextView
             android:id="@+id/tvheadername"
@@ -38,27 +38,67 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/ivBack"
             android:text="Tickets"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="15dp" />
 
         <ImageView
-            android:id="@+id/ivnotification"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:visibility="invisible"
+            android:id="@+id/ivsearch"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_notification" />
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_search"/>
 
 
     </RelativeLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/carviewseacrh"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/rvbackname"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etsearch"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="Search"
+                android:layout_toLeftOf="@+id/iv_progressBar"
+                android:padding="13dp"
+                android:singleLine="true"
+                android:textSize="13sp" />
+
+            <ProgressBar
+                android:id="@+id/iv_progressBar"
+                android:layout_width="25dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                android:layout_height="25dp"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <RelativeLayout
         android:id="@+id/rvaddmaterial"
         android:layout_width="match_parent"
         android:padding="2sp"
-        android:layout_below="@+id/rvbackname"
+        android:layout_below="@+id/carviewseacrh"
         android:gravity="center|start"
+        android:layout_marginBottom="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_height="wrap_content"
@@ -73,8 +113,8 @@
             android:textSize="13dp"
             android:id="@+id/tvopen"
             android:drawablePadding="5dp"
-            android:drawableLeft="@drawable/ic_dot"
-            android:textColor="@color/black_text"
+            android:drawableLeft="@drawable/rounddot"
+            android:textColor="@color/white"
             />
 
         <TextView
@@ -130,7 +170,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_below="@+id/rvaddmaterial"
-        android:layout_height="wrap_content"
+        android:background="@color/lightgrey"
+        android:layout_height="match_parent"
         android:id="@+id/rv_chosepcn"
         >
 
@@ -139,7 +180,6 @@
             android:layout_width="match_parent"
             android:visibility="visible"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
             android:scrollbarThumbHorizontal="@null"
             android:scrollbarThumbVertical="@null">
 

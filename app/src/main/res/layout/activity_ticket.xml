@@ -28,7 +28,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/icwhitearrow" />
 
         <TextView
             android:id="@+id/tvheadername"
@@ -73,7 +73,7 @@
             android:textSize="13dp"
             android:id="@+id/tvopen"
             android:drawablePadding="5dp"
-            android:drawableLeft="@drawable/ic_dot"
+            android:drawableLeft="@drawable/rounddot"
             android:textColor="@color/black_text"
             />
 

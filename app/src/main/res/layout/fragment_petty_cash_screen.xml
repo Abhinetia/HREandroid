@@ -9,6 +9,7 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@color/hre_background"
         android:layout_height="match_parent"
         >
 
@@ -20,12 +21,11 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivBack"
-                android:visibility="gone"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_back"/>
+                android:src="@drawable/icwhitearrow"/>
 
             <TextView
                 android:id="@+id/tvheadername"
@@ -35,7 +35,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/ivBack"
                 android:text="Petty Cash"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="15dp" />
 
             <TextView
@@ -196,7 +196,7 @@
             android:layout_marginRight="30dp"
             android:layout_below="@+id/rv_chosepcn"
             android:text="Action"
-            android:textColor="@color/black_text"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -401,20 +401,24 @@
 
         </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/lightgrey"
+        android:layout_below="@+id/linedate"
+        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
+        >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recylergrndata"
             android:layout_width="match_parent"
             android:visibility="visible"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/linedate"
-            android:layout_marginBottom="60dp"
             android:layout_height="wrap_content"
             android:scrollbarThumbHorizontal="@null"
             android:scrollbarThumbVertical="@null">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-
+    </RelativeLayout>
 
     </RelativeLayout>
 

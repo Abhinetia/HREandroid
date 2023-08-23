@@ -19,8 +19,11 @@ import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.android.hre.response.pcns.PCN
 import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
+import com.android.hre.response.searchindent.SearchIndent
 import com.android.hre.response.statment.StatementListData
+import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
 import com.android.hre.response.tickets.TicketList
+import com.android.hre.response.ticketsearch.SearchTicket
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.android.hre.response.vaults.VaultDetails
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
@@ -110,7 +113,7 @@ interface Api {
         @Part("issue") issue: RequestBody,
         @Part file : List<MultipartBody.Part>,
        // @Part file: MultipartBody.Part
-    ): Call<TicketCreated>
+    ): Call<TicketReposneNewCreated>
 
     @Multipart
     @POST("update-ticket")
@@ -250,9 +253,37 @@ interface Api {
     fun getTranscationInfo(
         @Field("user_id") user_id:String
     ) : Call<TranscationInfoDetails>
+
+    @FormUrlEncoded
+    @POST("search-indent")
+    fun getindents(
+        @Field("user_id") user_id:String,
+        @Field("search") search:String,
+        @Field("role") role:String
+    )  :Call<NewIndents>
+
+    @FormUrlEncoded
+    @POST("search-grn")
+    fun searchGRNlits(
+        @Field("user_id") user_id:String,
+        @Field("search") search:String
+    )  :Call<GrnList>
+    @FormUrlEncoded
+    @POST("search-ticket")
+    fun getticketsearch(
+        @Field("user_id") user_id:String,
+        @Field("search") search:String,
+        @Field("role") role:String
+    ) :Call<TikcetlistNew>
+
+//    @Headers("Content-Type: application/json")
+//    @POST("create-indent")
+//     fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>
+
+
     @Headers("Content-Type: application/json")
     @POST("create-indent")
-     fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>
+    fun createIndent(@Body request: CreateIndentRequest): Call<NewRepsonse>
 }
 
 

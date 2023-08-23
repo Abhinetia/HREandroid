@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
     android:layout_marginBottom="2dp"
     app:cardCornerRadius="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_margin="5dp"
+        android:weightSum="4"
         android:layout_height="wrap_content"
         android:id="@+id/rv_cosepcn"
         >
@@ -27,54 +28,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvgrnnumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOGIN"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:minWidth="80dp"
-                android:gravity="center"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Working Time"
-                android:minWidth="80dp"
-                android:gravity="center"
-                android:textColor="#FF9797"
-                android:textSize="14sp" />
-
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/tv_displaydaee"
-                android:minWidth="80dp"
-                android:textSize="14dp"
+                android:layout_weight="1"
+                android:textSize="15dp"
                 android:text="09-05-2023"
                 android:textColor="@color/black_text" />
 
@@ -84,9 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10:24 am"
-                android:minWidth="80dp"
+                android:layout_weight="1"
                 android:textColor="@color/black_text"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_timee"
@@ -94,20 +50,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10:24 am"
-                android:minWidth="80dp"
+                android:layout_weight="1"
                 android:textColor="@color/black_text"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/tv_lotimee"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10:24 am"
-                android:minWidth="80dp"
+                android:layout_weight="1"
                 android:textColor="@color/black_text"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
+
 
 
     </LinearLayout>

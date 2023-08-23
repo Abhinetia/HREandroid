@@ -17,11 +17,11 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/ivBack"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back"/>
+            android:src="@drawable/icwhitearrow"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:id="@+id/tvheadername"
             android:text="Create Ticket"
             android:textSize="15dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             />
 
         <ImageView
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PCN*"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
             <androidx.cardview.widget.CardView
@@ -191,6 +191,9 @@
                     android:background="@color/white"
                     android:hint="Type Department"
                     android:padding="12dp"
+                    android:focusable="true"
+                    android:imeOptions="actionNext"
+                    android:focusableInTouchMode="true"
                     android:singleLine="true"
                     android:inputType="text"
                     android:textColor="@color/black_text"
@@ -227,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Priority*"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
 
@@ -294,7 +297,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="Add Images*"
-                    android:textColor="@color/black_text">
+                    android:textColor="@color/white">
 
                 </TextView>
 

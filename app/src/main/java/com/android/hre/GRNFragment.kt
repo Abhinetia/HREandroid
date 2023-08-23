@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +17,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.GRNAdapter
+import com.android.hre.adapter.GRNAdapter2
+import com.android.hre.adapter.HomeAdapter2
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentGRNBinding
 import com.android.hre.databinding.FragmentHomeBinding
@@ -28,6 +34,11 @@ class GRNFragment : Fragment() {
     private lateinit var binding :FragmentGRNBinding
     var userid : String = ""
     private lateinit var grnAdapter: GRNAdapter
+    private lateinit var grnAdapter2: GRNAdapter2
+
+    private lateinit var handler: Handler
+    private var timerRunnable : Runnable? = null
+    private val delayMillis = 1500L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +49,18 @@ class GRNFragment : Fragment() {
         binding = FragmentGRNBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+        handler = Handler(Looper.getMainLooper())
+
         val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
         grnAdapter = GRNAdapter()
 
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-            fetchtheappData()
-        }
+
+
+//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+//            fetchtheappData()
+//        }
 
 
         fetchTheGRNDetails()
@@ -53,8 +69,91 @@ class GRNFragment : Fragment() {
             activity?.onBackPressed()
         }
 
+        binding.ivsearch.setOnClickListener {
+            binding.carviewseacrh.visibility = View.VISIBLE
+        }
+
+        binding.etsearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do Nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s.toString().length == 0){
+                    binding.ivProgressBar.visibility = View.GONE
+                }else{
+                    binding.ivProgressBar.visibility = View.VISIBLE
+                }
+                timerRunnable?.let { handler.removeCallbacks(it) }
+
+                // Schedule a new timerRunnable with the specified delay
+                timerRunnable = Runnable {
+
+                    fetchTheGRNSearchList(s.toString())
+//                    }else if(s.toString().length == 0){
+//                        fetchTheIndentList()
+//                    }
+                }
+
+                handler.postDelayed(timerRunnable!!, delayMillis)
+
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Do Nothing
+            }
+        })
+
+
         return root
     }
+
+    private fun fetchTheGRNSearchList(search:String) {
+
+        val call = RetrofitClient.instance.searchGRNlits(userid,search)
+        call.enqueue(object : Callback<GrnList> {
+            override fun onResponse(call: Call<GrnList>, response: Response<GrnList>) {
+                if (response.isSuccessful) {
+                    binding.ivProgressBar.visibility = View.GONE
+                    val apiResponse = response.body()
+                    val dataList = apiResponse?.data
+                    // Log.v("dat",dataList.toString())
+
+                    if (dataList.isNullOrEmpty()) {
+                        // The list is empty
+                      //  binding.tvShowPening.visibility = View.VISIBLE
+                       // binding.tvShowPening.text = "No Active GRN Available"
+                    } else {
+                        // The list is not empty
+                        grnAdapter.differ.submitList(dataList)
+                        Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
+
+                      /*  homeAdapter2 = HomeAdapter2(activeList.reversed(),context!!)
+
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = homeAdapter2
+                        }*/
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = grnAdapter
+                        }
+                    }
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<GrnList>, t: Throwable) {
+                // handle error
+            }
+        })
+
+    }
+
 
     private fun fetchTheGRNDetails() {
 
@@ -62,6 +161,7 @@ class GRNFragment : Fragment() {
         call.enqueue(object : Callback<GrnList> {
             override fun onResponse(call: Call<GrnList>, response: Response<GrnList>) {
                 if (response.isSuccessful) {
+                    binding.ivProgressBar.visibility = View.GONE
                     val apiResponse = response.body()
                     val dataList = apiResponse?.data
                     // Log.v("dat",dataList.toString())

@@ -22,19 +22,17 @@
             android:id="@+id/ivBack"
             android:visibility="gone"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back"/>
+            android:src="@drawable/icwhitearrow"/>
 
         <TextView
+            android:id="@+id/tvheadername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ivBack"
             android:layout_marginLeft="20dp"
-            android:id="@+id/tvheadername"
+            android:layout_toRightOf="@+id/ivBack"
             android:text="Create Intend"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            />
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -66,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Choose PCN"
-                android:textColor="@color/black_text"
+                android:text="Type PCN"
+                android:textColor="@color/white"
                 android:textSize="14dp" />
 
             <androidx.cardview.widget.CardView
@@ -380,7 +378,8 @@
        android:layout_marginRight="10dp"
        android:layout_below="@+id/rvaddmaterial"
        android:overScrollMode="never"
-       android:layout_height="wrap_content">
+       android:background="@color/lightgrey"
+       android:layout_height="match_parent">
 
        <LinearLayout
            android:id="@+id/linearLayout_gridLevelSinglePiece"
@@ -412,7 +411,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
             android:text="Add Indent Material"
-            android:textColor="@color/black_text"
+            android:textColor="@color/white"
             android:textSize="13sp" />
 
         <TextView

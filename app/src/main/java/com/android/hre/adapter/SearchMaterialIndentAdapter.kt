@@ -34,6 +34,7 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(differ.currentList[position])
+
     }
 
     override fun getItemCount(): Int =differ.currentList.size

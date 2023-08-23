@@ -9,6 +9,7 @@ data class DashbardData(
         val attendance: String,
         val grn_count: String,
         val indents_count: Int,
-        val tickets_count: Int
+        val tickets_count: Int,
+        val pettycash :String
     )
 }

@@ -57,18 +57,22 @@ class SplashScreenAtivity :AppCompatActivity(){
         }
 
         binding.btngetstarted.setOnClickListener {
-
-            if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-                var intent =  Intent(this,MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else{
-                val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
-                startActivity(Intent)
-
-            }
+            proceedToNextPage()
         }
 
+    }
+
+    fun proceedToNextPage(){
+        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            var intent =  Intent(this,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else{
+            val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
+            startActivity(Intent)
+            finish()
+
+        }
     }
     private fun setupPermissions() {
         val permission = ContextCompat.checkSelfPermission(this,
@@ -126,12 +130,20 @@ class SplashScreenAtivity :AppCompatActivity(){
                     }
 
                     if (dataList!!.isloggedin.equals("true")){
-                        openDashboard()
+                       // openDashboard()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,true)
+                        editor.apply()
+                        editor.commit()
                     } else {
-                        openDataLogin()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                        editor.apply()
+                        editor.commit()
+                        // openDataLogin()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }
+
+                    proceedToNextPage()
 
                     val isLoggedIn = dataList!!.isloggedin
                     val appVersion = dataList!!.app_version

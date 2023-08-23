@@ -167,9 +167,9 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
         val sharedPreferences = context.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
 
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-            fetchtheappData()
-        }
+//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+//            fetchtheappData()
+//        }
         return ViewHolder()
     }
 
@@ -182,7 +182,7 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     private val differCallback = object : DiffUtil.ItemCallback<NewIndents.Myindent>(){
         override fun areItemsTheSame(oldItem: NewIndents.Myindent, newItem: NewIndents.Myindent): Boolean {
-            return oldItem.indent_id == newItem.indent_id
+            return oldItem.indent_no == newItem.indent_no
         }
 
         override fun areContentsTheSame(oldItem: NewIndents.Myindent, newItem: NewIndents.Myindent): Boolean {

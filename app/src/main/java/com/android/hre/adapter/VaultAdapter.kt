@@ -18,6 +18,7 @@ import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -84,8 +85,12 @@ class VaultAdapter : RecyclerView.Adapter<VaultAdapter.ViewHolder>() {
                         }else{
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                                 downloadFileWithMediaStore(context,dataX.filepath+dataX.filename,dataX.filename)
+                                Toast.makeText(context, "Downloading Suceesfuly", Toast.LENGTH_LONG).show()
+
                             }else{
                                 downloadFilePreQ(context,dataX.filepath+dataX.filename,dataX.filename)
+                                Toast.makeText(context, "Downloading Suceesfuly", Toast.LENGTH_LONG).show()
+
                             }
 
                         }

@@ -25,13 +25,14 @@
             android:id="@+id/tvheadername"
             android:text="Update Ticket"
             android:textSize="15dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/ivnotification"
+            android:backgroundTint="@color/white"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/close"/>
@@ -105,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="PCN"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
             <androidx.cardview.widget.CardView
@@ -132,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Priority"
-                android:textColor="@color/black_text"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
 
@@ -202,7 +203,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="Add Images"
-                    android:textColor="@color/black_text">
+                    android:textColor="@color/white">
 
                 </TextView>
 

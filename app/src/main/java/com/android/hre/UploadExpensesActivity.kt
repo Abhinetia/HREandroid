@@ -48,6 +48,12 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class UploadExpensesActivity : AppCompatActivity() {
 
@@ -65,6 +71,17 @@ class UploadExpensesActivity : AppCompatActivity() {
     private val imgList = ArrayList<File>()
     private val listOfImages = ArrayList<MultipartBody.Part>()
     var isSelectedText :Boolean = true
+
+        companion object {
+            const val CAMERA_PERMISSION_REQUEST = 101
+            const val GALLERY_PERMISSION_REQUEST = 102
+
+        }
+
+    private val cameraPermission = Manifest.permission.CAMERA
+    private val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+    private val galleryPermission1 = Manifest.permission.READ_MEDIA_IMAGES
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,7 +167,21 @@ class UploadExpensesActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            selectImage()
+            //selectImage()
+
+            val currentVersion = Build.VERSION.SDK_INT
+
+            // Now you can use the version to conditionally run different methods
+            if (currentVersion >= Build.VERSION_CODES.TIRAMISU) {
+                checkIfPermissionGrantedAndroid13()
+            } else if (currentVersion >= Build.VERSION_CODES.O) {
+                checkIfPermissionGranted()
+                // Run methods for versions earlier than Android 9.0
+                // For example:
+                // yourMethodForVersionsBeforePie()
+            }
+
+
 //            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
 //            startActivityForResult(gallery, pickImage)
         }
@@ -231,7 +262,15 @@ class UploadExpensesActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG","message "+ response.body()?.message.toString())
-                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+                   // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+                    if (response.body()?.message.toString().contains("Suceess")){
+                        showAlertDialogOkAndCloseAfter("Bill Upload Sucessful")
+                    } else {
+                        showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                    }
+
+                   // "Bill Upload Sucessful"
 
                 }
 
@@ -245,18 +284,56 @@ class UploadExpensesActivity : AppCompatActivity() {
 
     }
 
+    fun  checkIfPermissionGrantedAndroid13(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission1) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission1), CAMERA_PERMISSION_REQUEST)
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+
+    fun  checkIfPermissionGranted(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission), CAMERA_PERMISSION_REQUEST)
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == CAMERA_PERMISSION_REQUEST || requestCode == GALLERY_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // Permissions granted, you can proceed with the actions
+                selectImage()
+            } else {
+                // Permissions denied, handle accordingly (e.g., show a message)
+                Toast.makeText(this,"Please allow all the permissions",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
     private fun selectImage() {
         val items = arrayOf<CharSequence>(
-            "Take Photo", "Choose from Library",
+             "Choose from Library",
             "Cancel"
-        )
+        ) // "Take Photo",
         val builder = AlertDialog.Builder(this@UploadExpensesActivity)
         builder.setTitle("Add Photo!")
         builder.setItems(items) { dialog, item ->
-            if (items[item] == "Take Photo") {
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(cameraIntent, 200)
-            } else if (items[item] == "Choose from Library") {
+//            if (items[item] == "Take Photo") {
+////                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+////                startActivityForResult(cameraIntent, 200)
+//            } else
+            if (items[item] == "Choose from Library") {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, pickImage)
             } else if (items[item] == "Cancel") {

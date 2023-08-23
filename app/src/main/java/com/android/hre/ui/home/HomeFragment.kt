@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -49,14 +50,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.android.hre.AttendanceActivity
 import com.android.hre.AttendanceFragment
+import com.android.hre.GRNFragment
 import com.android.hre.GRnActivity
 import com.android.hre.IndentActivity
 import com.android.hre.IndentFragment
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
 import com.android.hre.PettyCashActivity
+import com.android.hre.PettyCashScreenFragment
 import com.android.hre.TicketActivity
+import com.android.hre.TicketFragment
 import com.android.hre.VaultActivity
+import com.android.hre.VaultFragment
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
@@ -127,12 +132,12 @@ class HomeFragment : Fragment() {
       //  binding.tvPending.text = "Date : " + currentDate
 
 //        binding.tvPending.text = "Name" + name
-        binding.hellodat.text = "Hello, Welcome To HRE "
-        binding.nameee.text = name
-        binding.empiddd.text = empId
+        binding.hellodat.text = "Welcome"
+//        binding.nameee.text = name
+//        binding.empiddd.text = empId
 
         Log.v("Sharedpref", sharedPreferences?.getBoolean(Constants.ISLOGGEDIN,false).toString())
-        if (sharedPreferences.getBoolean("isLoggedIn",false)){
+        if (sharedPreferences.getBoolean(Constants.isEmployeeLoggedIn,false)){
             binding.slider.isReversed = true
             binding.slider.resetSlider()
             attendanceOn = true
@@ -151,9 +156,9 @@ class HomeFragment : Fragment() {
        // homeAdapterNew = HomeAdapterNew()
 
 
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+        /*if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
             fetchtheappData()
-        }
+        }*/
 
         fetchTheIndentList()
 
@@ -175,7 +180,7 @@ class HomeFragment : Fragment() {
 //            ft.replace(com.android.hre.R.id.nav_host_fragment_activity_main, IndentFragment())
 //            ft.addToBackStack(null)
 //            ft.commit()
-            replaceFragment(IndentFragment())
+           // replaceFragment(IndentFragment())
         }
         binding.ticketdata.setOnClickListener {
             val intent = Intent(context,TicketActivity::class.java)
@@ -201,18 +206,11 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-         val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-
-         // Replace the current fragment with the new fragment
-         transaction.replace(com.android.hre.R.id.nav_host_fragment_activity_main, fragment)
-
-         // Add the transaction to the back stack
-         transaction.addToBackStack(null)
-
-         // Commit the transaction
-         transaction.commit()
+    fun replaceFragmentIntent() {
+        if (activity is MainActivity) {
+            val indentFragment = IndentFragment()
+            (activity as MainActivity).replaceFragment(indentFragment)
+        }
     }
 
     private fun fetchTheIndentList() {
@@ -230,7 +228,8 @@ class HomeFragment : Fragment() {
                             binding.rvRecylergrndata.apply {
                                 layoutManager = LinearLayoutManager(context)
                                 adapter = homeAdapter
-                            }                        }
+                            }
+                        }
                         else {
                             binding.tvShowPening.visibility = View.VISIBLE
                             binding.tvShowPening.text = "No Pending Indents"
@@ -265,8 +264,38 @@ class HomeFragment : Fragment() {
             val Intent = Intent(context, DisplayGrnActivity::class.java)
             startActivity(Intent)
         }
+        binding.indentdata.setOnClickListener {
+            val fragmentB = IndentFragment()
+            (activity as MainActivity).replaceFragment(fragmentB)
+        }
 
-       binding.slider.onSlideCompleteListener =  object : SlideToActView.OnSlideCompleteListener {
+        binding.ticketdata.setOnClickListener {
+            val fragmentC = TicketFragment()
+            (activity as MainActivity).replaceFragment(fragmentC)
+        }
+
+        binding.grndata.setOnClickListener {
+            val fragmentD = GRNFragment()
+            (activity as MainActivity).replaceFragment(fragmentD)
+        }
+
+        binding.pettydata.setOnClickListener {
+            val fragmentE = PettyCashScreenFragment()
+            (activity as MainActivity).replaceFragment(fragmentE)
+        }
+        binding.linearattendance.setOnClickListener {
+            val fragmentF = AttendanceFragment()
+            (activity as MainActivity).replaceFragment(fragmentF)
+        }
+
+        binding.vaultdata.setOnClickListener {
+            val fragmentG = VaultFragment()
+            (activity as MainActivity).replaceFragment(fragmentG)
+        }
+
+
+
+        binding.slider.onSlideCompleteListener =  object : SlideToActView.OnSlideCompleteListener {
            override fun onSlideComplete(view: SlideToActView) {
                if (!attendanceOn){
                    attendanceOn = true
@@ -278,9 +307,9 @@ class HomeFragment : Fragment() {
                    binding.slider.text = "Attendance Logout"
                    getLastLocation()
                     var action = "login"
-                   editor.putBoolean("isLoggedIn",true)
-                   editor.apply()
-                   editor.commit()
+//                   editor.putBoolean("isLoggedIn",true)
+//                   editor.apply()
+//                   editor.commit()
                    loginattendance(action)
                    //fetchtheappData()
                } else{
@@ -292,9 +321,9 @@ class HomeFragment : Fragment() {
                    binding.slider.text = "Attendance Login"
                    getLastLocation()
                    var action = "logout"
-                   editor.putBoolean("isLoggedIn",false)
-                   editor.apply()
-                   editor.commit()
+//                   editor.putBoolean("isLoggedIn",false)
+//                   editor.apply()
+//                   editor.commit()
                    loginattendance(action)
                    Log.v("location","$currentDateAndTime")
                    //fetchtheappData()
@@ -370,10 +399,17 @@ class HomeFragment : Fragment() {
                     Log.v("Sucess",response.body().toString())
                     val status = response.body()?.status
                     if (status?.equals(1)!!){
-                        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
-                        if (response.body()!!.message.contains("Login Successfull")){
+                       // Toast.makeText(context, "Login Successfull", Toast.LENGTH_LONG).show()
+                        if (response.body()!!.message.contains("Login")){
                             Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
-
+                            editor.putBoolean(Constants.isEmployeeLoggedIn,true)
+                            editor.apply()
+                            editor.commit()
+                        } else if(response.body()!!.message.contains("Logout")){
+                            Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
+                            editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                            editor.apply()
+                            editor.commit()
                         } else if (response.body()!!.message.contains("Already loggedIn")){
                             binding.slider.isReversed = true
                             binding.slider.resetSlider()
@@ -568,10 +604,20 @@ class HomeFragment : Fragment() {
                     val indentResponse = response.body()
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
+                    binding.tvAattendd.text = dataList!!.attendance.toString()
+                    if (dataList!!.attendance.equals("P")){
+                        binding.tvAattendd.text = "Present"
+                        binding.tvAattendd.setTextColor(Color.parseColor("#FF03DAC5"))
+                    } else {
+                        binding.tvAattendd.text = "Absent"
+                        binding.tvAattendd.setTextColor(Color.parseColor("#F10909"))
 
-                    binding.indentcount.text = "My Indent : " + "  " +dataList!!.indents_count.toString()
-                    binding.tvgrncount.text = "My GRN :" + " " + dataList!!.grn_count
-                    binding.tvticketcount.text = "My Ticket :" + " " + dataList!!.tickets_count
+                    }
+
+                    binding.indentcount.text = dataList!!.indents_count.toString()
+                    binding.tvgrncount.text =  dataList!!.grn_count
+                    binding.tvticketcount.text =  dataList!!.tickets_count.toString()
+                    binding.pettycashcount.text = "₹" + dataList!!.pettycash.toString()
 
 
 
@@ -591,6 +637,9 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
+
+
 
 
 }

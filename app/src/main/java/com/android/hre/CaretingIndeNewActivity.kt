@@ -23,6 +23,7 @@ import com.android.hre.response.CreateIndentRequest
 import com.android.hre.response.Getmaterials
 import com.android.hre.response.Indent
 import com.android.hre.response.IndentResponse
+import com.android.hre.response.NewRepsonse
 import com.android.hre.response.pcns.PCN
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,6 +52,9 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
     var arrayList_details: List<Indent> = arrayListOf()
     val indentHashMap = HashMap<String, Indent>()
     val indentArrayList: ArrayList<Indent> = arrayListOf()
+    var indentNo :String = ""
+     var pcn :String = ""
+     var pcnDetails :String = ""
 
 
 
@@ -164,7 +168,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                             binding.pcnAddress.text =  data.area + " -" + data.city
 
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information","")
                             binding.btnMaterials.visibility = View.GONE
                         }
                     }
@@ -227,40 +231,46 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         )
         Log.v("TAG",request.toString())
 
-//        var arrayList_details: List<Indent>? = request.indents
-//        for (i in 0 until arrayList_details?.size!!){
-//            val dataString : Indent  = arrayList_details.get(i)
-//
-//            Log.v("log",i.toString())
-//            listdata.add(dataString.materialId)
-//            listdata.add(dataString.description)
-//            listdata.add(dataString.quantity)
-//
-//        }
+
 
         val call = RetrofitClient.api.createIndent(request)
-        call.enqueue(object : Callback<IndentResponse> {
-            override fun onResponse(call: Call<IndentResponse>, response: Response<IndentResponse>) {
+        call.enqueue(object : Callback<NewRepsonse> {
+            override fun onResponse(call: Call<NewRepsonse>, response: Response<NewRepsonse>) {
 
                     Log.v("data",response.body().toString())
                     // Handle successful response
-                    val apiResponse = response.body()
-                    if (apiResponse?.status == 1){
-//                        showAlertDialogOkAndCloseAfter(apiResponse.message.toString()+ " " + " IndentNo : " )
-                        val responseString = apiResponse.message.toString()
+//                    val apiResponse = response.body()
+//                    if (apiResponse?.status == 1){
+////                        showAlertDialogOkAndCloseAfter(apiResponse.message.toString()+ " " + " IndentNo : " )
+//                        val responseString = apiResponse.message.toString()
+//
+//
+//
+//                        showAlertDialogOkAndCloseAfter(responseString.toString())
+//
+//
+//
+//                    }
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    indentResponse?.let {
 
-                        val parts = responseString.split("\\s+".toRegex())
+                        indentNo = it.data.indent_no
+                         pcn = it.data.pcn
+                         pcnDetails = it.data.pcn_details
 
-                        val number = parts[1].trim()
+                        var display :String = "$indentNo\n$pcn\n$pcnDetails"
+                        Log.v("display",display)
 
-                        showAlertDialogOkAndCloseAfter(parts.toString())
-
-
+                        showAlertDialogOkAndCloseAfter(indentResponse.message.toString(),display)
 
                     }
+                } else {
+                    // Handle error cases
+                }
             }
 
-            override fun onFailure(call: Call<IndentResponse>, t: Throwable) {
+            override fun onFailure(call: Call<NewRepsonse>, t: Throwable) {
                 // Handle network failure or other errors
                 Log.v("data",t.toString())
 
@@ -392,9 +402,9 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         alertDialog.show()
     }
 
-    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+    private fun showAlertDialogOkAndCloseAfter(message: String,alertMessage: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(alertMessage)
+        builder.setMessage(message+"\n"+alertMessage)
         builder.setPositiveButton(
             "OK"
         ) { dialogInterface, i -> finish() }

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.AttendanceAdapter
@@ -27,7 +29,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -45,6 +49,8 @@ class PettyCashScreenFragment : Fragment() {
     private lateinit var statmentadapter: StatementAdapter
     var issuedAm : String = ""
     var balancecash :String = ""
+    var statemnetlistData: ArrayList<StatementListData.Data> = arrayListOf()
+
 
 
 
@@ -81,6 +87,10 @@ class PettyCashScreenFragment : Fragment() {
             popupDialog.show()
         }
 
+        binding.ivBack.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         binding.linerUploadbill.setOnClickListener {
             binding.linedate.visibility = View.GONE
             binding.rvRecylergrndata.visibility = View.GONE
@@ -101,12 +111,59 @@ class PettyCashScreenFragment : Fragment() {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val todaydate = LocalDate.now()
+            val sdf = SimpleDateFormat("dd-MM-yyyy")
+            val currentDate = sdf.format(Date())
+            println("Months first date in yyyy-mm-dd: " + todaydate.withDayOfMonth(1) + "  " + currentDate)
+
+            val fdate = todaydate.withDayOfMonth(1)
+
+            fetchtheattendanceListt(fdate.toString(),currentDate)
+
+        }
+
+
 
         pettycashFromServer()
 
 
         return root
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchtheattendanceListt(fdate: String, currentDate: String) {
+        statemnetlistData.clear()
+        val call = RetrofitClient.instance.getStatmnet(userid,fdate,currentDate)
+        call.enqueue(object : Callback<StatementListData> {
+            override fun onResponse(call: Call<StatementListData>, response: Response<StatementListData>) {
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+                    statemnetlistData = ArrayList(indentResponse!!.data)
+                    Log.v("dat", statemnetlistData.toString())
+
+                    if (statemnetlistData != null) {
+                        // Set up the adapter and RecyclerView
+                        statmentadapter.differ.submitList(statemnetlistData)
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = statmentadapter
+                        }
+
+                    } else {
+
+                        // Handle error response
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<StatementListData>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
 
     private fun pettycashFromServer() {
 
@@ -123,9 +180,13 @@ class PettyCashScreenFragment : Fragment() {
 
                     var arrayList_details: List<PettyCashFirstScreen.Data>? = listMaterials?.data
 
-                    val dataString: PettyCashFirstScreen.Data = arrayList_details!!.get(0)
-                    binding.pcnClinet.text = dataString.issued_amount.toString()
-                    binding.tvexpense.text = dataString.balance_amount.toString()
+                    if(!arrayList_details!!.isEmpty()){
+                        val dataString: PettyCashFirstScreen.Data = arrayList_details!!.get(0)
+                        binding.pcnClinet.text = dataString.issued_amount.toString()
+                        binding.tvexpense.text = dataString.balance_amount.toString()
+                    }
+
+
 
 /*
                     if (arrayList_details!!.isEmpty()){
@@ -207,17 +268,18 @@ class PettyCashScreenFragment : Fragment() {
     }
 
     private fun fetchthestatmentList() {
+        statemnetlistData.clear()
         val call = RetrofitClient.instance.getStatmnet(userid,frommdate,toodate)
         call.enqueue(object : Callback<StatementListData> {
             override fun onResponse(call: Call<StatementListData>, response: Response<StatementListData>) {
                 if (response.isSuccessful) {
                     val indentResponse = response.body()
-                    val dataList = indentResponse?.data
-                    Log.v("dat", dataList.toString())
+                    statemnetlistData = ArrayList(indentResponse!!.data)
+                    Log.v("dat", statemnetlistData.toString())
 
-                    if (dataList != null) {
+                    if (statemnetlistData != null) {
                         // Set up the adapter and RecyclerView
-                        statmentadapter.differ.submitList(dataList)
+                        statmentadapter.differ.submitList(statemnetlistData)
 
                         binding.rvRecylergrndata.apply {
                             layoutManager = LinearLayoutManager(context)
