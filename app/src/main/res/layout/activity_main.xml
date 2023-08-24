@@ -126,6 +126,7 @@
             app:layout_anchor="@id/bottomAppBar"
             android:layout_gravity="center"
             android:background="@null"
+            android:visibility="gone"
             android:src="@drawable/hrenewlogo" />
 
 

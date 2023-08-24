@@ -138,7 +138,6 @@ class UploadExpensesActivity : AppCompatActivity() {
 
                     val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                     val formattedDate = dateFormat.format(selectedDate.time)
-
                     binding.tvDate.setText(formattedDate)
                 },
                 year,
@@ -147,6 +146,9 @@ class UploadExpensesActivity : AppCompatActivity() {
             )
 
             datePickerDialog.show()
+            datePickerDialog.getDatePicker().setMaxDate(Date().time)
+//            datePickerDialog.datePicker.maxDate(System.currentTimeMillis())
+
         }
 
       //  binding.imageview1.visibility = View.GONE

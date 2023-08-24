@@ -138,13 +138,18 @@ class HomeFragment : Fragment() {
 
         Log.v("Sharedpref", sharedPreferences?.getBoolean(Constants.ISLOGGEDIN,false).toString())
         if (sharedPreferences.getBoolean(Constants.isEmployeeLoggedIn,false)){
+            binding.slider.text = "Attendance Logout"
             binding.slider.isReversed = true
             binding.slider.resetSlider()
+            binding.slider.outerColor = Color.parseColor("#F10909")
+
             attendanceOn = true
         } else{
+            binding.slider.text = "Attendance Login"
             binding.slider.isReversed = false
             binding.slider.resetSlider()
             attendanceOn = false
+            binding.slider.outerColor = Color.parseColor("#3EBA26")
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -305,6 +310,7 @@ class HomeFragment : Fragment() {
                     currentDateAndTime = simpleDateFormat.format(Date())
                    Log.v("location","$currentDateAndTime")
                    binding.slider.text = "Attendance Logout"
+                   binding.slider.outerColor = Color.parseColor("#F10909")
                    getLastLocation()
                     var action = "login"
 //                   editor.putBoolean("isLoggedIn",true)
@@ -319,6 +325,7 @@ class HomeFragment : Fragment() {
                    simpleDateFormat = SimpleDateFormat("HH:mm")
                    currentDateAndTime = simpleDateFormat.format(Date())
                    binding.slider.text = "Attendance Login"
+                   binding.slider.outerColor = Color.parseColor("#3EBA26")
                    getLastLocation()
                    var action = "logout"
 //                   editor.putBoolean("isLoggedIn",false)
@@ -403,10 +410,14 @@ class HomeFragment : Fragment() {
                         if (response.body()!!.message.contains("Login")){
                             Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
                             editor.putBoolean(Constants.isEmployeeLoggedIn,true)
+                            binding.slider.text = "Attendance Logout"
+                            binding.slider.outerColor = Color.parseColor("#F10909")
                             editor.apply()
                             editor.commit()
                         } else if(response.body()!!.message.contains("Logout")){
                             Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
+                            binding.slider.text = "Attendance Login"
+                            binding.slider.outerColor = Color.parseColor("#3EBA26")
                             editor.putBoolean(Constants.isEmployeeLoggedIn,false)
                             editor.apply()
                             editor.commit()
