@@ -53,12 +53,14 @@
                 android:visibility="visible" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:visibility="invisible"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:visibility="visible"
+                android:padding="2dp"
+                android:id="@+id/icinfo"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_logout"/>
+                android:src="@drawable/info_icon"/>
 
 
         </RelativeLayout>

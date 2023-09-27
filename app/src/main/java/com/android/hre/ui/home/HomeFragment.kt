@@ -48,6 +48,7 @@ import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.android.hre.AboutUsActivity
 import com.android.hre.AttendanceActivity
 import com.android.hre.AttendanceFragment
 import com.android.hre.GRNFragment
@@ -207,6 +208,11 @@ class HomeFragment : Fragment() {
            val intent = Intent(context,AttendanceActivity::class.java)
            startActivity(intent)
        }
+
+        binding.icinfo.setOnClickListener {
+            val intent = Intent(context,AboutUsActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }
