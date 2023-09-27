@@ -42,6 +42,10 @@ class TranscationInfoActivity : AppCompatActivity() {
 
         pettytransInfoDatails()
 
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+
 
         binding.tvIssuedamount.text= issuedCash
         binding.tvBillaccpeted.text = billaceepted

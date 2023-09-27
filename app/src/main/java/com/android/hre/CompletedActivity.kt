@@ -2,6 +2,7 @@ package com.android.hre
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -92,6 +93,13 @@ class CompletedActivity : AppCompatActivity() {
                 binding.description.requestFocus()
                 return@setOnClickListener
             }
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Data is Completing")
+            progressDialog.setMessage("Please wait...")
+            progressDialog.setCancelable(false)
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+
 
             val ticketid = RequestBody.create(MediaType.parse("text/plain"), ticketid)
             val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
@@ -112,6 +120,7 @@ class CompletedActivity : AppCompatActivity() {
                     call: Call<Completelist>,
                     response: Response<Completelist>
                 ) {
+                    progressDialog.dismiss()
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG", "message " + response.body()?.message.toString())
                     showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
@@ -119,7 +128,7 @@ class CompletedActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<Completelist>, t: Throwable) {
-
+                    progressDialog.dismiss()
                     Log.v("TAG", t.toString())
                 }
 

@@ -1,9 +1,9 @@
 package com.android.hre
 
-import android.R.attr.autoText
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -23,7 +23,6 @@ import com.android.hre.models.Intends
 import com.android.hre.response.CreateIndentRequest
 import com.android.hre.response.Getmaterials
 import com.android.hre.response.Indent
-import com.android.hre.response.IndentResponse
 import com.android.hre.response.NewRepsonse
 import com.android.hre.response.pcns.PCN
 import retrofit2.Call
@@ -229,6 +228,13 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
     private fun sendDataToServer() {
 
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Saving Data")
+        progressDialog.setMessage("Please wait...")
+        progressDialog.setCancelable(false)
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+
 //        val request = CreateIndentRequest(
 //            userId = "1",
 //            pcn = "PCN_01155",
@@ -258,8 +264,9 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         val call = RetrofitClient.api.createIndent(request)
         call.enqueue(object : Callback<NewRepsonse> {
             override fun onResponse(call: Call<NewRepsonse>, response: Response<NewRepsonse>) {
+                progressDialog.dismiss()
 
-                    Log.v("data",response.body().toString())
+                Log.v("data",response.body().toString())
                     // Handle successful response
 //                    val apiResponse = response.body()
 //                    if (apiResponse?.status == 1){
@@ -294,6 +301,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
             }
 
             override fun onFailure(call: Call<NewRepsonse>, t: Throwable) {
+                progressDialog.dismiss()
                 // Handle network failure or other errors
                 Log.v("data",t.toString())
 

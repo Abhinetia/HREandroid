@@ -3,6 +3,7 @@ package com.android.hre
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -203,6 +204,13 @@ class CreateTicketActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Ticket Creating")
+            progressDialog.setMessage("Please wait...")
+            progressDialog.setCancelable(false)
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+
 
             val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
             val pcn = RequestBody.create(MediaType.parse("text/plain"), binding.etSelctpcn.text.toString())
@@ -237,6 +245,7 @@ class CreateTicketActivity : AppCompatActivity() {
 
             call.enqueue(object : retrofit2.Callback<TicketReposneNewCreated> {
                 override fun onResponse(call: Call<TicketReposneNewCreated>, response: Response<TicketReposneNewCreated>) {
+                    progressDialog.dismiss()
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG","message "+ response.body()?.message.toString())
                    // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
@@ -260,7 +269,7 @@ class CreateTicketActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TicketReposneNewCreated>, t: Throwable) {
-
+                    progressDialog.dismiss()
                     Log.v("TAG", t.toString())
                 }
 

@@ -120,7 +120,7 @@
                                     android:layout_marginTop="5dp"
                                     android:gravity="center"
                                     android:padding="2sp"
-                                    android:text="₹100"
+                                    android:text="₹0"
                                     android:textSize="13dp">
 
                                 </TextView>
@@ -171,7 +171,7 @@
                                     android:layout_marginTop="5dp"
                                     android:gravity="center"
                                     android:padding="2sp"
-                                    android:text="₹100"
+                                    android:text="₹0"
                                     android:textSize="13dp">
 
                                 </TextView>

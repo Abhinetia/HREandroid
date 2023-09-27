@@ -29,31 +29,40 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     tvTmee.text = dataX.login
                     tvTimee.text = dataX.logout
 
+                        // Date caluclation made proper
+                        val myDividend = dataX.working_minutes.toInt()
+                        val myDivisor = 60
 
-//                        val myDividend = dataX.working_minutes.toInt()
-//                        val myDivisor = 60
+                        val resultQuotient = myDividend / myDivisor
+                        val resultRemainder = myDividend % myDivisor
 
-//                        val resultQuotient = myDividend / myDivisor
-//                        val resultRemainder = myDividend % myDivisor
+                        tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
 
-//                        tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
-
-                        //tvLotimee.text = dataX.working_minutes
-
-
-                        val timeSec: String = dataX.working_minutes
-
-                        val hours = timeSec.toInt() / 3600
-                        var temp = timeSec.toInt() - hours * 3600
-                        val mins = temp / 60
-                        temp = temp - mins * 60
-                        val secs = temp
-
-                        val requiredFormat = "$hours Hr: $temp Min"
-
-                        tvLotimee.text = requiredFormat.toString()
+                      //  tvLotimee.text = dataX.working_minutes
 
 
+//                        val timeSec: String = dataX.working_minutes
+//
+//                        val hours = timeSec.toInt() / 3600
+//                        var temp = timeSec.toInt() - hours * 3600
+//                        val mins = temp / 60
+//                        temp = temp - mins * 60
+//                        val secs = temp
+//
+//                        val requiredFormat = "$hours Hr: $temp Min"
+
+                       // tvLotimee.text = requiredFormat.toString()
+
+
+//                    val seconds: String = dataX.working_minutes.toInt().toString()
+//                    val S = seconds.toInt() % 60
+//                    var H = seconds.toInt() / 60
+//                    val M = H % 60
+//                    H = H / 60
+//                    print("$H:$M:$S")
+//
+//                    val requiredFormat = "$H Hr: $M"
+//                    tvLotimee.text = requiredFormat.toString()
 
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
