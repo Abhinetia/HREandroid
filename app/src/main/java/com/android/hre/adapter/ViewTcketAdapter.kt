@@ -1,6 +1,7 @@
 package com.android.hre.adapter
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -21,6 +24,7 @@ import com.android.hre.databinding.ViewmailBinding
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.tickets.TicketList
 import com.android.hre.storage.SharedPrefManager
+import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +51,23 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
                     tvmesage.text = dataX.message
                     tvreceptient.text = dataX.sender +   " -> "  + dataX.recipient
 
+                    if (dataX.filename.size != 0){
+                        icinfo.visibility = View.VISIBLE
+
+                        for (i in 0 until dataX.filename.size ){
+                            val imageUrl = dataX.filepath + dataX.filename.get(i)
+                            Glide.with(context)
+                                .load(imageUrl)
+                                .into(icinfo)
+                        }
+                    }else{
+                        icinfo.visibility = View.GONE
+                    }
+
+                    icinfo.setOnClickListener {
+                        displayImages(dataX.filepath , dataX.filename)
+                    }
+
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                     val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -62,7 +83,43 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
             }
         }
 
+        private fun displayImages(filepath: String, filename: List<String>) {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_image_preview)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+            val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+            Glide.with(context)
+                .load(filepath + filename)
+                .into(previewImageView)
+
+            ivnotification.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+
     }
+
+/*
+     private fun displayImages(filepath: String, filename: List<String>) {
+         val dialog = Dialog(context)
+         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+         dialog.setContentView(R.layout.dialog_image_preview)
+         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+         val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+         val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+         Glide.with(context)
+             .load(icinfo)
+             .into(previewImageView)
+
+         ivnotification.setOnClickListener {
+             dialog.dismiss()
+         }
+         dialog.show()
+     }
+*/
 
 //    inner class ViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //        @SuppressLint("SetTextI18n")

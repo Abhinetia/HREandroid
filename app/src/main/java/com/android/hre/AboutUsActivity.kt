@@ -15,6 +15,10 @@ class AboutUsActivity : AppCompatActivity() {
         binding = ActivityAboutUsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.icinfo.setOnClickListener {
+            onBackPressed()
+        }
+
 
     }
 }

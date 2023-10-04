@@ -17,6 +17,46 @@
         android:layout_height="wrap_content"
         android:id="@+id/rv_cosepcn"
         >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" About "
+            android:minWidth="278dp"
+            android:textColor="@color/black_text"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:visibility="visible"
+            android:padding="2dp"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/icinfo"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/close"/>
+
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Android Application Specification "
+            android:minWidth="278dp"
+            android:background="@drawable/round_corner"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

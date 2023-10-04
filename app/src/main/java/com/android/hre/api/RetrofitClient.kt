@@ -18,9 +18,9 @@ object RetrofitClient {
     private val AUTH = "Basic "+ Base64.encodeToString("belalkhan:123456".toByteArray(), Base64.NO_WRAP)
 
 
-  //  private const val BASE_URL = "https://hre.netiapps.com/api/"
+    private const val BASE_URL = "https://hre.netiapps.com/api/"
 
-    private const val BASE_URL = "https://admin.hresolutions.in/api/"
+   // private const val BASE_URL = "https://admin.hresolutions.in/api/"
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
@@ -53,7 +53,7 @@ val client = OkHttpClient.Builder()
         .create()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://admin.hresolutions.in/api/")      // https://hre.netiapps.com/api/ =  test api {https://admin.hresolutions.in/api/  = prod api }
+        .baseUrl("https://hre.netiapps.com/api/")      // https://hre.netiapps.com/api/ =  test api {https://admin.hresolutions.in/api/  = prod api }
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create()) // Add RxJava3 call adapter factory
