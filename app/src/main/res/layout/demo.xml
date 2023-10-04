@@ -1,510 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="2sp"
+    android:layout_height="wrap_content"
+    android:id="@+id/rv_chosepcn"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="fragment"
-            type="com.android.hre.ui.home.HomeFragment" /> <!-- Change the type accordingly -->
-    </data>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-        <FrameLayout
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:id="@+id/framela"
-            android:background="@color/colordarkgrey">
-
-        </FrameLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:id="@+id/rld"
-            android:visibility="visible"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
-            >
+            app:cardCornerRadius="10dp"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="1dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               >
+
+            <RelativeLayout
+                android:id="@+id/rvstatus_showing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvticketno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="#21223"
+                    android:textColor="#FF9797"
+                    android:textSize="12dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_pcn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/tvticketno"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="PCN"
+                    android:textColor="#FF9797"
+                    android:textSize="12dp" />
+
+
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="14 Mar 2023"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
 
             <ImageView
-                android:id="@+id/idsidenavigation"
-                android:layout_width="50dp"
+                android:id="@+id/imgline"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:visibility="invisible"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/rvstatus_showing"
+                android:src="@drawable/ic_linehoriz" />
+
+            <TextView
+                android:id="@+id/tv_ticketstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_openrectan"
+                android:gravity="center"
+                android:layout_below="@+id/imgline"
+                android:layout_marginLeft="25dp"
                 android:padding="5dp"
-                android:src="@drawable/ic_sidenavigation" />
-
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:visibility="visible"
-                android:layout_centerInParent="true"
-                android:src="@drawable/hrenewlogo" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/logoeut"
-                android:visibility="invisible"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_logout"/>
-
-
-        </RelativeLayout>
-
-        <com.ncorti.slidetoact.SlideToActView
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/rld"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:elevation="6dp"
-            android:layout_marginTop="20dp"
-            app:animation_duration="250"
-            app:area_margin="4dp"
-            app:border_radius="2dp"
-            app:inner_color="#FFFFFF"
-            app:outer_color="#3EBA26"
-            app:slider_locked="false"
-            app:text="Attendance Login"
-            app:text_size="14sp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:id="@+id/name"
-            android:layout_below="@+id/slider"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome "
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:gravity="center"
-                android:layout_marginBottom="4dp"
-                android:id="@+id/hellodat"/>
-
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:background="@color/lightgrey"
-            android:id="@+id/linear1"
-            android:layout_below="@+id/name"
-            android:layout_height="wrap_content">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/linearattendance"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_attend"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="My Attendance: "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:id="@+id/tv_aattendd"
-                        android:text="Present"
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/indentdata"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_indent"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="My Indent: "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/indentcount"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:text="Present"
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/ticketdata"
-
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_ticket"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="My Ticket: "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tvticketcount"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:text="Present"
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:background="@color/lightgrey"
-            android:id="@+id/linear2"
-            android:layout_below="@+id/linear1"
-            android:layout_height="wrap_content">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/grndata"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_grn"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="My GRN: "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:id="@+id/tvgrncount"
-                        android:text="Present"
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_pettycash"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="My Petty Cash: "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/pettycashcount"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:text="Present"
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="2dp"
-                android:layout_gravity="center"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="10dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/vaultdata"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_vault"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12dp"
-                        android:text="Vault "
-                        android:textColor="#3E3E3E"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13dp"
-                        android:text=""
-                        android:textColor="#3E3E3E"
-                        />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-
-        </LinearLayout>
-
-
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:id="@+id/rv_recvyler"
-            android:visibility="gone"
-            android:background="@color/lightgrey"
-            android:layout_below="@+id/framela"
-            android:layout_height="wrap_content">
-
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_recylergrndata"
-                android:layout_width="match_parent"
-                android:visibility="visible"
-                android:background="#EDEDEB"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:scrollbarThumbHorizontal="@null"
-                android:scrollbarThumbVertical="@null">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-
-            <TextView
-                android:id="@+id/tv_showPening"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
+                android:text="Open"
                 android:textColor="@color/black_text"
+                android:textSize="12dp" />
+
+
+
+            <TextView
+                android:id="@+id/tvdpcndatapcn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tv_ticketstatus"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:marqueeRepeatLimit= "marquee_forever"
+                android:text="PCN852"
+                android:textColor="@color/black_text"
+                android:textSize="13sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_ticketsubject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvdpcndatapcn"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Received Defective Sheets"
+                    android:textColor="@color/black_text"
+                    android:textSize="16sp" />
+
+
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/tv_ticketsubject"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="I have Received Defective 15 Ply Sheet with different size and color."
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/tv_body"
+                android:layout_marginBottom="10dp"
                 android:padding="5dp"
-                android:text="No Pending Indent has Been Created"
-                android:visibility="invisible" />
+                android:layout_marginTop="10dp"
+                android:minWidth="150dp"
+                android:id="@+id/tv_viewmore"
+                android:text="View Convo"
+                android:textColor="#FF5E5E"
+                android:textSize="13dp" />
 
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginLeft="120dp"
+                android:visibility="gone"
+                android:layout_marginBottom="5dp"
+                android:gravity="right"
+                android:id="@+id/tv_assigned"
+                android:textSize="11dp"
+                android:background="@drawable/ic_balckround"
+                android:text="More Info"
+                android:textColor="@color/white"
+                />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_centerInParent="true"
-            android:text="Welcome"
-            android:visibility="gone"
-            android:id="@+id/tv_display"
-            android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
+    </LinearLayout>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_centerInParent="true"
-            android:text="GRN"
-            android:gravity="center"
-            android:visibility="gone"
-            android:id="@+id/tv_grn"
-            android:layout_height="wrap_content"/>
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivnotificatn"
-            android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_notification"/>
-
-
-
-
-    </RelativeLayout>
-</layout>
+</RelativeLayout>

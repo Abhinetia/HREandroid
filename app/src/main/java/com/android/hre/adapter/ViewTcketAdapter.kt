@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -59,6 +60,9 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
                             Glide.with(context)
                                 .load(imageUrl)
                                 .into(icinfo)
+
+
+                           // displayImages(dataX.filepath , dataX.filename)
                         }
                     }else{
                         icinfo.visibility = View.GONE
@@ -90,17 +94,34 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
             dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
             val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
-            Glide.with(context)
-                .load(filepath + filename)
-                .into(previewImageView)
+            val llImages = dialog.findViewById<LinearLayout>(R.id.ll_images)
+
+            for (i in 0 until filename.size){
+                setImages(filepath + filename.get(i),llImages)
+            }
 
             ivnotification.setOnClickListener {
                 dialog.dismiss()
             }
+
             dialog.show()
+
         }
 
     }
+     private fun setImages(filepath:String, llImages : LinearLayout){
+         val infalot = LayoutInflater.from(context)
+         val custrom = infalot.inflate(R.layout.item_single_image_view,null)
+
+         val ivAttachment = custrom.findViewById<ImageView>(R.id.iv_attachment)
+
+         Glide.with(context)
+             .load(filepath )
+             .into(ivAttachment)
+
+         llImages.addView(ivAttachment)
+
+     }
 
 /*
      private fun displayImages(filepath: String, filename: List<String>) {

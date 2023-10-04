@@ -22,189 +22,190 @@
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
             app:cardElevation="1dp">
-
             <RelativeLayout
-                android:id="@+id/rvstatus_showing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:padding="5dp">
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rvstatus_showing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvticketno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="#21223"
+                        android:textColor="#FF9797"
+                        android:textSize="12dp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_pcn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/tvticketno"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="PCN"
+                        android:textColor="#FF9797"
+                        android:textSize="12dp" />
+
+
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text="14 Mar 2023"
+                        android:textColor="@color/black_text"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorbaackgoun"
+                    android:id="@+id/imgline"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_below="@+id/rvstatus_showing"
+                    android:layout_height="1dp"/>
+
 
                 <TextView
-                    android:id="@+id/tvticketno"
+                    android:id="@+id/tv_ticketstatus"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_openrectan"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/imgline"
+                    android:layout_marginLeft="25dp"
+                    android:padding="5dp"
+                    android:text="Open"
+                    android:textColor="@color/black_text"
+                    android:textSize="12dp" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:padding="5dp"
+                    android:gravity="right"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/tv_ticketstatus"
+                    android:layout_below="@id/imgline"
+                    android:id="@+id/icinfo"
+                    android:src="@drawable/ic_eye"
+                    />
+
+
+
+                <TextView
+                    android:id="@+id/tvdpcndatapcn"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="#21223"
-                    android:textColor="#FF9797"
-                    android:textSize="12dp" />
-
-
-                <TextView
-                    android:id="@+id/tv_pcn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/tvticketno"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="PCN"
-                    android:textColor="#FF9797"
-                    android:textSize="12dp" />
-
-
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="14 Mar 2023"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/tv_ticketstatus"
+                    android:ellipsize="marquee"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:marqueeRepeatLimit= "marquee_forever"
+                    android:text="PCN852"
                     android:textColor="@color/black_text"
-                    android:textSize="12sp" />
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imgline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_status"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="25dp"
-                android:src="@drawable/ic_linehoriz" />
-
-            <TextView
-                android:id="@+id/tv_ticketstatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/tv_pcn"
-                android:background="@drawable/ic_openrectan"
-                android:gravity="center"
-                android:layout_marginTop="60dp"
-                android:layout_marginLeft="25dp"
-                android:padding="5dp"
-                android:text="Open"
-                android:textColor="@color/black_text"
-                android:textSize="12dp" />
-
-
-
-            <TextView
-                android:id="@+id/tvdpcndatapcn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="90dp"
-                android:ellipsize="marquee"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:marqueeRepeatLimit= "marquee_forever"
-                android:text="PCN852"
-                android:textColor="@color/black_text"
-                android:textSize="12sp" />
-
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="100dp"
-                android:layout_marginStart="10dp"
-                android:padding="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content">
+                    android:textSize="13sp" />
 
 
                 <TextView
                     android:id="@+id/tv_ticketsubject"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvdpcndatapcn"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
                     android:text="Received Defective Sheets"
                     android:textColor="@color/black_text"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
 
-            </RelativeLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/rrrr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="125dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp">
+
 
                 <TextView
                     android:id="@+id/tv_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/tv_ticketsubject"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:minWidth="150dp"
                     android:text="I have Received Defective 15 Ply Sheet with different size and color."
                     android:textColor="@color/black_text"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/tv_body"
+                    android:layout_marginBottom="10dp"
+                    android:padding="5dp"
+                    android:layout_marginTop="10dp"
+                    android:minWidth="150dp"
+                    android:id="@+id/tv_viewmore"
+                    android:text="View Convo"
+                    android:textColor="#FF5E5E"
+                    android:textSize="13dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="7dp"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginLeft="120dp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="right"
+                    android:id="@+id/tv_assigned"
+                    android:textSize="11dp"
+                    android:background="@drawable/ic_balckround"
+                    android:text="More Info"
+                    android:textColor="@color/white"
+                    />
 
 
             </RelativeLayout>
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="170dp"
-                android:layout_marginBottom="10dp"
-                android:padding="5dp"
-                android:minWidth="150dp"
-                android:id="@+id/tv_viewmore"
-                android:text="View Convo"
-                android:textColor="#FF5E5E"
-                android:textSize="12dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="7dp"
-                android:layout_marginTop="150dp"
-                android:layout_marginLeft="120dp"
-                android:visibility="gone"
-                android:layout_marginBottom="5dp"
-                android:gravity="right"
-                android:id="@+id/tv_assigned"
-                android:textSize="11dp"
-                android:background="@drawable/ic_balckround"
-                android:text="More Info"
-                android:textColor="@color/white"
-                />
-
-
-
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

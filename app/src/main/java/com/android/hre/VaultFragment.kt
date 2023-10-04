@@ -60,20 +60,38 @@ class VaultFragment : Fragment() {
                         val apiResponse = response.body()
                         val pettyCashBills = apiResponse?.data
 
-                        if (pettyCashBills != null) {
-                            // Set up the adapter and RecyclerView
+                        if (pettyCashBills.isNullOrEmpty()) {
+                            // The list is empty
+                            binding.tvShowPening.visibility = View.VISIBLE
+                            binding.tvShowPening.text = "No Vault Available"
+                        } else {
+                            // The list is not empty
                             vaultAdapter.differ.submitList(pettyCashBills)
+                            Log.v("dat", vaultAdapter.differ.submitList(pettyCashBills).toString())
 
                             binding.rvRecylergrndata.apply {
                                 layoutManager = LinearLayoutManager(context)
                                 adapter = vaultAdapter
                             }
-
-                        } else {
-                            // Handle error response
                         }
-                    } else {
-                        // Handle the error
+
+
+//                        if (pettyCashBills != null) {
+//                            // Set up the adapter and RecyclerView
+//                            vaultAdapter.differ.submitList(pettyCashBills)
+//
+//                            binding.rvRecylergrndata.apply {
+//                                layoutManager = LinearLayoutManager(context)
+//                                adapter = vaultAdapter
+//                            }
+//
+//                        } else {
+//                            binding.tvShowPening.visibility = View.VISIBLE
+//                            binding.tvShowPening.text = "No Vault Available"
+//                            // Handle error response
+//                        }
+//                    } else {
+//                        // Handle the error
                     }
 
                 }

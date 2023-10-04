@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
@@ -476,7 +477,7 @@ class CreateTicketActivity : AppCompatActivity() {
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
         imgList.add(Imaagefile!!)
-        Toast.makeText(applicationContext, "Bill Uploaded successful", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "Image Uploaded successful", Toast.LENGTH_LONG).show()
 
         return File(storageDir, imageFileName)
     }
@@ -707,9 +708,21 @@ class CreateTicketActivity : AppCompatActivity() {
         val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
 
         val imageview = custrom.findViewById<ImageView>(R.id.iv_imagecapture)
+        val icclose = custrom.findViewById<ImageView>(R.id.imageView_close)
+        val linear = custrom.findViewById<LinearLayout>(R.id.linear)
+
 
         imageUriList.add(imageUri!!) // adding the image to the list
         imageview.setImageURI(imageUri) // setting the image view
+        icclose.setOnClickListener {
+            imageview.setImageResource(0)
+            icclose.setImageResource(0)
+            imageUriList.clear()
+            linear.visibility = View.GONE
+            icclose.visibility = View.GONE
+            Toast.makeText(this,"Image Removed",Toast.LENGTH_SHORT).show()
+        }
+
 
         binding.btnCretaeticket.visibility= View.VISIBLE
 

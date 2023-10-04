@@ -23,6 +23,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -610,9 +611,21 @@ class UploadExpensesActivity : AppCompatActivity() {
         val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
 
         val imageview = custrom.findViewById<ImageView>(R.id.iv_imagecapture)
+        val icclose = custrom.findViewById<ImageView>(R.id.imageView_close)
+        val linear = custrom.findViewById<LinearLayout>(R.id.linear)
+
 
         imageUriList.add(imageUri!!) // adding the image to the list
         imageview.setImageURI(imageUri) // setting the image view
+
+        icclose.setOnClickListener {
+            imageview.setImageResource(0)
+            icclose.setImageResource(0)
+            imageUriList.clear()
+            linear.visibility = View.GONE
+            icclose.visibility = View.GONE
+            Toast.makeText(this,"Image Removed",Toast.LENGTH_SHORT).show()
+        }
 
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
