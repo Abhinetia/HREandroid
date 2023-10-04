@@ -216,10 +216,51 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
             .load(filepath )
             .into(ivAttachment)
 
+        ivAttachment.setOnClickListener {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_image_preview)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+            val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+            val llImages = dialog.findViewById<LinearLayout>(R.id.ll_images)
+            previewImageView.visibility = View.VISIBLE
+            Glide.with(context)
+                .load(filepath)
+                .into(previewImageView)
+
+            ivnotification.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+       // preview(ivAttachment)
+
         llImages.addView(ivAttachment)
 
     }
-    
+
+    private fun preview(ivAttachment: ImageView?) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_image_preview)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
+        val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+        val llImages = dialog.findViewById<LinearLayout>(R.id.ll_images)
+
+        Glide.with(context)
+            .load(previewImageView)
+            .into(ivAttachment!!)
+
+        ivnotification.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
     open interface ViewMoreClickListener{
         fun onBtnClick(position: Int,dataX: TikcetlistNew.Ticket?)
     }
