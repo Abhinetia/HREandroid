@@ -11,6 +11,7 @@ data class PCN(
         val client_name: String,
         val pcn: String,
         val state: String,
+        val pincode:String,
         val brand:String,
         val location:String,
         val status:String,

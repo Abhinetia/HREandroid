@@ -177,7 +177,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         if (data.status.contains("Active")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
-                            binding.pcnAddress.text =  data.location + data.area + " -" + data.city
+                            binding.pcnAddress.text =  data.location + data.area + " -" + data.city + data.pincode
 
                         } else if (data.status.contains("Completed")){
                             showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
