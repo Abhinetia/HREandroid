@@ -63,6 +63,9 @@ class LoginActivity :AppCompatActivity() {
         sharedPreferences=getSharedPreferences(Constants.PREFS_KEY, MODE_PRIVATE)
         editor=sharedPreferences.edit()
 
+        editor.putBoolean(Constants.ISLOGGEDIN,false);
+        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+        editor.commit()
 
 
         binding.btnlogin.setOnClickListener {

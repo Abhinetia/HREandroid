@@ -4,16 +4,15 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityGrncommpleteLkistBinding
-import com.android.hre.databinding.ActivityMainBinding
 import com.android.hre.response.countupdate.CountList
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
@@ -39,6 +38,9 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
     var dispatched :String = ""
     var stauts :String = ""
     var userid : String = ""
+    var dipactcomment :String = ""
+    var acceptcomnet :String = ""
+    var qtyPening:String = ""
 
 
 
@@ -71,7 +73,12 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         recvied = intent.getStringExtra("Recvied")!!
         dispatched = intent.getStringExtra("Dispatched")!!
         stauts = intent.getStringExtra("Status")!!
+        dipactcomment = intent.getStringExtra("dispatchcomment")!!
+        qtyPening = intent.getStringExtra("qtypening")!!
+        acceptcomnet =  intent.getStringExtra("recviercomment")!!
 
+
+        binding.tvRecvievercomnet.text = acceptcomnet
 
         binding.tvgrnnumber.text = grn
         binding.tvPcnno.text = pcn
@@ -83,6 +90,9 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         binding.tvInfo.text = info
         binding.tvQtyrecved.text = recvied
         binding.tvStstu.text = stauts
+        binding.tvDispatchcomnet.text = dipactcomment
+        binding.tvQtypening.text = qtyPening
+        binding.tvQtydispatched.text = dispatched
 
          if (stauts.equals("Received")){
              binding.tvViewdteuils.visibility = View.INVISIBLE
@@ -116,43 +126,46 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
                     desc.requestFocus()
                     return@setOnClickListener
                 }
-
-
-
-                if (enteredValue == null) {
+                if (enteredValue == null){
                     Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
+
+                }
+
+              /*  if (enteredValue == null) {
                 } else if ("$enteredValue" > count) {
 
-                    Toast.makeText(this, "Count is greater than entered value", Toast.LENGTH_SHORT).show()
-                } else {
+                  // Toast.makeText(this, "Count is greater than entered value", Toast.LENGTH_SHORT).show()
+                } else {*/
 
-                    val num1: Int = count.toInt()
-                    val num2: Int = textViewtotalqusntityy.text.toString().toInt()
+//                    val num1: Int = count.toInt()
+//                    val num2: Int = textViewtotalqusntityy.text.toString().toInt()
 
-                    val rejected =  num1 - num2
+                    val number: Int = textViewtotalqusntityy.getText().toString().toInt()
+                    if (number > count.toInt()) {
+                        showAlertDialogOkAndCloseAfter("Entered Number is Greater than Dispatched Value")
+                    } else{
+                        val rejected =  count.toInt() - number
 
-
-
-                    RetrofitClient.instance.updateGrn(userid,grn,enteredValue.toString(),rejected.toString(),grncommnet)
-                        .enqueue(object : retrofit2.Callback<CountList> {
-                            override fun onResponse(call: Call<CountList>, response: Response<CountList>) {
-                                val updateResponse = response.body()
-                                if (updateResponse != null && updateResponse.status == 1) {
-                                    showAlertDialogOkAndClose("GRN Updated successfully")
-                                    // Update was successful, show a success message
-                                    //  Toast.makeText(context, updateResponse.message, Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(this@GRNCommpleteLkistActivity, "Update failed", Toast.LENGTH_SHORT).show()
+                        RetrofitClient.instance.updateGrn(userid,grn,textViewtotalqusntityy.getText().toString(),rejected.toString(),grncommnet)
+                            .enqueue(object : retrofit2.Callback<CountList> {
+                                override fun onResponse(call: Call<CountList>, response: Response<CountList>) {
+                                    val updateResponse = response.body()
+                                    if (updateResponse != null && updateResponse.status == 1) {
+                                        showAlertDialogOkAndClose("GRN Updated successfully")
+                                        // Update was successful, show a success message
+                                        //  Toast.makeText(context, updateResponse.message, Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(this@GRNCommpleteLkistActivity, "Update failed", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
-                            }
 
-                            override fun onFailure(call: Call<CountList>, t: Throwable) {
-                                Toast.makeText(this@GRNCommpleteLkistActivity, "Update failed: ${t.message}", Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                                override fun onFailure(call: Call<CountList>, t: Throwable) {
+                                    Toast.makeText(this@GRNCommpleteLkistActivity, "Update failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
 
-                    Toast.makeText(this, "Count is not greater than entered value", Toast.LENGTH_SHORT).show()
-                }
+
             }
 
 
@@ -177,6 +190,17 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         ) { dialogInterface, i ->
             (this as Activity).setResult(Activity.RESULT_OK)
             (this as Activity)?.onBackPressed() }   // (context as Activity).finish()
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->  }  // LoginActivity::class.java
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()

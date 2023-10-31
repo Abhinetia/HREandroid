@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -40,6 +41,8 @@ class AttendanceFragment : Fragment() {
     var toodate :String = ""
     private var fromDate: Calendar = Calendar.getInstance()
     private var toDate: Calendar = Calendar.getInstance()
+    lateinit var sharedPreferences : SharedPreferences
+    lateinit var editor : SharedPreferences.Editor
 
     private lateinit var attedanceadapter: AttendanceAdapter
     val attendanceListData: ArrayList<AttendanceListData.Data> = arrayListOf()
@@ -64,7 +67,8 @@ class AttendanceFragment : Fragment() {
         val root: View = binding.root
 
 
-        val sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
+        sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
+        editor = sharedPreferences.edit()
         userid = sharedPreferences?.getString("user_id", "")!!
 
 
@@ -76,9 +80,9 @@ class AttendanceFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             activity?.onBackPressed()
         }
-//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-//            fetchtheappData()
-//        }
+        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            fetchtheappData()
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val todaydate = LocalDate.now()
             val sdf = SimpleDateFormat("dd-MM-yyyy")
@@ -232,7 +236,13 @@ class AttendanceFragment : Fragment() {
                     if (dataList!!.isloggedin.equals("true")){
                         // openDashboard()
                     } else {
-                        openDataLogin()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                        editor.apply()
+                        editor.commit()
+
+                        var intent =  Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }

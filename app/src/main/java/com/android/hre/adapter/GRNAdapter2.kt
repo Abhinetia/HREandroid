@@ -96,20 +96,20 @@ class GRNAdapter2(private var items: List<GrnList.Data>,private val context :Con
         }
 
 
-        holder.btnCretaeTicket.setOnClickListener {
-            val intent = Intent(context,GRNCommpleteLkistActivity::class.java)
-            intent.putExtra("PCN",dataX.pcn)
-            intent.putExtra("GRN",dataX.grn)
-            intent.putExtra("PCNDetails",dataX.pcn_detail)
-            intent.putExtra("IndentNo",dataX.indent_no)
-            intent.putExtra("Dispatched",dataX.dispatched)
-            intent.putExtra("Status",dataX.status)
-            intent.putExtra("MaterialName",intendDetail.material_name)
-            intent.putExtra("Brand", intendDetail.brand)
-            intent.putExtra("Info",stringd)
-            intent.putExtra("Recvied",intendDetail.quantity_received)
-            context.startActivity(intent)
-        }
+//        holder.btnCretaeTicket.setOnClickListener {
+//            val intent = Intent(context,GRNCommpleteLkistActivity::class.java)
+//            intent.putExtra("PCN",dataX.pcn)
+//            intent.putExtra("GRN",dataX.grn)
+//            intent.putExtra("PCNDetails",dataX.pcn_detail)
+//            intent.putExtra("IndentNo",dataX.indent_no)
+//            intent.putExtra("Dispatched",dataX.dispatched)
+//            intent.putExtra("Status",dataX.status)
+//            intent.putExtra("MaterialName",intendDetail.material_name)
+//            intent.putExtra("Brand", intendDetail.brand)
+//            intent.putExtra("Info",stringd)
+//            intent.putExtra("Recvied",intendDetail.quantity_received)
+//            context.startActivity(intent)
+//        }
 
     }
 

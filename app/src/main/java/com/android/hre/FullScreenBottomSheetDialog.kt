@@ -3,27 +3,24 @@ package com.android.hre
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.adapter.SearchMaterialIndentAdapter
 import com.android.hre.api.RetrofitClient
-import com.android.hre.databinding.ActivitySearchMaterialIndentBinding
 import com.android.hre.databinding.BottomSheetDialogBinding
 import com.android.hre.response.Getmaterials
-import com.android.hre.response.Indent
 import com.android.hre.response.listmaterial.ListMaterials
-import com.android.hre.response.pcns.PCN
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import retrofit2.Call
 import retrofit2.Response
+
 
 class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickListener: BottomSheetItemClickListener) : BottomSheetDialogFragment(),SearchMaterialIndentAdapter.ItemClickListener {
 
@@ -66,9 +63,18 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
 
 
 
-
         return binding.root
 
+    }
+    fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun fetchthelistMaterial() {
@@ -138,6 +144,10 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                                     layoutManager = LinearLayoutManager(context)
                                     adapter = searchMaterialIndentAdapter
                                 }
+
+                                val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+
                             }
                         }
                     }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
+import com.android.hre.R
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.HomeindentlistBinding
 import com.android.hre.response.getappdata.AppDetails
@@ -49,6 +50,10 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
                     tvdpcndatapcn.text = dataX.pcn_detail
                     //tvDisplaydate.text = dataX.created_on
                     tvdpcndatapcn.isSelected = true
+
+                    if (dataX.status.equals("Completed")){
+                        tvIndentstatus.setBackgroundResource(R.drawable.ic_greenbaby)
+                    }
 
 
                     val inputDateString = dataX.created_on

@@ -262,7 +262,7 @@
                 android:id="@+id/tv_qtydispatched"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GRN"
+                android:text=""
                 android:minWidth="120dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp" />
@@ -287,7 +287,7 @@
                 android:id="@+id/tv_qtypening"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GRN"
+                android:text=""
                 android:minWidth="120dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp" />
@@ -312,7 +312,7 @@
                 android:id="@+id/tv_dispatchcomnet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GRN"
+                android:text=""
                 android:minWidth="120dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp" />
@@ -337,7 +337,7 @@
                 android:id="@+id/tv_recvievercomnet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GRN"
+                android:text=""
                 android:minWidth="120dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp" />
@@ -494,7 +494,7 @@
                         android:layout_gravity="center"
                         android:textSize="13dp"
                         android:background="@drawable/icrectborder"
-                        android:text="Pending"
+                        android:text="Cancel"
                         android:textColor="#FF5E5E"
                         />
 

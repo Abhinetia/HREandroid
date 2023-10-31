@@ -129,7 +129,7 @@
             android:id="@+id/tv_count"
             android:layout_toRightOf="@+id/tvopen"
             android:background="@drawable/ic_roundd"
-            android:text="9"
+            android:text="00"
             android:textColor="@color/black_text"
             />
 

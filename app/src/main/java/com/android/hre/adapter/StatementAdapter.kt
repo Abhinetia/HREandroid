@@ -34,6 +34,7 @@ class StatementAdapter : RecyclerView.Adapter<StatementAdapter.ViewHolder>() {
                     tvore.text = dataX.amount
                    // tvEntrydate.text = dataX.bill_submission_date
                     tvTimee.text = dataX.ref
+                    tvComments.text = dataX.comment
                    // tvCommnets.text = dataX.comment
 
                     if (dataX.type.equals("Debit")) {

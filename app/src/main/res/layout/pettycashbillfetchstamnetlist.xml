@@ -110,6 +110,20 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:singleLine="false"
+                    android:id="@+id/tv_comments"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/purpose"
+                    android:gravity="center|start"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="13dp"
+                    android:text="Comments given"
+                    android:textColor="@color/black_text"
+                    />
 
 
             </RelativeLayout>

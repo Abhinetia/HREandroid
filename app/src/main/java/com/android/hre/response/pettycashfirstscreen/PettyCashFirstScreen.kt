@@ -7,6 +7,7 @@ data class PettyCashFirstScreen(
 ) {
     data class Data(
         val balance_amount: String,
-        val issued_amount: String
+        val issued_amount: String,
+        val my_spend: String
     )
 }

@@ -52,14 +52,11 @@ import com.android.hre.AboutUsActivity
 import com.android.hre.AttendanceActivity
 import com.android.hre.AttendanceFragment
 import com.android.hre.GRNFragment
-import com.android.hre.GRnActivity
-import com.android.hre.IndentActivity
 import com.android.hre.IndentFragment
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
 import com.android.hre.PettyCashActivity
 import com.android.hre.PettyCashScreenFragment
-import com.android.hre.TicketActivity
 import com.android.hre.TicketFragment
 import com.android.hre.VaultActivity
 import com.android.hre.VaultFragment
@@ -123,21 +120,15 @@ class HomeFragment : Fragment() {
         var empId = sharedPreferences?.getString("employee_id","")
         userid = sharedPreferences?.getString("user_id", "")!!
         binding.tvDisplay.text = name
-//        binding.tvEmpId.text = empId
-//        binding.tvusername.text = name
-//        binding.tvVersion.text= version
-
+//
         val simpleDate = SimpleDateFormat("dd/M/yyyy ")
         val currentDate = simpleDate.format(Date())
         println(" Current Date is: " +currentDate)
-      //  binding.tvPending.text = "Date : " + currentDate
 
-//        binding.tvPending.text = "Name" + name
         binding.hellodat.text = "Welcome"
-//        binding.nameee.text = name
-//        binding.empiddd.text = empId
-
+//
         Log.v("Sharedpref", sharedPreferences?.getBoolean(Constants.ISLOGGEDIN,false).toString())
+      //  Toast.makeText(context,""+sharedPreferences?.getBoolean(Constants.isEmployeeLoggedIn,false).toString(),Toast.LENGTH_LONG).show()
         if (sharedPreferences.getBoolean(Constants.isEmployeeLoggedIn,false)){
             binding.slider.text = "Attendance Logout"
             binding.slider.isReversed = true
@@ -162,9 +153,9 @@ class HomeFragment : Fragment() {
        // homeAdapterNew = HomeAdapterNew()
 
 
-        /*if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
             fetchtheappData()
-        }*/
+        }
 
         fetchTheIndentList()
 
@@ -179,35 +170,11 @@ class HomeFragment : Fragment() {
         }
 
         binding.indentdata.setOnClickListener {
-//            val intent = Intent(context,IndentActivity::class.java)
-//            startActivity(intent)
+//
+        }
 
-//            val ft: FragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction()
-//            ft.replace(com.android.hre.R.id.nav_host_fragment_activity_main, IndentFragment())
-//            ft.addToBackStack(null)
-//            ft.commit()
-           // replaceFragment(IndentFragment())
-        }
-        binding.ticketdata.setOnClickListener {
-            val intent = Intent(context,TicketActivity::class.java)
-            startActivity(intent)
-        }
-        binding.grndata.setOnClickListener {
-            val intent = Intent(context,GRnActivity::class.java)
-            startActivity(intent)
-        }
-        binding.pettydata.setOnClickListener {
-            val intent = Intent(context,PettyCashActivity::class.java)
-            startActivity(intent)
-        }
-        binding.vaultdata.setOnClickListener {
-            val intent = Intent(context,VaultActivity::class.java)
-            startActivity(intent)
-        }
-       binding.linearattendance.setOnClickListener {
-           val intent = Intent(context,AttendanceActivity::class.java)
-           startActivity(intent)
-       }
+
+
 
         binding.icinfo.setOnClickListener {
             val intent = Intent(context,AboutUsActivity::class.java)
@@ -323,7 +290,7 @@ class HomeFragment : Fragment() {
 //                   editor.apply()
 //                   editor.commit()
                    loginattendance(action)
-                   //fetchtheappData()
+                   fetchtheappData()
                } else{
                    attendanceOn = false
                    binding.slider.isReversed = false
@@ -339,7 +306,7 @@ class HomeFragment : Fragment() {
 //                   editor.commit()
                    loginattendance(action)
                    Log.v("location","$currentDateAndTime")
-                   //fetchtheappData()
+                   fetchtheappData()
                }
 
            }
@@ -562,7 +529,13 @@ class HomeFragment : Fragment() {
                     if (dataList!!.isloggedin.equals("true")){
                          // openDashboard()
                     } else {
-                        openDataLogin()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                        editor.apply()
+                        editor.commit()
+
+                        var intent =  Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }
@@ -589,6 +562,7 @@ class HomeFragment : Fragment() {
     fun openDataLogin(){
         var intent =  Intent(context, LoginActivity::class.java)
         startActivity(intent)
+        activity?.finish()
     }
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {

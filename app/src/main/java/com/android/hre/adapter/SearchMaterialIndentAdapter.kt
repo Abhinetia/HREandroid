@@ -103,13 +103,13 @@ class SearchMaterialIndentAdapter @Inject() constructor(private val intemClickLi
                         val desc = description.text.toString()
                         if (qty.isEmpty()){
                             binding.tvqty.error = "Quantity required"
-                            Toast.makeText(context,"Quantity required",Toast.LENGTH_LONG).show()
+                           // Toast.makeText(context,"Quantity required",Toast.LENGTH_LONG).show()
                             binding.tvqty.requestFocus()
                             return@setOnClickListener
                         }
                         if (desc.isEmpty()){
                             binding.description.error = "Description required"
-                            Toast.makeText(context,"Description required",Toast.LENGTH_LONG).show()
+                           // Toast.makeText(context,"Description required",Toast.LENGTH_LONG).show()
                             binding.description.requestFocus()
                             return@setOnClickListener
                         }

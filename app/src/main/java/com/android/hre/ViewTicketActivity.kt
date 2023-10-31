@@ -1,12 +1,10 @@
 package com.android.hre
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -15,32 +13,24 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.ViewTcketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityViewTicketBinding
-import com.android.hre.response.Completelist
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getconve.Conversation
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputEditText
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -74,6 +64,7 @@ class ViewTicketActivity : AppCompatActivity() {
     var receiptId : Int ? = null
     var data : String ? = null
     var username :String = ""
+    var roleName : String = ""
     val action: String = "Completed"
     private val imageUriList = ArrayList<Uri>()
     var position : Int ? = null
@@ -93,6 +84,7 @@ class ViewTicketActivity : AppCompatActivity() {
         val sharedPreferences =getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
         username = sharedPreferences?.getString("username","")!!
+        roleName = sharedPreferences?.getString("role","")!!
 
         viewTicketAdapter = ViewTcketAdapter()
 
@@ -170,10 +162,9 @@ class ViewTicketActivity : AppCompatActivity() {
             Log.v("Data","abcd $binding.etpcnId.text.toString()")
 
 
-            // Image From Gallery File path
-            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.addConversationForTicket(ticketid,ticketno, message, userId, recipientid,image)
+//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+//            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+            val call = RetrofitClient.instance.addConversationForTicket(ticketid,ticketno, message, userId, recipientid)
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
@@ -237,6 +228,8 @@ class ViewTicketActivity : AppCompatActivity() {
 
     private fun fetchthemailList() {
 
+        val allRoles = resources.getStringArray(R.array.roles)
+
         val call = RetrofitClient.instance.getConverstaion(userid,ticketid,ticketno)
         call.enqueue(object : Callback<Conversation> {
             override fun onResponse(call: Call<Conversation>, response: Response<Conversation>) {
@@ -248,14 +241,30 @@ class ViewTicketActivity : AppCompatActivity() {
 
                     if (!maillistdata.isEmpty()) {
                         val replyData : Conversation.Data = maillistdata.last()
-                        if(replyData.recipient_id.equals(userid)){
+
+                        if(allRoles.contains(roleName)){
                             binding.tvcompleted.visibility=View.VISIBLE
                             binding.linearlayoutreply.visibility = View.VISIBLE
-                            if (status.contains("Resolved")){
+                        }else{
+                            if(replyData.recipient_id.equals(userid) ){
+                                binding.tvcompleted.visibility=View.VISIBLE
+                                binding.linearlayoutreply.visibility = View.VISIBLE
+                            }else{
                                 binding.tvcompleted.visibility=View.GONE
                                 binding.linearlayoutreply.visibility = View.GONE
                             }
-                        }else{
+                        }
+
+//                        if(replyData.recipient_id.equals(userid) ){
+//                            binding.tvcompleted.visibility=View.VISIBLE
+//                            binding.linearlayoutreply.visibility = View.VISIBLE
+//
+//                        }else{
+//                            binding.tvcompleted.visibility=View.GONE
+//         //                   binding.linearlayoutreply.visibility = View.GONE
+//                        }
+
+                        if (status.contains("Resolved")){
                             binding.tvcompleted.visibility=View.GONE
                             binding.linearlayoutreply.visibility = View.GONE
                         }

@@ -1,96 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="10dp"
+<RelativeLayout android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
-    android:layout_marginBottom="2dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginTop="5dp"
+    android:padding="5dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/rv_chosepcn"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_cosepcn"
-        >
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tv_billdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bill Date"
-                android:minWidth="120dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-            <TextView
-                android:id="@+id/tv_amountutilized"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Amount Utilized"
-                android:minWidth="120dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tv_IsApproved"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IsApproved"
-                android:minWidth="120dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_piurpose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IsApproved"
-                android:minWidth="120dp"
-                android:textColor="@color/black_text"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:gravity="center"
-            android:id="@+id/tvviemore"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center"
-            android:textSize="13dp"
-            android:background="@drawable/icrectborder"
-            android:text="View More"
-            android:textColor="#FF5E5E"
-            />
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="10dp"
+            >
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_cosepcn"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
+                    android:id="@+id/rdet"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_billdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bill Date"
+                        android:minWidth="130dp"
+                        android:textColor="@color/black_text"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tv_amountutilized"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Amount Utilized"
+                        android:layout_toRightOf="@+id/tv_billdate"
+                        android:minWidth="120dp"
+                        android:textColor="@color/black_text"
+                        android:textSize="14sp" />
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_below="@+id/rdet"
+                    android:id="@+id/edrt"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_IsApproved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IsApproved"
+                        android:minWidth="130dp"
+                        android:textColor="@color/black_text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_piurpose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IsApproved"
+                        android:layout_toRightOf="@+id/tv_IsApproved"
+                        android:minWidth="120dp"
+                        android:textColor="@color/black_text"
+                        android:textSize="14sp" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_descriptiomn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edrt"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Descr"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_below="@+id/tv_descriptiomn"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/tvviemore"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="13dp"
+                    android:background="@drawable/icrectborder"
+                    android:text="View More"
+                    android:textColor="#FF5E5E"
+                    />
+
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

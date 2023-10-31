@@ -162,7 +162,7 @@
 
             <TextView
                 android:id="@+id/tv_indentnogen"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="GRN"
                 android:minWidth="120dp"
@@ -182,13 +182,17 @@
                 android:id="@+id/btn_cretae_ticket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_corner"
+                android:background="@drawable/ic_rectangle"
                 android:text="View Detailed GRN"
                 android:gravity="center"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:layout_gravity="center"
                 android:layout_alignParentEnd="true"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
 

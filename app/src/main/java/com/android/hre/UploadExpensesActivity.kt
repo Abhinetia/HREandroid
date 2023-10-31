@@ -627,6 +627,8 @@ class UploadExpensesActivity : AppCompatActivity() {
             Toast.makeText(this,"Image Removed",Toast.LENGTH_SHORT).show()
         }
 
+        binding.btnMaterials.visibility = View.VISIBLE
+
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
 

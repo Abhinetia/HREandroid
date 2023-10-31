@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.api.Api
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivitySplashScreenAtivityBinding
+import com.android.hre.response.Indent
 import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.getappdata.AppDetails
 import retrofit2.Call
@@ -52,9 +53,13 @@ class SplashScreenAtivity :AppCompatActivity(){
 
         Log.v("Sharedpref", sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false).toString())
 
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+       /* if(!sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
+            startActivity(Intent)
+            finish()
+        }else{
             fetchtheappData()
-        }
+        }*/
 
         binding.btngetstarted.setOnClickListener {
             proceedToNextPage()
@@ -63,7 +68,7 @@ class SplashScreenAtivity :AppCompatActivity(){
     }
 
     fun proceedToNextPage(){
-        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+       /* if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
             var intent =  Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -72,7 +77,16 @@ class SplashScreenAtivity :AppCompatActivity(){
             startActivity(Intent)
             finish()
 
+        }*/
+        if(!sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
+            startActivity(Intent)
+            finish()
+        }else{
+            fetchtheappData()
         }
+
+
     }
     private fun setupPermissions() {
         val permission = ContextCompat.checkSelfPermission(this,
@@ -130,20 +144,34 @@ class SplashScreenAtivity :AppCompatActivity(){
                     }
 
                     if (dataList!!.isloggedin.equals("true")){
+
+                        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+                            val Intent = Intent(this@SplashScreenAtivity,MainActivity::class.java)
+                            startActivity(Intent)
+                            finish()
+                        } else{
+                            val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
+                            startActivity(Intent)
+                            finish()
+
+                        }
+
                        // openDashboard()
-                        editor.putBoolean(Constants.isEmployeeLoggedIn,true)
+                       /* editor.putBoolean(Constants.isEmployeeLoggedIn,true)
                         editor.apply()
-                        editor.commit()
+                        editor.commit()*/
                     } else {
-                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
-                        editor.apply()
-                        editor.commit()
+
+                        val Intent = Intent(this@SplashScreenAtivity,LoginActivity::class.java)
+                        startActivity(Intent)
+                        finish()
+
                         // openDataLogin()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }
 
-                    proceedToNextPage()
+                   // proceedToNextPage()
 
                     val isLoggedIn = dataList!!.isloggedin
                     val appVersion = dataList!!.app_version

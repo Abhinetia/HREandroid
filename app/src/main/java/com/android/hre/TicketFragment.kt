@@ -16,19 +16,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.TicketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentTicketBinding
 import com.android.hre.response.getappdata.AppDetails
-import com.android.hre.response.newindentrepo.NewIndents
 import com.android.hre.response.newticketReponse.TikcetlistNew
-import com.android.hre.response.ticketsearch.SearchTicket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,9 +69,9 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
         fetchtheTicketList()
         ticketAdapter = TicketAdapter(this)
 
-//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-//            fetchtheappData()
-//        }
+        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            fetchtheappData()
+        }
         binding.ivsearch.setOnClickListener {
             binding.carviewseacrh.visibility = View.VISIBLE
         }
@@ -145,12 +145,13 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                             layoutManager = LinearLayoutManager(context)
                             adapter = ticketAdapter
                         }
-
+                        val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
                     }
                     else {
                         binding.tvShowPening.visibility = View.VISIBLE
-                        binding.tvShowPening.text = "No Pending Indents"
+                        binding.tvShowPening.text = "No Pending Tickets"
                         // Handle error or unexpected response
                     }
                 } else {
@@ -271,7 +272,14 @@ class TicketFragment : Fragment(),TicketAdapter.ViewMoreClickListener {
                     if (dataList!!.isloggedin.equals("true")){
                         // openDashboard()
                     } else {
-                        openDataLogin()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                        editor.apply()
+                        editor.commit()
+
+                        var intent =  Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                       // openDataLogin()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }

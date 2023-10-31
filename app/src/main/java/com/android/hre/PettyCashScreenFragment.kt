@@ -182,8 +182,9 @@ class PettyCashScreenFragment : Fragment() {
 
                     if(!arrayList_details!!.isEmpty()){
                         val dataString: PettyCashFirstScreen.Data = arrayList_details!!.get(0)
-                        binding.pcnClinet.text = dataString.issued_amount.toString()
-                        binding.tvexpense.text = dataString.balance_amount.toString()
+                        binding.pcnClinet.text = "₹" +""+ dataString.issued_amount.toString()
+                        binding.tvexpense.text =  "₹" + ""+dataString.balance_amount.toString()
+                        binding.tvsepend.text =  "₹" + ""+ dataString.my_spend.toString()
                     }
 
 

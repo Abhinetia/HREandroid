@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.GRNAdapter
@@ -105,7 +106,7 @@ class GRNFragment : Fragment() {
             }
         })
 
-
+        fetchTheGRNDetails()
         return root
     }
 
@@ -114,6 +115,7 @@ class GRNFragment : Fragment() {
         val call = RetrofitClient.instance.searchGRNlits(userid,search)
         call.enqueue(object : Callback<GrnList> {
             override fun onResponse(call: Call<GrnList>, response: Response<GrnList>) {
+/*
                 if (response.isSuccessful) {
                     binding.ivProgressBar.visibility = View.GONE
                     val apiResponse = response.body()
@@ -129,13 +131,15 @@ class GRNFragment : Fragment() {
                         grnAdapter.differ.submitList(dataList)
                         Log.v("dat", grnAdapter.differ.submitList(dataList).toString())
 
-                      /*  homeAdapter2 = HomeAdapter2(activeList.reversed(),context!!)
+                      */
+/*  homeAdapter2 = HomeAdapter2(activeList.reversed(),context!!)
 
 
                         binding.rvRecylergrndata.apply {
                             layoutManager = LinearLayoutManager(context)
                             adapter = homeAdapter2
-                        }*/
+                        }*//*
+
 
                         binding.rvRecylergrndata.apply {
                             layoutManager = LinearLayoutManager(context)
@@ -145,6 +149,37 @@ class GRNFragment : Fragment() {
 
 
                 }
+*/
+
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+
+                    if (indentResponse != null && indentResponse.status == 1) {
+                        binding.ivProgressBar.visibility = View.GONE
+
+
+                       val globalList = indentResponse.data
+                        grnAdapter.differ.submitList(globalList)
+                        grnAdapter.notifyDataSetChanged()
+
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = grnAdapter
+                        }
+                        val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+
+                    }
+                    else {
+                        binding.tvShowPening.visibility = View.VISIBLE
+                        binding.tvShowPening.text = "No Pending Tickets"
+                        // Handle error or unexpected response
+                    }
+                } else {
+                    // Handle API call failure
+                }
+
             }
 
             override fun onFailure(call: Call<GrnList>, t: Throwable) {
@@ -160,6 +195,7 @@ class GRNFragment : Fragment() {
         val call = RetrofitClient.instance.getGRnDetails(userid)
         call.enqueue(object : Callback<GrnList> {
             override fun onResponse(call: Call<GrnList>, response: Response<GrnList>) {
+/*
                 if (response.isSuccessful) {
                     binding.ivProgressBar.visibility = View.GONE
                     val apiResponse = response.body()
@@ -183,6 +219,32 @@ class GRNFragment : Fragment() {
 
 
                 }
+*/
+
+                if (response.isSuccessful) {
+                    val indentResponse = response.body()
+
+                    if (indentResponse != null && indentResponse.status == 1) {
+                        binding.ivProgressBar.visibility = View.GONE
+
+                        val dataList = indentResponse.data
+                        grnAdapter.differ.submitList(dataList.reversed())   //now added reverse function in android @5.53 pm need to check while debugging
+
+                       // binding.tvCount.text = globalList?.size.toString()
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = grnAdapter
+                        }
+                    }
+                    else {
+                        binding.tvShowPening.visibility = View.VISIBLE
+                        binding.tvShowPening.text = "No Active GRN Available"
+                        // Handle error or unexpected response
+                    }
+                } else {
+                    // Handle API call failure
+                }
+
             }
 
             override fun onFailure(call: Call<GrnList>, t: Throwable) {

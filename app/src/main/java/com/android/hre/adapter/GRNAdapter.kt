@@ -6,6 +6,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,6 +48,15 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                     tvIndentnogen.text = dataX.status
                     tvInedntnumber.text = dataX.indent_no
                     tvDispatchenumber.text = dataX.dispatched
+
+
+                    if (dataX.status.equals("Received")){
+                        btnCretaeTicket.text = "    Compeleted GRN    "
+                        btnCretaeTicket.setTextColor(Color.parseColor("#000000"))
+                       // btnCretaeTicket.setBackgroundResource(R.color.colorAccent)
+                        btnCretaeTicket.setBackgroundResource(R.drawable.ic_greenbaby)
+
+                    }
 
                    // tvDispatched.text = dataX.dispatched
                     var intendDetailList = dataX.indent_details
@@ -165,6 +176,10 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                         intent.putExtra("Brand", intendDetail.brand)
                         intent.putExtra("Info",stringd)
                         intent.putExtra("Recvied",intendDetail.quantity_received)
+                        intent.putExtra("dispatchcomment",dataX.dispatch_comment)
+                   //     val value = if(TextUtils.isEmpty(dataX.accepting_comment)) "-" else dataX.accepting_comment
+                        intent.putExtra("recviercomment",  if(TextUtils.isEmpty(dataX.accepting_comment)) "-" else dataX.accepting_comment)
+                        intent.putExtra("qtypening",intendDetail.quantity_pending)
                         context.startActivity(intent)
                     }
                 }
@@ -184,7 +199,8 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])    }
+        holder.bind(differ.currentList[position])
+    }
 
     override fun getItemCount(): Int =differ.currentList.size
 
@@ -201,6 +217,8 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
 
     val differ = AsyncListDiffer(this, differCallback)
 
+    override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
+
     private fun showAlertDialogOkAndClose(alertMessage: String) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(context)
         builder.setMessage(alertMessage)
@@ -213,7 +231,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
-    override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
+  //  override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
 
 
 }

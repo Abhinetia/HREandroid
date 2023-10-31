@@ -20,6 +20,7 @@ import com.android.hre.response.pcns.PCN
 import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.searchindent.SearchIndent
+import com.android.hre.response.searchmaterialIndents.searchMaterial
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
 import com.android.hre.response.tickets.TicketList
@@ -146,8 +147,8 @@ interface Api {
         @Part("ticket_no") ticket_no: RequestBody,
         @Part("message") message :RequestBody,
         @Part("user_id") user_id:RequestBody,
-        @Part("recipient") recipient:RequestBody,
-        @Part file: MultipartBody.Part
+        @Part("recipient") recipient:RequestBody
+       // @Part file: MultipartBody.Part
     ) :Call<TicketCreated>
 
    @FormUrlEncoded
@@ -279,6 +280,12 @@ interface Api {
 //    @Headers("Content-Type: application/json")
 //    @POST("create-indent")
 //     fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>
+
+    @FormUrlEncoded
+    @POST("search-material")
+    fun searchMaterialData(
+        @Field("search") search:String
+    ) : Call<searchMaterial>
 
 
     @Headers("Content-Type: application/json")

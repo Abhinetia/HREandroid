@@ -12,6 +12,8 @@ data class GrnList(
         val indent_no: String,
         val pcn: String,
         val pcn_detail :String,
+        val dispatch_comment :String,
+        val accepting_comment :String,
         val status :String
     )
     data class IndentDetail(

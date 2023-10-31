@@ -57,6 +57,7 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
 //
                     if (dataX.status.contains("Pending/Ongoing")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_babypinkboreder)
+                        tvTicketstatus.text = "Ongoing"
                         tvViewmore.visibility = View.VISIBLE
                         //tvMailcount.visibility = View.VISIBLE
                         tvAssigned.visibility = View.INVISIBLE
@@ -68,9 +69,10 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                         tvAssigned.visibility = View.INVISIBLE
                     } else if (dataX.status.contains("Rejected")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
-                        tvViewmore.visibility = View.GONE
+                        tvViewmore.visibility = View.VISIBLE
                        // tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.GONE
+                        tvViewmore.text = "Rejected"
                     } else if (dataX.status.contains("Created")){
                         tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
                        //tvMailcount.visibility = View.GONE
@@ -142,21 +144,24 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                                 moreClickListener = btnlistner
                                 moreClickListener?.onBtnClick(position,dataX)
 ////
-//                                val Intent = Intent(context, ViewTicketActivity::class.java)
-//                                Intent.putExtra("TicketId",dataX.ticket_id)
-//                                Intent.putExtra("TicketNo",dataX.ticket_no)
-//                                Intent.putExtra("Subject",dataX.category)
-//                                Intent.putExtra("Stauts",dataX.status)
-//                                Intent.putExtra("TicketId",dataX.ticket_id)
-//                                context.startActivity(Intent)
-
-
+                               /* val Intent = Intent(context, ViewTicketActivity::class.java)
+                                Intent.putExtra("TicketId",dataX.ticket_id)
+                                Intent.putExtra("TicketNo",dataX.ticket_no)
+                                Intent.putExtra("Subject",dataX.category)
+                                Intent.putExtra("Stauts",dataX.status)
+                                Intent.putExtra("TicketId",dataX.ticket_id)
+                                context.startActivity(Intent)*/
 
                             }
 
+                        } else if(dataX.status.contains("Rejected")){
+                            if (tvViewmore.text.contains("Rejected")){
+                               var comments =  dataX.comments
+                                tvViewmore.text = comments
 
+                            }
                         }
-//                        val Intent = Intent(context, ViewTicketActivity::class.java)
+ //                       val Intent = Intent(context, ViewTicketActivity::class.java)
 ////                        Intent.putExtra("TicketId",dataX.ticket_id)
 //                        Intent.putExtra("TicketNo",dataX.ticket_no)
 //                        Intent.putExtra("Subject",dataX.category)

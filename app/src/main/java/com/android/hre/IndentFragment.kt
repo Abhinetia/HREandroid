@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,9 +71,9 @@ class IndentFragment : Fragment() {
 
         // homeAdapterNew = HomeAdapterNew()
 
-//        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
-//            fetchtheappData()
-//        }
+        if(sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false)){
+            fetchtheappData()
+        }
 
         fetchTheIndentList()
 
@@ -219,6 +220,8 @@ class IndentFragment : Fragment() {
 //                            layoutManager = LinearLayoutManager(context)
 //                            adapter = ho
 //                        }
+                        val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
 
 
@@ -333,7 +336,13 @@ class IndentFragment : Fragment() {
                     if (dataList!!.isloggedin.equals("true")){
                         // openDashboard()
                     } else {
-                        openDataLogin()
+                        editor.putBoolean(Constants.isEmployeeLoggedIn,false)
+                        editor.apply()
+                        editor.commit()
+
+                        var intent =  Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
                         /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
                         return*/
                     }

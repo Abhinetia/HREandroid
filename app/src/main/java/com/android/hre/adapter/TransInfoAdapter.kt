@@ -19,7 +19,9 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.webkit.MimeTypeMap
@@ -39,6 +41,7 @@ import com.android.hre.databinding.TranscationinfoBinding
 import com.android.hre.others.Notifications
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -64,6 +67,7 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
                     tvAmountutilized.text = "₹" + dataX.utilised_amount
                     tvIsApproved.text = dataX.isapproved
                     tvPiurpose.text = dataX.purpose
+                    tvDescriptiomn.text = dataX.comments
 
 
 
@@ -74,7 +78,8 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
 
                     val date = inputFormat.parse(inputDateString)
                     val outputDateString = outputFormat.format(date)
-                    tvBilldate.text = dataX.bill_date
+                   // tvBilldate.text = dataX.bill_date
+                    tvBilldate.text = outputDateString
 
 
 
@@ -93,7 +98,7 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
                         val llFiles = popupView.findViewById<LinearLayout>(R.id.ll_files)
 
 
-                        billdate.text = dataX.bill_date
+                        billdate.text = outputDateString
                         amountutilixed.text= dataX.utilised_amount
                         purpose.text = dataX.purpose
                         commnets.text= dataX.comments
@@ -166,9 +171,16 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
                 dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 val previewImageView = dialog.findViewById<ImageView>(R.id.previewImageView)
                 val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
+                previewImageView.visibility = View.VISIBLE
+              //  displayImage(filePath + filename)
+                Log.v("Image",filePath + filename)
                 Glide.with(context)
-                    .load(filePath+ filename)
+                    .load(filePath + filename)
+                    .apply(RequestOptions()
+                        .placeholder(R.drawable.ic_eye)
+                    )
                     .into(previewImageView)
+
                 ivnotification.setOnClickListener {
                     dialog.dismiss()
                 }
@@ -196,6 +208,8 @@ class TransInfoAdapter : RecyclerView.Adapter<TransInfoAdapter.ViewHolder>() {
 
         llFiles.addView(custrom)
     }
+
+
 
     fun downloadFilePreQ(context: Context, fileUrl: String, fileName: String) {
         val request = DownloadManager.Request(Uri.parse(fileUrl))

@@ -10,27 +10,20 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityMainBinding
-import com.android.hre.grn.DisplayGrnActivity
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,15 +63,25 @@ class MainActivity : AppCompatActivity() {
         navView.background = null
 
         sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
+
         editor = sharedPreferences.edit()
+
+        Log.v("Main", sharedPreferences.getBoolean(Constants.ISLOGGEDIN,false).toString())
+
         userid = sharedPreferences?.getString("user_id", "")!!
 
         name = sharedPreferences?.getString("username", "")!!
         role = sharedPreferences?.getString("role_name","")!!
         empId = sharedPreferences?.getString("employee_id","")!!
 
+       /* context.getSystemService(INPUT_METHOD_SERVICE)
+            .hideSoftInputFromWindow(
+                this.currentFocus!!.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )*/
 
-     //   navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        //   navController = findNavController(R.id.nav_host_fragment_activity_main)
       //  val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
        // val navVieww = findViewById<NavigationView>(R.id.nav_vview)
        // val navItem = navVieww.menu.findItem(R.id.grntv)

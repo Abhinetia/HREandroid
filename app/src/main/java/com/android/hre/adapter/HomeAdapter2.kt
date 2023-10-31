@@ -42,6 +42,12 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
              holder.tvpcndetails.text = dataX.pcn_detail
              //tvDisplaydate.text = dataX.created_on
 
+             if (dataX.status.equals("Completed")){
+                 holder.tvstatus.setBackgroundResource(R.drawable.ic_greenbaby)
+             } else{
+                 holder.tvstatus.setBackgroundResource(R.drawable.ic_rectangle)
+
+             }
 
              val inputDateString = dataX.created_on
              val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
