@@ -50,20 +50,30 @@ class ViewTcketAdapter :  RecyclerView.Adapter<ViewTcketAdapter.ViewHolder>()
                 if (dataX != null){
                     Log.v("TAG","data is $dataX")
                     tvmesage.text = dataX.message
-                    tvreceptient.text = dataX.sender +   " -> "  + dataX.recipient
+                    tvreceptient.text = dataX.sender +  " -> "  + dataX.recipient
 
                     if (dataX.filename.size != 0){
-                        icinfo.visibility = View.VISIBLE
-
-                        for (i in 0 until dataX.filename.size ){
-                            val imageUrl = dataX.filepath + dataX.filename.get(i)
-                            Glide.with(context)
-                                .load(imageUrl)
-                                .into(icinfo)
-
-
-                           // displayImages(dataX.filepath , dataX.filename)
+                        if(dataX.filename.size  == 1){
+                            if (dataX.filename.get(0).isEmpty()){
+                                icinfo.visibility = View.GONE
+                            }else{
+                                icinfo.visibility = View.VISIBLE
+                            }
+                        }else{
+                            icinfo.visibility = View.VISIBLE
                         }
+                       // icinfo.setImageIcon(R.drawable.ic_eye)
+
+
+//                        for (i in 0 until dataX.filename.size ){
+//                            val imageUrl = dataX.filepath + dataX.filename.get(i)
+//                            Glide.with(context)
+//                                .load(imageUrl)
+//                                .into(icinfo)
+//
+//
+//                           // displayImages(dataX.filepath , dataX.filename)
+//                        }
                     }else{
                         icinfo.visibility = View.GONE
                     }

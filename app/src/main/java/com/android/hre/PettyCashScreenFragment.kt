@@ -2,29 +2,30 @@ package com.android.hre
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.size
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.hre.adapter.AttendanceAdapter
 import com.android.hre.adapter.StatementAdapter
 import com.android.hre.api.RetrofitClient
-import com.android.hre.databinding.FragmentPettyCashBinding
 import com.android.hre.databinding.FragmentPettyCashScreenBinding
-import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.statment.StatementListData
+import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +34,8 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
+
 
 
 class PettyCashScreenFragment : Fragment() {
@@ -50,7 +53,7 @@ class PettyCashScreenFragment : Fragment() {
     var issuedAm : String = ""
     var balancecash :String = ""
     var statemnetlistData: ArrayList<StatementListData.Data> = arrayListOf()
-
+    var transList :List<TranscationInfoDetails.Data> = arrayListOf()
 
 
 
@@ -103,12 +106,18 @@ class PettyCashScreenFragment : Fragment() {
         binding.lnStatment.setOnClickListener {
            binding.linedate.visibility = View.VISIBLE
 
-            binding.etDate.setOnClickListener {
-               showDatePickerDialog(true)
-           }
-            binding.etMonth.setOnClickListener {
+            binding.stratdate.setOnClickListener {
+                showDatePickerDialog(true)
+            }
+//            binding.etDate.setOnClickListener {
+//               showDatePickerDialog(true)
+//           }
+            binding.crdmonthg.setOnClickListener {
                 showDatePickerDialog(false)
             }
+//            binding.etMonth.setOnClickListener {
+//
+//            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -126,10 +135,12 @@ class PettyCashScreenFragment : Fragment() {
 
 
         pettycashFromServer()
+        pettytransInfoDatails()
 
 
         return root
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchtheattendanceListt(fdate: String, currentDate: String) {
@@ -183,8 +194,22 @@ class PettyCashScreenFragment : Fragment() {
                     if(!arrayList_details!!.isEmpty()){
                         val dataString: PettyCashFirstScreen.Data = arrayList_details!!.get(0)
                         binding.pcnClinet.text = "₹" +""+ dataString.issued_amount.toString()
-                        binding.tvexpense.text =  "₹" + ""+dataString.balance_amount.toString()
-                        binding.tvsepend.text =  "₹" + ""+ dataString.my_spend.toString()
+//                        binding.tvexpense.text =  "₹" + ""+dataString.balance_amount.toString()
+//                        binding.tvsepend.text =  "₹" + ""+ dataString.my_spend.toString()
+
+
+                      //  binding.tvexpense.text =  "₹" + ""+dataString.my_spend.toString()
+                       // binding.tvsepend.text =  "₹" + ""+ dataString.balance_amount.toString()
+
+
+                        val num1issued : Int = dataString.issued_amount.toInt()
+                        val num2mySpend : Int = dataString.my_spend.toInt()
+
+                        val balancetotal = num1issued - num2mySpend
+
+                        binding.tvsepend.text = balancetotal.toString()
+
+
                     }
 
 
@@ -215,14 +240,77 @@ class PettyCashScreenFragment : Fragment() {
                 binding.rvRecylergrndata.visibility = View.GONE
                 binding.etDate.setText("")
                 binding.etMonth.setText("")
-                val Intent = Intent(context,TranscationInfoActivity::class.java)
+               // val intent = Intent(context,TranscationInfoActivity::class.java)
 
-                startActivity(Intent)
+                 if(transList.size != 0){
+                     val gson = Gson()
+                     val jsonString = gson.toJson(transList)
+                     editor.putString("transcation_key",jsonString)
+                     editor.apply()
+                     val intent = Intent(context, TranscationInfoActivity::class.java)
+                     startActivity(intent)
+                 }else{
+
+                 }
+
 
         }
 
 
     }
+
+    fun Intent.putParcelableListExtra(key: String, list: List<Parcelable>) {
+        this.putParcelableArrayListExtra(key, ArrayList(list))
+    }
+
+    fun Intent.getParcelableListExtra(key: String): List<Parcelable>? {
+        return this.getParcelableArrayListExtra(key)
+    }
+
+    private fun pettytransInfoDatails() {
+        RetrofitClient.instance.getTranscationInfo(userid)
+            .enqueue(object: retrofit2.Callback<TranscationInfoDetails> {
+                override fun onFailure(call: Call<TranscationInfoDetails>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<TranscationInfoDetails>, response: Response<TranscationInfoDetails>) {
+                    Log.v("Sucess", response.body().toString())
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        transList = apiResponse?.data!!
+                        if(transList!!.size != 0){
+                            setApprovedAmount(transList)
+                        }
+
+                    } else {
+                        // Handle the error
+                    }
+
+                }
+
+            })
+
+    }
+
+    private fun setApprovedAmount(pettyCashBills: List<TranscationInfoDetails.Data>?) {
+            var value : Int =  0
+            for (i in 0 until pettyCashBills!!.size){
+
+                    val data =  pettyCashBills.get(i)
+                    if(!TextUtils.isEmpty(data.utilised_amount) && data.isapproved.equals("Accepted")) {
+                        value = value + data.utilised_amount.toInt()
+                    }
+            }
+
+        binding.tvexpense.text =  "₹" + ""+value
+
+    }
+
+
+
+
+
 
 
 
@@ -265,7 +353,34 @@ class PettyCashScreenFragment : Fragment() {
             Log.v("Date","$toodate")
         }
 
-        fetchthestatmentList()
+        if (frommdate.isNotBlank() && toodate.isNotBlank()) {
+            if (checkDates(frommdate, toodate)) {
+                fetchthestatmentList()
+            } else {
+                showAlertDialogOkAndCloseAfter("End date should be after start date!")
+            }
+        }
+    }
+
+    fun checkDates(d1: String, d2: String): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        var b = false
+
+        try {
+            val date1 = dateFormat.parse(d1)
+            val date2 = dateFormat.parse(d2)
+
+            if (date1 != null && date2 != null) {
+                when {
+                    date1.before(date2) -> b = true // Start date is before end date
+                    date1 == date2 -> b = true // Two dates are equal
+                    else -> b = false // Start date is after the end date
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return b
     }
 
     private fun fetchthestatmentList() {
@@ -300,5 +415,18 @@ class PettyCashScreenFragment : Fragment() {
             }
         })
     }
+
+
+    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->  }  // LoginActivity::class.java
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
 }

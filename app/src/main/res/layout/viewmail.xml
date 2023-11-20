@@ -44,12 +44,14 @@
             android:layout_height="25dp"
             android:padding="5dp"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_weight=".5"
             android:layout_toRightOf="@+id/tvreceptient"
             android:layout_below="@id/tvmesage"
             android:id="@+id/icinfo"
             android:src="@drawable/ic_eye"
             />
+
 
         <TextView
             android:layout_width="wrap_content"

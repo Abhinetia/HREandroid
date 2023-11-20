@@ -127,6 +127,16 @@ interface Api {
     ) :Call<TicketCreated>
 
     @Multipart
+    @POST("update-ticket")
+    fun updateticketwithimage(
+        @Part("user_id") userId:RequestBody,
+        @Part("subject") subject:RequestBody,
+        @Part("issue") issue:RequestBody,
+        @Part("ticket_no") ticket_no:RequestBody,
+        @Part("priority") priority:RequestBody,
+        @Part file: MultipartBody.Part
+    ) :Call<TicketCreated>
+    @Multipart
     @POST("upload-pettycash_bill")
     fun uploadPettycashBill(
         @Part("user_id") userId:RequestBody,
@@ -149,6 +159,17 @@ interface Api {
         @Part("user_id") user_id:RequestBody,
         @Part("recipient") recipient:RequestBody
        // @Part file: MultipartBody.Part
+    ) :Call<TicketCreated>
+
+    @Multipart
+    @POST("add-conversation")
+    fun addConversationForTicketWithImage(
+        @Part("ticket_id") ticket_id:RequestBody,
+        @Part("ticket_no") ticket_no: RequestBody,
+        @Part("message") message :RequestBody,
+        @Part("user_id") user_id:RequestBody,
+        @Part("recipient") recipient:RequestBody,
+        @Part file: MultipartBody.Part
     ) :Call<TicketCreated>
 
    @FormUrlEncoded
@@ -246,7 +267,20 @@ interface Api {
         @Part("message") message :RequestBody,
         @Part("user_id") user_id:RequestBody,
         @Part("action") recipient:RequestBody,
-        @Part file: MultipartBody.Part
+      //  @Part file: MultipartBody.Part
+        @Part file : List<MultipartBody.Part>
+    ) :Call<Completelist>
+
+    @Multipart
+    @POST("update-ticket-status_2")
+    fun CompletTicket2(
+        @Part("ticket_id") ticket_id:RequestBody,
+        @Part("ticket_no") ticket_no: RequestBody,
+        @Part("message") message :RequestBody,
+        @Part("user_id") user_id:RequestBody,
+        @Part("action") recipient:RequestBody,
+        //  @Part file: MultipartBody.Part
+        @Part file : List<MultipartBody.Part>
     ) :Call<Completelist>
 
     @FormUrlEncoded

@@ -2,6 +2,7 @@ package com.android.hre
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -72,6 +74,15 @@ class UpdateTicketActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
 
+       /* val fileUris = intent.getParcelableArrayListExtra<Uri>("fileUris")
+
+        // Now you can use the file URIs as needed in the second activity
+        if (fileUris != null) {
+            for (uri in fileUris) {
+                // Do something with each file URI
+            }
+        }*/
+
         val intentUser = intent
         ticketno = intentUser!!.getStringExtra("TicketNo").toString()
         status = intentUser.getStringExtra("Stauts").toString()
@@ -98,7 +109,7 @@ class UpdateTicketActivity : AppCompatActivity() {
         dropdwonfromServer()
 
 
-        binding.ivCamera.setOnClickListener {
+        binding.rvimage.setOnClickListener {
 
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
@@ -146,18 +157,39 @@ class UpdateTicketActivity : AppCompatActivity() {
     }
 
     private fun updateToServer() {
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Saving Data")
+        progressDialog.setMessage("Please wait...")
+        progressDialog.setCancelable(false)
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+
         val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
         val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
         val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
         val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
         val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
 
+
+        var call: Call<TicketCreated>? = null
+
+        if(Imaagefile != null){
+            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+            call = RetrofitClient.instance.updateticketwithimage(userId,subject,issue,ticketno,priority,image)
+
+        }else{
+            call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
+        }
+
 //            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
 //            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-        val call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
+       // val call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
 
         call.enqueue(object : retrofit2.Callback<TicketCreated> {
             override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+                progressDialog.dismiss()
                 Log.v("TAG", response.body().toString())
                 Log.v("TAG","message "+ response.body()?.message.toString())
                 if (response.body()!!.message.contains("Ticket updated")){
@@ -171,6 +203,7 @@ class UpdateTicketActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
+                progressDialog.dismiss()
 
                 Log.v("TAG", t.toString())
             }
@@ -299,9 +332,17 @@ class UpdateTicketActivity : AppCompatActivity() {
             compressAndSaveImage(file.toString(),50)
 
             // Added This Functionality
-            binding.ivimageuploadq.isVisible = true
-            binding.ivimageuploadq.setImageURI(imageUri)
-            binding.ivCamera.isVisible = false
+            binding.ivImagecapture.isVisible = true
+            binding.frameimage.isVisible = true
+            binding.ivImagecapture.setImageURI(imageUri)
+            binding.rvimage.isVisible = false
+
+            binding.imageViewClose.setOnClickListener {
+                binding.ivImagecapture.setImageResource(0)
+                binding.rvimage.visibility = View.VISIBLE
+                binding.frameimage.visibility = View.GONE
+                Toast.makeText(this,"Image Removed", Toast.LENGTH_SHORT).show()
+            }
 
         }
     }

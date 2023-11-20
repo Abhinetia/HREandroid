@@ -30,39 +30,20 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     tvTimee.text = dataX.logout
 
                         // Date caluclation made proper
-                        val myDividend = dataX.working_minutes.toInt()
-                        val myDivisor = 60
 
-                        val resultQuotient = myDividend / myDivisor
-                        val resultRemainder = myDividend % myDivisor
+//                        if (dataX.working_minutes != "---"){
+                            val myDividend = dataX.working_minutes.toInt()
+                            val myDivisor = 60
 
-                        tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
+                            val resultQuotient = myDividend / myDivisor
+                            val resultRemainder = myDividend % myDivisor
 
-                      //  tvLotimee.text = dataX.working_minutes
-
-
-//                        val timeSec: String = dataX.working_minutes
-//
-//                        val hours = timeSec.toInt() / 3600
-//                        var temp = timeSec.toInt() - hours * 3600
-//                        val mins = temp / 60
-//                        temp = temp - mins * 60
-//                        val secs = temp
-//
-//                        val requiredFormat = "$hours Hr: $temp Min"
-
-                       // tvLotimee.text = requiredFormat.toString()
+                            tvLotimee.text = "$resultQuotient"+"hr" +  ":" + "$resultRemainder"+"mm"
+//                        } else{
+//                            tvLotimee.text = "0"+"hr" +  ":" + "0"+"mm"
+//                        }
 
 
-//                    val seconds: String = dataX.working_minutes.toInt().toString()
-//                    val S = seconds.toInt() % 60
-//                    var H = seconds.toInt() / 60
-//                    val M = H % 60
-//                    H = H / 60
-//                    print("$H:$M:$S")
-//
-//                    val requiredFormat = "$H Hr: $M"
-//                    tvLotimee.text = requiredFormat.toString()
 
                     val inputDateString = dataX.date
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -72,15 +53,9 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
                     val date = inputFormat.parse(inputDateString)
                     val outputDateString = outputFormat.format(date)
 
+
+                    Log.v("Date","$outputDateString")
                     tvDisplaydaee.text  = outputDateString
-
-//                    "date": "2023-05-09",
-//                    "login": "---",
-//                    "login_location": "",
-//                    "logout": "---",
-//                    "logout_location": "",
-//                    "working_minutes": "---"
-
 
                 }
 
@@ -100,11 +75,13 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
         return ViewHolder()
     }
 
-    override fun getItemCount(): Int = differ.currentList.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(differ.currentList[position])
     }
+
+    override fun getItemCount(): Int =differ.currentList.size
+
+
     private val differCallback = object : DiffUtil.ItemCallback<AttendanceListData.Data>(){
         override fun areItemsTheSame(oldItem: AttendanceListData.Data, newItem: AttendanceListData.Data): Boolean {
             return oldItem.date == newItem.date
@@ -114,7 +91,9 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
             return oldItem == newItem
         }
     }
+
     val differ = AsyncListDiffer(this, differCallback)
+
     override fun getItemViewType(position: Int): Int = position  // Shuffling need to be added
 
 }

@@ -1,11 +1,12 @@
 package com.android.hre.adapter
 
+import android.R.attr.path
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,22 +14,21 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hre.Constants
 import com.android.hre.R
 import com.android.hre.UpdateTicketActivity
-import com.android.hre.ViewTicketActivity
 import com.android.hre.databinding.TicketDetailsBinding
 import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
 
@@ -128,6 +128,18 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                     binding.tvViewmore.setOnClickListener {
                         if (dataX.status.contains("Created")){
                               if (tvViewmore.text.contains("Update Ticket")){
+
+//                                  val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
+//
+//
+//                                  intent.type = "application/*" // Adjust the MIME type based on the type of files you are sharing
+//
+//                                  val fileUris = ArrayList<Uri>()
+//
+//                                  intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris)
+//                                  intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing files")
+//                                  intent.putExtra(Intent.EXTRA_TEXT, "Check out these files!")
+
                                   val Intent = Intent(context,UpdateTicketActivity::class.java)
                                   Intent.putExtra("TicketId",dataX.ticket_id)
                                   Intent.putExtra("TicketNo",dataX.ticket_no)
@@ -136,6 +148,10 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                                   Intent.putExtra("PCN",dataX.pcn)
                                   Intent.putExtra("PCN_Detilas",dataX.pcn_detail)
                                   Intent.putExtra("Priority",dataX.priority)
+                                 // Intent.putExtra("fileUris", fileUris)
+
+                                //  Log.v("Image", fileUris.toString())
+
                                   context.startActivity(Intent)
                               }
                         } else if (dataX.status.equals("Pending/Ongoing") || dataX.status.equals("Completed") || dataX.status.equals("Resolved")){
@@ -167,7 +183,7 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
 //                        Intent.putExtra("Subject",dataX.category)
 //                        Intent.putExtra("Stauts",dataX.status)
 //                        Intent.putExtra("ticketid",dataX.ticket_id)
-//                        context.startActivity(Intent)
+//                       40dp context.startActivity(Intent)
 
                     }
 
@@ -217,8 +233,12 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
 
         val ivAttachment = custrom.findViewById<ImageView>(R.id.iv_attachment)
 
+
         Glide.with(context)
             .load(filepath )
+            .apply(RequestOptions().override(400, 400))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(ivAttachment)
 
         ivAttachment.setOnClickListener {
@@ -230,8 +250,10 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
             val ivnotification = dialog.findViewById<ImageView>(R.id.iv_cancel)
             val llImages = dialog.findViewById<LinearLayout>(R.id.ll_images)
             previewImageView.visibility = View.VISIBLE
+
             Glide.with(context)
-                .load(filepath)
+                .load(filepath).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(previewImageView)
 
             ivnotification.setOnClickListener {
@@ -258,6 +280,7 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
         Glide.with(context)
             .load(previewImageView)
             .into(ivAttachment!!)
+
 
         ivnotification.setOnClickListener {
             dialog.dismiss()

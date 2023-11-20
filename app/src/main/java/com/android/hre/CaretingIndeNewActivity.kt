@@ -165,6 +165,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
                     arrayAdapter.notifyDataSetChanged()
 
+                    binding.etpcnId.setValidator(CustomValidator(listdata))
 
 
                     //  binding.etpcnId.threshold = 2
@@ -180,11 +181,26 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                             binding.pcnAddress.text =  data.location + data.area + " -" + data.city + data.pincode
 
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
+                           // showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
+                            showAlertDialogOkAndCloseAr("Selected Project is Completed, Please contact super Admin for more information","")
+                            binding.etpcnId.setText("")
                             binding.btnMaterials.visibility = View.GONE
                         }
                     }
-                   // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+
+                    binding.etpcnId.setOnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) {
+                            val enteredText = binding.etpcnId.text.toString()
+                            if (enteredText.isNotEmpty() && !listdata.contains(enteredText)) {
+                                // Handle the case when the user didn't select from the dropdown
+                                showAlertDialogOkAndCloseAr("Wrong PCN, please select from Drop Down: $enteredText","")
+                                // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
+                                binding.etpcnId.setText("") // Clear the invalid entry
+                            }
+                        }
+                    }
+
+                    // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
                     binding.etpcnId.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
                             charSequence: CharSequence,

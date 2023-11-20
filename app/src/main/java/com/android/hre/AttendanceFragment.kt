@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.adapter.AttendanceAdapter
+import com.android.hre.adapter.AttendanceDataAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentAttendanceBinding
 import com.android.hre.databinding.FragmentNotificationsBinding
@@ -46,6 +47,8 @@ class AttendanceFragment : Fragment() {
 
     private lateinit var attedanceadapter: AttendanceAdapter
     val attendanceListData: ArrayList<AttendanceListData.Data> = arrayListOf()
+
+    private lateinit var attedanceDataadapter: AttendanceDataAdapter
 
 
     private val fromDateClickListener = View.OnClickListener {
@@ -77,6 +80,8 @@ class AttendanceFragment : Fragment() {
 
         attedanceadapter = AttendanceAdapter()
 
+
+
         binding.ivBack.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -100,6 +105,7 @@ class AttendanceFragment : Fragment() {
 
     return root
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchtheattendanceListt(fdate: String, currentDate: String) {
         attendanceListData.clear()
@@ -119,11 +125,16 @@ class AttendanceFragment : Fragment() {
                             attendanceListData.add(data)
                         }
                     }
-                    attedanceadapter.differ.submitList(attendanceListData)
+
+
+ //                   attedanceadapter.differ.submitList(attendanceListData)
+
+                    attedanceDataadapter = AttendanceDataAdapter(attendanceListData)
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)
-                        adapter = attedanceadapter
+//                        adapter = attedanceadapter
+                        adapter = attedanceDataadapter
                     }
 
                 } else  {
@@ -138,7 +149,6 @@ class AttendanceFragment : Fragment() {
         })
     }
 
-
     private fun showDatePickerDialog(isFromDate: Boolean) {
         val calendar = if (isFromDate) fromDate else toDate
 
@@ -150,6 +160,7 @@ class AttendanceFragment : Fragment() {
             calendar.set(selectedYear, selectedMonth, selectedDay)
 
             updateSelectedDate(isFromDate)
+
         }, year, month, day)
 
         datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
@@ -173,7 +184,36 @@ class AttendanceFragment : Fragment() {
             Log.v("Date","$toodate")
         }
 
-        fetchtheattendanceList()
+        if (frommdate.isNotBlank() && toodate.isNotBlank()) {
+            if (checkDates(frommdate, toodate)) {
+                fetchtheattendanceList()
+            } else {
+                showAlertDialogOkAndCloseAfter("End date should be after start date!")
+            }
+        }
+
+
+    }
+
+    fun checkDates(d1: String, d2: String): Boolean {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        var b = false
+
+        try {
+            val date1 = dateFormat.parse(d1)
+            val date2 = dateFormat.parse(d2)
+
+            if (date1 != null && date2 != null) {
+                when {
+                    date1.before(date2) -> b = true // Start date is before end date
+                    date1 == date2 -> b = true // Two dates are equal
+                    else -> b = false // Start date is after the end date
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return b
     }
     private fun fetchtheattendanceList() {
         attendanceListData.clear()
@@ -187,17 +227,23 @@ class AttendanceFragment : Fragment() {
 
                     for(i  in 0 until dataList!!.size){
                         val data  = dataList.get(i)
+
+                        //attendanceListData.add(data)
                         if ( data.login.contains("---")){
 
                         }else{
                             attendanceListData.add(data)
                         }
                     }
-                    attedanceadapter.differ.submitList(attendanceListData)
+//                    attedanceadapter.differ.submitList(attendanceListData)
+
+                    attedanceDataadapter = AttendanceDataAdapter(attendanceListData)
+
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)
-                        adapter = attedanceadapter
+//                        adapter = attedanceadapter
+                        adapter = attedanceDataadapter
                     }
 
                 } else  {

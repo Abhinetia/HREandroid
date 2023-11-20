@@ -2,6 +2,7 @@ package com.android.hre
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -32,6 +33,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
     var pcndetails : String = ""
     var indentno:String = ""
     var materialname :String = ""
+    var materialCategory :String = ""
     var brand :String = ""
     var info :String = ""
     var recvied :String = ""
@@ -41,6 +43,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
     var dipactcomment :String = ""
     var acceptcomnet :String = ""
     var qtyPening:String = ""
+    var qtyraised :String = ""
 
 
 
@@ -68,6 +71,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         pcndetails = intent.getStringExtra("PCNDetails")!!
         indentno = intent.getStringExtra("IndentNo")!!
         materialname = intent.getStringExtra("MaterialName")!!
+        materialCategory = intent.getStringExtra("MaterialCategory")!!
         brand = intent.getStringExtra("Brand")!!
         info = intent.getStringExtra("Info")!!
         recvied = intent.getStringExtra("Recvied")!!
@@ -76,6 +80,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         dipactcomment = intent.getStringExtra("dispatchcomment")!!
         qtyPening = intent.getStringExtra("qtypening")!!
         acceptcomnet =  intent.getStringExtra("recviercomment")!!
+        qtyraised =   intent.getStringExtra("qtyraised")!!
 
 
         binding.tvRecvievercomnet.text = acceptcomnet
@@ -85,8 +90,9 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
         binding.tvPcnnodet.text = pcndetails
         binding.tvIndentnogen.text = indentno
         binding.tvMatrildispaly.text = materialname
+        binding.tvMatrilcategrory.text = materialCategory
         binding.tvBrnddispaly.text = brand
-        binding.tvDispatched.text = dispatched
+        binding.tvDispatched.text = qtyraised
         binding.tvInfo.text = info
         binding.tvQtyrecved.text = recvied
         binding.tvStstu.text = stauts
@@ -117,6 +123,13 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
 
             tvupdate.setOnClickListener {
 
+                val progressDialog = ProgressDialog(this)
+                progressDialog.setTitle("Receiveing Data")
+                progressDialog.setMessage("Please wait...")
+                progressDialog.setCancelable(false)
+                progressDialog.setCanceledOnTouchOutside(false)
+                progressDialog.show()
+
                 val count = dispatched
                 val enteredValue = textViewtotalqusntityy.text.toString().toIntOrNull()
                 val grncommnet = desc.text.toString()
@@ -142,13 +155,16 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
 
                     val number: Int = textViewtotalqusntityy.getText().toString().toInt()
                     if (number > count.toInt()) {
+                        progressDialog.dismiss()
                         showAlertDialogOkAndCloseAfter("Entered Number is Greater than Dispatched Value")
+
                     } else{
                         val rejected =  count.toInt() - number
 
                         RetrofitClient.instance.updateGrn(userid,grn,textViewtotalqusntityy.getText().toString(),rejected.toString(),grncommnet)
                             .enqueue(object : retrofit2.Callback<CountList> {
                                 override fun onResponse(call: Call<CountList>, response: Response<CountList>) {
+                                    progressDialog.dismiss()
                                     val updateResponse = response.body()
                                     if (updateResponse != null && updateResponse.status == 1) {
                                         showAlertDialogOkAndClose("GRN Updated successfully")
@@ -160,6 +176,7 @@ class GRNCommpleteLkistActivity : AppCompatActivity() {
                                 }
 
                                 override fun onFailure(call: Call<CountList>, t: Throwable) {
+                                    progressDialog.dismiss()
                                     Toast.makeText(this@GRNCommpleteLkistActivity, "Update failed: ${t.message}", Toast.LENGTH_SHORT).show()
                                 }
                             })

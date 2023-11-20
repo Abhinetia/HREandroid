@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -162,9 +163,16 @@ class ViewTicketActivity : AppCompatActivity() {
             Log.v("Data","abcd $binding.etpcnId.text.toString()")
 
 
-//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-//            val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.addConversationForTicket(ticketid,ticketno, message, userId, recipientid)
+            var call: Call<TicketCreated>? = null
+
+            if(Imaagefile != null){
+                val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+                val image = MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+                call = RetrofitClient.instance.addConversationForTicketWithImage(ticketid,ticketno, message, userId, recipientid,image)
+
+            }else{
+                call = RetrofitClient.instance.addConversationForTicket(ticketid,ticketno, message, userId, recipientid)
+            }
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
@@ -352,7 +360,15 @@ class ViewTicketActivity : AppCompatActivity() {
             binding.ivimageuploadq.isVisible = true
             binding.ivimageuploadq.setImageURI(imageUri)
             binding.ivimageupload.isVisible = false
+            binding.imageViewClose.isVisible = true
 
+
+            binding.imageViewClose.setOnClickListener {
+                binding.ivimageuploadq.setImageResource(0)
+                binding.ivimageupload.visibility = View.VISIBLE
+                binding.imageViewClose.visibility = View.GONE
+                Toast.makeText(this,"Image Removed", Toast.LENGTH_SHORT).show()
+            }
 
         }
     }

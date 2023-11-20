@@ -184,18 +184,33 @@
 
             <ImageView
                 android:id="@+id/ivimageupload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:visibility="visible"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/attach_svgrepo_com" />
 
             <ImageView
                 android:id="@+id/ivimageuploadq"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:visibility="gone"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/attach_svgrepo_com" />
+
+            <ImageView
+                android:id="@+id/imageView_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:padding="8dp"
+                android:layout_marginLeft="-22dp"
+                android:layout_marginBottom="28dp"
+                android:visibility="gone"
+                android:background="@color/white"
+                android:clickable="true"
+                android:src="@drawable/close" />
+
 
 
             <AutoCompleteTextView

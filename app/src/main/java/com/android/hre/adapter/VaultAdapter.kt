@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
@@ -78,6 +79,7 @@ class VaultAdapter : RecyclerView.Adapter<VaultAdapter.ViewHolder>() {
                             Glide.with(context)
                                 .load(dataX.filepath+ dataX.filename)
                                 .into(previewImageView)
+                            Log.v("Image",dataX.filepath+ dataX.filename)
                             ivnotification.setOnClickListener {
                                 dialog.dismiss()
                             }

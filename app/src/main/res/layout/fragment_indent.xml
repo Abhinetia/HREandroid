@@ -89,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="Search"
+                android:inputType="textCapWords"
                 android:layout_toLeftOf="@+id/iv_progressBar"
                 android:padding="13dp"
                 android:singleLine="true"

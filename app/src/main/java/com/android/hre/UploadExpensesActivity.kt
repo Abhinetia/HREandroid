@@ -1,8 +1,10 @@
 package com.android.hre
 
 import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,12 +15,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
@@ -60,7 +64,7 @@ class UploadExpensesActivity : AppCompatActivity() {
     var pettycashid :String = ""
     val listdata: ArrayList<String> = arrayListOf()
     var selectedItem :String = ""
-    private val imageUriList = java.util.ArrayList<Uri>()
+    private val imageUriList = ArrayList<Uri>()
     private val imgList = ArrayList<File>()
     private val listOfImages = ArrayList<MultipartBody.Part>()
     var isSelectedText :Boolean = true
@@ -74,6 +78,11 @@ class UploadExpensesActivity : AppCompatActivity() {
     private val cameraPermission = Manifest.permission.CAMERA
     private val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
     private val galleryPermission1 = Manifest.permission.READ_MEDIA_IMAGES
+
+
+    private lateinit var handler: Handler
+    private var timerRunnable : Runnable? = null
+    private val delayMillis = 1500L
 
 
 
@@ -154,10 +163,14 @@ class UploadExpensesActivity : AppCompatActivity() {
 
       //  binding.imageview1.visibility = View.GONE
         binding.imageview.setOnClickListener {
-            if(imageUriList.size == 4){
+            if(imgList.size == 4){  //imgList  imageUriList
                 Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
+
             }
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
             //selectImage()
 
             val currentVersion = Build.VERSION.SDK_INT
@@ -196,6 +209,10 @@ class UploadExpensesActivity : AppCompatActivity() {
 
         binding.btnMaterials.setOnClickListener {
 
+
+
+           // binding.btnMaterials.visibility = View.GONE
+
             val  amount = binding.tvamount.text.toString()
             val comm = binding.etDescrtiption.text.toString()
             val purpseFrom = binding.tvPurpose.text.toString()
@@ -229,6 +246,22 @@ class UploadExpensesActivity : AppCompatActivity() {
                 }
 
             }
+
+            if (imgList.size == 0){
+                showAlertDialogOkAndCloseAr("Image required","")
+                binding.imageview.requestFocus()
+                return@setOnClickListener
+            }
+
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Uploading Data")
+            progressDialog.setMessage("Please wait...")
+            progressDialog.setCancelable(false)
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+
+
+
             val initDate = SimpleDateFormat("dd-MM-yyyy").parse(binding.tvDate.text.toString())
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val parsedDate = formatter.format(initDate)
@@ -256,13 +289,14 @@ class UploadExpensesActivity : AppCompatActivity() {
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+                    progressDialog.dismiss()
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG","message "+ response.body()?.message.toString())
                    // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
                     if (response.body()?.message.toString().contains("Success")){
-                        showAlertDialogOkAndCloseAfter("Bill Upload Sucessful")
+                        showAlertDialogOkAndCloseAftersucees("Bill Upload Sucessful")
                     } else {
-                        showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+                        showAlertDialogOkAndCloseAftersucees(response.body()?.message.toString())
 
                     }
 
@@ -271,7 +305,7 @@ class UploadExpensesActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
-
+                    progressDialog.dismiss()
                     Log.v("TAG", t.toString())
                 }
 
@@ -318,6 +352,9 @@ class UploadExpensesActivity : AppCompatActivity() {
     }
 
     private fun selectImage() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
         val items = arrayOf<CharSequence>(
              "Choose from Library",
             "Cancel"
@@ -429,6 +466,8 @@ class UploadExpensesActivity : AppCompatActivity() {
 
                     arrayAdapter.notifyDataSetChanged()
 
+                    binding.tvPcn.setValidator(CustomValidator(listdata))
+
 
                     //  binding.etpcnId.threshold = 2
 
@@ -443,9 +482,27 @@ class UploadExpensesActivity : AppCompatActivity() {
                             binding.pcnAddress.text = data.location + data.area + " -" + data.city + data.pincode
 
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                           // showAlertDialogOkAndCloseAfter("This PCN is Completed , Please contact your Super Admin for more information")
+                            showAlertDialogOkAndCloseAfter("Selected Project is Completed, Please contact super Admin for more information")
+
+
                         }
                     }
+
+                    binding.tvPcn.setOnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) {
+                            val enteredText = binding.tvPcn.text.toString()
+                            if (enteredText.isNotEmpty() && !listdata.contains(enteredText)) {
+                                // Handle the case when the user didn't select from the dropdown
+                                showAlertDialogOkAndCloseAr("Wrong PCN, please select from Drop Down: $enteredText","")
+                                // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
+                                binding.tvPcn.setText("") // Clear the invalid entry
+                            }
+                        }
+                    }
+
+
+
                     // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
                     binding.tvPcn.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -465,9 +522,9 @@ class UploadExpensesActivity : AppCompatActivity() {
                             isSelectedText = false
                             if(!listdata.contains(binding.tvPcn.text.toString()) && charSequence.toString().length > 1){
                                 binding.carviewpcn.visibility = View.GONE
-                                binding.carviewpcnDoesntExit.visibility = View.VISIBLE
+                                binding.tvPcnDoesNotExit.visibility = View.VISIBLE
                             }else{
-                                binding.carviewpcnDoesntExit.visibility = View.GONE
+                                binding.tvPcnDoesNotExit.visibility = View.GONE
                             }
                         }
 
@@ -484,6 +541,21 @@ class UploadExpensesActivity : AppCompatActivity() {
 
     }
 
+    private fun showAlertDialogOkAndCloseAr(message:String, alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message + "\n"+ alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+            setResult(Activity.RESULT_OK)
+            binding.tvPcn.requestFocus()
+        }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+
 
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
         val builder = AlertDialog.Builder(this)
@@ -492,11 +564,26 @@ class UploadExpensesActivity : AppCompatActivity() {
             "OK"
         ) { dialogInterface, i ->
 //            setResult(Activity.RESULT_OK)
-            finish() }
+            binding.tvPcn.setText("")
+             }
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
     }
+
+    private fun showAlertDialogOkAndCloseAftersucees(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+//            setResult(Activity.RESULT_OK)
+        finish()}
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
 
 
     private fun getRealPathFromURI(contentURI: Uri): String? {
@@ -520,13 +607,16 @@ class UploadExpensesActivity : AppCompatActivity() {
 //            binding.image.setImageURI(imageUri)
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
             Log.v("TAAAAAAAAAAG","$file")
-            compressAndSaveImage(file.toString(),50)
-                                                                            
+          //compressAndSaveImage(file.toString(),50)
+
+            val fileValue = compressAndSaveImage(file.toString(),50)
+
+
             // Added This Functionality
 //            binding.imageview1.setImageURI(imageUri)
 //            binding.imageview1.visibility = View.VISIBLE
 //            binding.imageview.visibility = View.GONE
-            addImage("$imageUri")
+            addImage("$imageUri",fileValue)
 
         }
         if (resultCode == RESULT_OK && requestCode == 200 && data != null) {
@@ -542,8 +632,8 @@ class UploadExpensesActivity : AppCompatActivity() {
             }
             imageUri = this?.let { getImageUri(it, photo!!) }
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
-            compressAndSaveImage(file.toString(), 50)
-            addImage("$imageUri")
+            val fileValue = compressAndSaveImage(file.toString(), 50)
+            addImage("$imageUri",fileValue)
 
             Log.v("TAG", "image path : $imageUri and $file")
         }
@@ -558,9 +648,11 @@ class UploadExpensesActivity : AppCompatActivity() {
         )
         return Uri.parse(path)
     }
-    private fun compressAndSaveImage(imgage : String , quality : Int) {
+    private fun compressAndSaveImage(imgage : String , quality : Int) :File {
 
-        val compressedImagePath = createImageFile().absolutePath // Generate a new file path for the compressed image
+        val file : File = createImageFile()
+
+        val compressedImagePath = file.absolutePath // Generate a new file path for the compressed image
 
         val quality = quality // Adjust the quality value as needed (0-100)
 
@@ -587,6 +679,7 @@ class UploadExpensesActivity : AppCompatActivity() {
             // Error occurred while compressing or saving the image
             // Handle the error accordingly
         }
+        return file
     }
 
     private fun createImageFile(): File {
@@ -601,11 +694,13 @@ class UploadExpensesActivity : AppCompatActivity() {
         // Create a new file in the directory with a unique name
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
-        imgList.add(Imaagefile!!)
-        return File(storageDir, imageFileName)
+       // imgList.add(Imaagefile!!)
+        //return File(storageDir, imageFileName)
+
+        return Imaagefile as File
     }
 
-    private fun addImage(image: String) {
+    private fun addImage(image: String,fileValue : File) {
 
         val infalot = LayoutInflater.from(this)
         val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
@@ -617,11 +712,17 @@ class UploadExpensesActivity : AppCompatActivity() {
 
         imageUriList.add(imageUri!!) // adding the image to the list
         imageview.setImageURI(imageUri) // setting the image view
-
+        imgList.add(fileValue)
         icclose.setOnClickListener {
-            imageview.setImageResource(0)
-            icclose.setImageResource(0)
-            imageUriList.clear()
+//            imageview.setImageResource(0)
+//            icclose.setImageResource(0)
+//            imageUriList.clear()
+            if(imgList.contains(fileValue)){
+                imgList.remove(fileValue)
+            }
+
+            binding.linearLayoutGridLevelSinglePiece.removeView(custrom)
+
             linear.visibility = View.GONE
             icclose.visibility = View.GONE
             Toast.makeText(this,"Image Removed",Toast.LENGTH_SHORT).show()

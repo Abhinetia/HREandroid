@@ -1,6 +1,7 @@
 package com.android.hre
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,8 @@ import com.android.hre.adapter.TransInfoAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityTranscationInfoBinding
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Response
 
@@ -22,8 +25,7 @@ class TranscationInfoActivity : AppCompatActivity() {
     var issuedCash :String = ""
     var billaceepted :String = ""
     var billamount :String = ""
-
-
+    lateinit var editor : SharedPreferences.Editor
 
 
 
@@ -36,11 +38,12 @@ class TranscationInfoActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
+        editor = sharedPreferences.edit()
 
 
         transInfoAdapter= TransInfoAdapter()
 
-        pettytransInfoDatails()
+        //pettytransInfoDatails()
 
         binding.ivBack.setOnClickListener {
             onBackPressed()
@@ -52,6 +55,26 @@ class TranscationInfoActivity : AppCompatActivity() {
         binding.tvBalncanmount.text = billamount
 
 
+        val jsonString = sharedPreferences.getString("transcation_key", null)
+
+        val gson = Gson()
+        val type = object : TypeToken<List<TranscationInfoDetails.Data>>() {}.type
+
+        val objectList = gson.fromJson<List<TranscationInfoDetails.Data>>(jsonString, type)
+
+        transInfoAdapter.differ.submitList(objectList)
+
+        binding.rvRecylergrndata.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = transInfoAdapter
+        }
+
+    }
+
+    override fun onBackPressed() {
+        editor.putString("transcation_key",null)
+        editor.apply()
+        super.onBackPressed()
     }
 
     private fun pettytransInfoDatails() {

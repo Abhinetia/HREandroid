@@ -173,6 +173,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                         intent.putExtra("Dispatched",dataX.dispatched)
                         intent.putExtra("Status",dataX.status)
                         intent.putExtra("MaterialName",intendDetail.material_name)
+                        intent.putExtra("MaterialCategory",intendDetail.material_category)
                         intent.putExtra("Brand", intendDetail.brand)
                         intent.putExtra("Info",stringd)
                         intent.putExtra("Recvied",intendDetail.quantity_received)
@@ -180,6 +181,7 @@ class GRNAdapter : RecyclerView.Adapter<GRNAdapter.ViewHolder>() {
                    //     val value = if(TextUtils.isEmpty(dataX.accepting_comment)) "-" else dataX.accepting_comment
                         intent.putExtra("recviercomment",  if(TextUtils.isEmpty(dataX.accepting_comment)) "-" else dataX.accepting_comment)
                         intent.putExtra("qtypening",intendDetail.quantity_pending)
+                        intent.putExtra("qtyraised",intendDetail.quantity_raised)
                         context.startActivity(intent)
                     }
                 }

@@ -210,6 +210,26 @@
 
         </LinearLayout>
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:layout_marginRight="10dp"
+            android:overScrollMode="never"
+            android:padding="5dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_gridLevelSinglePiece"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
         <ImageView
             android:layout_width="100dp"
             android:visibility="gone"
@@ -221,6 +241,52 @@
             android:layout_centerVertical="true"
             />
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/frameimage"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:id="@+id/linear"
+                android:orientation="vertical"
+                android:paddingBottom="-50dp" >
+
+                <!---add your views here-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_imagecapture"
+                        android:layout_width="100dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="5dp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:padding="8dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:src="@drawable/close" />
+        </FrameLayout>
+
+
 
 
         <LinearLayout
@@ -228,6 +294,8 @@
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:weightSum="2"
+            android:visibility="invisible"
+            android:id="@+id/linearsubmit"
             android:layout_height="wrap_content">
 
             <TextView

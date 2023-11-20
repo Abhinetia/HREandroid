@@ -31,7 +31,6 @@ import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentHomeBinding
 import com.android.hre.grn.DisplayGrnActivity
 import com.android.hre.response.attenda.LoginpageAttendance
-import com.android.hre.response.homeindents.GetIndentsHome
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationServices
@@ -42,28 +41,21 @@ import retrofit2.Response
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.random.Random
 import com.google.android.gms.location.*
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.android.hre.AboutUsActivity
-import com.android.hre.AttendanceActivity
 import com.android.hre.AttendanceFragment
 import com.android.hre.GRNFragment
 import com.android.hre.IndentFragment
 import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
-import com.android.hre.PettyCashActivity
 import com.android.hre.PettyCashScreenFragment
 import com.android.hre.TicketFragment
-import com.android.hre.VaultActivity
 import com.android.hre.VaultFragment
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
-import com.android.hre.response.vaults.VaultDetails
 
 
 class HomeFragment : Fragment() {

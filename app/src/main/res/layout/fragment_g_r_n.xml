@@ -82,6 +82,7 @@
                     android:hint="Search PCNno, Indentno, GRN no"
                     android:layout_toLeftOf="@+id/iv_progressBar"
                     android:padding="13dp"
+                    android:inputType="textCapWords"
                     android:singleLine="true"
                     android:textSize="13sp" />
 

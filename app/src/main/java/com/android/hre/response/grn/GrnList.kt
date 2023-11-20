@@ -20,6 +20,7 @@ data class GrnList(
         val brand: String,
      //   val information: Information,
         val material_name: String,
+        val material_category :String,
         val quantity_pending: String,
         val quantity_raised: String,
         val quantity_received: String,

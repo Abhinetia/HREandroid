@@ -36,7 +36,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@+id/ivBack"
-            android:text="Attendance"
+            android:text="Attendance Report"
             android:textColor="@color/white"
             android:textSize="15dp" />
 
@@ -58,26 +58,15 @@
         android:layout_below="@+id/rvbackname"
         android:gravity="center|start"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text=" Report"
-            android:layout_centerVertical="true"
-            android:textSize="15dp"
-            android:id="@+id/tvopen"
-            android:drawablePadding="5dp"
-            android:textColor="@color/white"
-            />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardElevation="3dp"
+            android:id="@+id/card"
             android:layout_toLeftOf="@+id/crdmonthg"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp">
@@ -148,7 +137,7 @@
             android:layout_width="match_parent"
             android:weightSum="4"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
             android:id="@+id/linearname"

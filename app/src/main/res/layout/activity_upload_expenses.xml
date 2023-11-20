@@ -190,6 +190,54 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:textColor="@color/black_text"
+                        android:text="Date of Bill* :"
+                        android:layout_gravity="center"
+                        android:minWidth="105dp"
+                        android:textSize="13dp"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        android:layout_toLeftOf="@+id/crdmonthg"
+                        android:layout_margin="10dp"
+                        app:cardCornerRadius="10dp">
+
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tv_date"
+                            android:hint="Select Date                 "
+                            android:singleLine="true"
+                            android:textSize="13sp"
+                            android:clickable="true"
+                            android:inputType="textCapSentences"
+                            android:padding="12dp"
+                            android:focusable="false"
+                            android:background="@color/white"
+                            />
+
+
+
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/black_text"
                         android:text="Purpose* :"
                         android:layout_gravity="center"
                         android:minWidth="105dp"
@@ -265,34 +313,22 @@
                             android:textSize="12sp" />
 
                     </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/carviewpcn_doesnt_exit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:padding="2sp"
-                        android:visibility="gone"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="3dp">
-
-
-                        <TextView
-                            android:id="@+id/tv_pcn_does_not_exit"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_gravity="center"
-                            android:text="PCN Does't Exist!!"
-                            android:layout_height="wrap_content">
-
-                        </TextView>
-
-
-                    </androidx.cardview.widget.CardView>
-
 
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_pcn_does_not_exit"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:text="PCN Does't Exist!!"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -374,52 +410,6 @@
                 </androidx.cardview.widget.CardView>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginLeft="10dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/black_text"
-                        android:text="Date of Bill* :"
-                        android:layout_gravity="center"
-                        android:minWidth="105dp"
-                        android:textSize="13dp"
-                        android:layout_height="wrap_content"/>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="3dp"
-                        android:layout_toLeftOf="@+id/crdmonthg"
-                        android:layout_margin="10dp"
-                        app:cardCornerRadius="10dp">
-
-
-                        <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:id="@+id/tv_date"
-                            android:hint="Select Date                 "
-                            android:singleLine="true"
-                            android:textSize="13sp"
-                            android:clickable="true"
-                            android:inputType="textCapSentences"
-                            android:padding="12dp"
-                            android:focusable="false"
-                            android:background="@color/white"
-                            />
-
-
-
-
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/crdviewDesc"

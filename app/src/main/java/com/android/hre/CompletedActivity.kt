@@ -1,20 +1,31 @@
 package com.android.hre
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCompletedBinding
@@ -25,6 +36,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -46,6 +58,22 @@ class CompletedActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var file: File? = null
     private var Imaagefile: File? = null
+    //private val imageUriList = java.util.ArrayList<Uri>()
+    private val imageUriList = ArrayList<Uri>()
+    private val imgList = ArrayList<File>()
+    private val listOfImages = ArrayList<MultipartBody.Part>()
+
+
+
+    companion object {
+        const val CAMERA_PERMISSION_REQUEST = 101
+        const val GALLERY_PERMISSION_REQUEST = 102
+
+    }
+
+    private val cameraPermission = Manifest.permission.CAMERA
+    private val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+    private val galleryPermission1 = Manifest.permission.READ_MEDIA_IMAGES
 
 
 
@@ -79,18 +107,52 @@ class CompletedActivity : AppCompatActivity() {
         binding.tvStatus.text = status
 
         binding.rvimage.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
+
+            if(imgList.size == 4){  //imgList  imageUriList
+                Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+
+            }
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
+            val currentVersion = Build.VERSION.SDK_INT
+
+            // Now you can use the version to conditionally run different methods
+            if (currentVersion >= Build.VERSION_CODES.TIRAMISU) {
+                checkIfPermissionGrantedAndroid13()
+            } else if (currentVersion >= Build.VERSION_CODES.O) {
+                checkIfPermissionGranted()
+
+            }
+
+//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//            startActivityForResult(gallery, pickImage)
+//
+            binding.linearsubmit.visibility = View.VISIBLE
         }
 
         binding.tvCancel.setOnClickListener {
                 onBackPressed()
         }
 
+
         binding.tvUpdate.setOnClickListener {
             if (binding.description.text.toString().isEmpty()) {
                 binding.description.error = "Description required"
                 binding.description.requestFocus()
+                return@setOnClickListener
+            }
+
+//            if (listOfImages == null){
+//                showAlertDialogOkAndCloseAfternotUplodad("Image required")
+//                binding.rvimage.requestFocus()
+//                return@setOnClickListener
+//            }
+
+            if (imgList.size == 0){
+                showAlertDialogOkAndCloseAr("Image required","")
+                binding.imageview.requestFocus()
                 return@setOnClickListener
             }
             val progressDialog = ProgressDialog(this)
@@ -108,12 +170,20 @@ class CompletedActivity : AppCompatActivity() {
             val actionCompl = RequestBody.create(MediaType.parse("text/plain"), action)
 
 
-            // Image From Gallery File path
-            val requestFile: RequestBody =
-                RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
-            val image =
-                MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
-            val call = RetrofitClient.instance.CompletTicket(ticketid,ticketno,message,userId,actionCompl,image)
+            // Single Image From Gallery File path
+//            val requestFile: RequestBody =
+//                RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
+//            val image =
+//                MultipartBody.Part.createFormData("image", Imaagefile?.name, requestFile)
+
+            // Multiple Image From Gallery File path
+            for (i in imgList){
+                Log.v("TAG","imglist is $i")
+                val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+                val image =   MultipartBody.Part.createFormData("image[$i]", Imaagefile?.name, requestFile)
+                listOfImages.add(image)
+            }
+            val call = RetrofitClient.instance.CompletTicket2(ticketid,ticketno,message,userId,actionCompl,listOfImages)
 
             call.enqueue(object : retrofit2.Callback<Completelist> {
                 override fun onResponse(
@@ -137,16 +207,74 @@ class CompletedActivity : AppCompatActivity() {
 
     }
 
-    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+    fun  checkIfPermissionGrantedAndroid13(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission1) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission1),
+                UploadExpensesActivity.CAMERA_PERMISSION_REQUEST
+            )
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+    fun  checkIfPermissionGranted(){
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, galleryPermission) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission, galleryPermission),
+                UploadExpensesActivity.CAMERA_PERMISSION_REQUEST
+            )
+        } else {
+            selectImage()
+            // Camera and gallery permissions already granted
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == UploadExpensesActivity.CAMERA_PERMISSION_REQUEST || requestCode == UploadExpensesActivity.GALLERY_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // Permissions granted, you can proceed with the actions
+                selectImage()
+            } else {
+                // Permissions denied, handle accordingly (e.g., show a message)
+                Toast.makeText(this,"Please allow all the permissions",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+    private fun selectImage() {
+        val items = arrayOf<CharSequence>(
+            "Choose from Library",
+            "Cancel"
+        ) //"Take Photo",
+        val builder = AlertDialog.Builder(this@CompletedActivity)
+        builder.setTitle("Add Photo!")
+        builder.setItems(items) { dialog, item ->
+//            if (items[item] == "Take Photo") {
+//                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(cameraIntent, 200)
+//            } else
+            if (items[item] == "Choose from Library") {
+                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, pickImage)
+            } else if (items[item] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    private fun showAlertDialogOkAndCloseAr(message:String, alertMessage: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(alertMessage)
+        builder.setMessage(message + "\n"+ alertMessage)
         builder.setPositiveButton(
             "OK"
         ) { dialogInterface, i ->
-//            setResult(Activity.RESULT_OK)
-            val intent2=  Intent()
-            setResult(Activity.RESULT_OK,intent2)
-            finish()
+            setResult(Activity.RESULT_OK)
+           // binding.tvPcn.requestFocus()
         }
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
@@ -154,20 +282,104 @@ class CompletedActivity : AppCompatActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+//            setResult(Activity.RESULT_OK)
+            finish()
+        }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+    private fun showAlertDialogOkAndCloseAfternotUplodad(alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+//            setResult(Activity.RESULT_OK)
+
+        }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+
+
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == pickImage) {
             imageUri = data?.data
 //            binding.image.setImageURI(imageUri)
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
             compressAndSaveImage(file.toString(),50)
-            binding.imageview.isVisible = true
-            binding.imageview.setImageURI(imageUri)
+//            binding.imageview.isVisible = true
+//            binding.imageview.setImageURI(imageUri)
+
+            binding.frameimage.isVisible = true
+            binding.ivImagecapture.setImageURI(imageUri)
             binding.rvimage.isVisible = false
 
 
         }
+        binding.imageViewClose.setOnClickListener {
+            binding.ivImagecapture.setImageResource(0)
+            binding.rvimage.visibility = View.VISIBLE
+            binding.frameimage.visibility = View.GONE
+            binding.linearsubmit.visibility = View.GONE
+            Toast.makeText(this,"Image Removed", Toast.LENGTH_SHORT).show()
+        }
+
+    }*/
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == pickImage) {
+            imageUri = data?.data
+            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            val fileValue = compressAndSaveImage(file.toString(),50)
+
+
+            addImage("$imageUri",fileValue)
+
+
+        }
+        if (resultCode == RESULT_OK && requestCode == 200 && data != null){
+
+            val photo = data.extras!!["data"] as Bitmap?
+            if (photo!= null){
+//
+
+            }
+            imageUri = this?.let { getImageUri(it, photo!!) }
+            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+            val fileValue =   compressAndSaveImage(file.toString(),50)
+
+            addImage("$imageUri",fileValue)
+
+
+            Log.v("TAG","image path : $imageUri and $file")
+
+        }
     }
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.getContentResolver(), inImage,
+            "Title", null
+        )
+        return Uri.parse(path)
+    }
+
+
     private fun getRealPathFromURI(contentURI: Uri): String? {
         val result: String?
         val cursor: Cursor = getContentResolver()?.query(contentURI, null, null, null, null)!!
@@ -181,9 +393,53 @@ class CompletedActivity : AppCompatActivity() {
         }
         return result
     }
-    private fun compressAndSaveImage(imgage : String , quality : Int) {
 
-        val compressedImagePath = createImageFile().absolutePath // Generate a new file path for the compressed image
+    private fun addImage(image: String,fileValue : File) {
+
+        val infalot = LayoutInflater.from(this)
+        val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
+
+        val imageview = custrom.findViewById<ImageView>(R.id.iv_imagecapture)
+        val icclose = custrom.findViewById<ImageView>(R.id.imageView_close)
+        val linear = custrom.findViewById<LinearLayout>(R.id.linear)
+
+        Log.v("ImahgeBe","$imageUriList")
+
+
+        imageUriList.add(imageUri!!) // adding the image to the list
+        imageview.setImageURI(imageUri) // setting the image view
+        imgList.add(fileValue)
+        icclose.setOnClickListener {
+            imageview.setImageResource(0)
+            icclose.setImageResource(0)
+//            imageUriList.removeAt(1)
+//            imgList.removeAt(1)
+
+            if(imgList.contains(fileValue)){
+                imgList.remove(fileValue)
+            }
+
+            binding.linearLayoutGridLevelSinglePiece.removeView(custrom)
+
+
+            // imageUriList.clear()
+            linear.visibility = View.GONE
+            icclose.visibility = View.GONE
+            Toast.makeText(this, "Image Removed", Toast.LENGTH_SHORT)
+                .show()  // 1000042116  1000042116
+            Log.v("Imahge", "$imageUriList")
+        }
+
+        binding.linearLayoutGridLevelSinglePiece.addView(custrom)
+
+
+    }
+
+    private fun compressAndSaveImage(imgage : String , quality : Int) :File {
+
+        val file : File = createImageFile()
+
+        val compressedImagePath = file.absolutePath // Generate a new file path for the compressed image
 
         val quality = quality // Adjust the quality value as needed (0-100)
 
@@ -210,6 +466,7 @@ class CompletedActivity : AppCompatActivity() {
             // Error occurred while compressing or saving the image
             // Handle the error accordingly
         }
+        return file
     }
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -224,8 +481,9 @@ class CompletedActivity : AppCompatActivity() {
         // Create a new file in the directory with a unique name
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
-
-        return File(storageDir, imageFileName)
+        //imgList.add(Imaagefile!!)
+        //return File(storageDir, imageFileName)
+        return Imaagefile as File
     }
 
 }

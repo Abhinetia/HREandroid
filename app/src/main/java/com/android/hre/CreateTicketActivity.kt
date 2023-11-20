@@ -10,6 +10,8 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -54,7 +57,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
+import android.widget.AutoCompleteTextView.Validator as TextViewValidator
 
 const val PERMISSION_REQUEST_CODE = 1001
 
@@ -128,10 +131,11 @@ class CreateTicketActivity : AppCompatActivity() {
 
         binding.rvimage.setOnClickListener {
 
-            if(imageUriList.size == 4){
+            if(imgList.size == 4){  // imgList   imageUriList
                 Toast.makeText(applicationContext, "Only you select 4 images.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+            binding.btnCretaeticket.visibility= View.VISIBLE
 
             val currentVersion = Build.VERSION.SDK_INT
 
@@ -174,7 +178,6 @@ class CreateTicketActivity : AppCompatActivity() {
 //        binding.etSelctrecepitent.setOnItemClickListener { adapterView, view, i, l ->
 //            receiptEmployee = listEmployeeData.get(i).recipient
 //        }
-
         binding.btnCretaeticket.setOnClickListener {
 
             val comment =  binding.etDescrtiption.text.toString()
@@ -202,6 +205,17 @@ class CreateTicketActivity : AppCompatActivity() {
             if (departm.isEmpty()){
                 binding.etTickettitle.error = "Please Select The Department"
                 binding.etTickettitle.requestFocus()
+                return@setOnClickListener
+            }
+//            if(imageUriList.size == 0 ){
+//                showAlertDialogOkAndCloseAr("Image required","")
+//                binding.rvimage.requestFocus()
+//                return@setOnClickListener
+//            }
+
+            if (imgList.size == 0){
+                showAlertDialogOkAndCloseAr("Image required","")
+                binding.rvimage.requestFocus()
                 return@setOnClickListener
             }
 
@@ -279,6 +293,8 @@ class CreateTicketActivity : AppCompatActivity() {
 
 
     }
+
+
 
     fun  checkIfPermissionGrantedAndroid13(){
         if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
@@ -404,13 +420,13 @@ class CreateTicketActivity : AppCompatActivity() {
             imageUri = data?.data
 //            binding.image.setImageURI(imageUri)
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
-            compressAndSaveImage(file.toString(),50)
+            val fileValue = compressAndSaveImage(file.toString(),50)
 
             // Added This Functionality
 //            binding.ivImagecapture.isVisible = true
 //            binding.ivImagecapture.setImageURI(imageUri)
 //            binding.ivCamera.isVisible = false
-            addImage("$imageUri")
+            addImage("$imageUri",fileValue)
 
 
         }
@@ -427,9 +443,9 @@ class CreateTicketActivity : AppCompatActivity() {
             }
             imageUri = this?.let { getImageUri(it, photo!!) }
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
-            compressAndSaveImage(file.toString(),50)
+            val fileValue = compressAndSaveImage(file.toString(),50)
 
-            addImage("$imageUri")
+            addImage("$imageUri",fileValue)
 
 
             Log.v("TAG","image path : $imageUri and $file")
@@ -445,9 +461,10 @@ class CreateTicketActivity : AppCompatActivity() {
         )
         return Uri.parse(path)
     }
-    private fun compressAndSaveImage(imgage : String , quality : Int) {
+    private fun compressAndSaveImage(imgage : String , quality : Int): File {
 
-        val compressedImagePath = createImageFile().absolutePath // Generate a new file path for the compressed image
+        val file : File = createImageFile()
+        val compressedImagePath = file.absolutePath // Generate a new file path for the compressed image
 
         val quality = quality // Adjust the quality value as needed (0-100)
 
@@ -460,6 +477,7 @@ class CreateTicketActivity : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        return file
     }
 
     // Function to create a new image file with a unique name in the app's external storage directory
@@ -476,10 +494,10 @@ class CreateTicketActivity : AppCompatActivity() {
         // Create a new file in the directory with a unique name
         val imageFileName = "IMG_$timeStamp.jpg"
         Imaagefile=File(storageDir, imageFileName)
-        imgList.add(Imaagefile!!)
+        //imgList.add(Imaagefile!!)
         Toast.makeText(applicationContext, "Image Uploaded successful", Toast.LENGTH_LONG).show()
 
-        return File(storageDir, imageFileName)
+        return Imaagefile as File
     }
 
 
@@ -578,6 +596,8 @@ class CreateTicketActivity : AppCompatActivity() {
                     binding.etSelctpcn.setThreshold(1)
                     arrayAdapter.notifyDataSetChanged()
 
+                    binding.etSelctpcn.setValidator(CustomValidator(listdata))
+
 
                     //  binding.etpcnId.threshold = 2
 
@@ -586,15 +606,35 @@ class CreateTicketActivity : AppCompatActivity() {
                         var position : Int = listdata.indexOf(binding.etSelctpcn.text.toString())
                         var data: PCN.Data = arrayList_details.get(position)
                         isSelectedText = true
+                        Log.v("isSelectedText",isSelectedText.toString())
                         if (data.status.contains("Active")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
                             binding.pcnAddress.text = data.location + data.area + " -" + data.city + data.pincode
 
+
                         } else if (data.status.contains("Completed")){
-                            showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
+                            //showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
+                            showAlertDialogOkAndCloseAr("Selected Project is Completed, Please contact super Admin for more information","")
+                            binding.etSelctpcn.setText("")
+                            binding.etSelctpcn.requestFocus()
                         }
                     }
+
+                    binding.etSelctpcn.setOnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) {
+                            val enteredText = binding.etSelctpcn.text.toString()
+                            if (enteredText.isNotEmpty() && !listdata.contains(enteredText)) {
+                                // Handle the case when the user didn't select from the dropdown
+                                showAlertDialogOkAndCloseAr("Wrong PCN, please select from Drop Down: $enteredText","")
+                               // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
+                                binding.etSelctpcn.setText("")
+                                binding.etSelctpcn.requestFocus()// Clear the invalid entry
+                            }
+                        }
+                    }
+
+
                     // myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
                     binding.etSelctpcn.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -633,6 +673,10 @@ class CreateTicketActivity : AppCompatActivity() {
     }
 
 
+
+
+
+
     private fun showAlertDialogOkAndCloseAr(message:String, alertMessage: String) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(message + "\n"+ alertMessage)
@@ -640,6 +684,8 @@ class CreateTicketActivity : AppCompatActivity() {
             "OK"
         ) { dialogInterface, i ->
             setResult(Activity.RESULT_OK)
+            //binding.etSelctpcn.requestFocus()
+            //binding.etSelctpcn.setText("")
              }
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
@@ -691,6 +737,22 @@ class CreateTicketActivity : AppCompatActivity() {
                         AutoCompleteAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata2)
                     binding.etTickettitle.setAdapter(arrayAdapter)
                     binding.etTickettitle.threshold = 1
+
+                    binding.etTickettitle.setValidator(CustomValidator(listdata2))
+
+                    binding.etTickettitle.setOnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) {
+                            val enteredText = binding.etTickettitle.text.toString()
+                            if (enteredText.isNotEmpty() && !listdata2.contains(enteredText)) {
+                                // Handle the case when the user didn't select from the dropdown
+                                showAlertDialogOkAndCloseAr("Wrong Department, please select from Drop Down: $enteredText","")
+                                // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
+                                binding.etTickettitle.setText("")
+                               // binding.etTickettitle.requestFocus()// Clear the invalid entry
+                            }
+                        }
+                    }
+
                 } else {
                     // Handle error response
                 }
@@ -702,7 +764,7 @@ class CreateTicketActivity : AppCompatActivity() {
         })
     }
 
-    private fun addImage(image: String) {
+    private fun addImage(image: String,fileValue : File) {
 
         val infalot = LayoutInflater.from(this)
         val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
@@ -711,20 +773,31 @@ class CreateTicketActivity : AppCompatActivity() {
         val icclose = custrom.findViewById<ImageView>(R.id.imageView_close)
         val linear = custrom.findViewById<LinearLayout>(R.id.linear)
 
+        Log.v("ImahgeBe","$imageUriList")
 
         imageUriList.add(imageUri!!) // adding the image to the list
         imageview.setImageURI(imageUri) // setting the image view
+        imgList.add(fileValue)
+
         icclose.setOnClickListener {
-            imageview.setImageResource(0)
-            icclose.setImageResource(0)
-            imageUriList.clear()
+//            imageview.setImageResource(0)
+//            icclose.setImageResource(0)
+//            imageUriList.removeAt(1)
+//            imgList.removeAt(1)
+
+            if(imgList.contains(fileValue)){
+                imgList.remove(fileValue)
+            }
+
+            binding.linearLayoutGridLevelSinglePiece.removeView(custrom)
+
+            // imageUriList.clear()
             linear.visibility = View.GONE
             icclose.visibility = View.GONE
-            Toast.makeText(this,"Image Removed",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Image Removed", Toast.LENGTH_SHORT)
+                .show()  // 1000042116  1000042116
+            Log.v("Imahge", "$imageUriList")
         }
-
-
-        binding.btnCretaeticket.visibility= View.VISIBLE
 
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
@@ -812,5 +885,20 @@ class CreateTicketActivity : AppCompatActivity() {
         }
     }
 */
+
+}
+
+class CustomValidator(private val listdata: ArrayList<String>) :
+    AutoCompleteTextView.Validator {
+    override fun isValid(text: CharSequence?): Boolean {
+
+        return text != null && listdata.contains(text.toString())
+
+    }
+
+    override fun fixText(invalidText: CharSequence?): CharSequence {
+        return "wrong input please correct"
+    }
+
 
 }

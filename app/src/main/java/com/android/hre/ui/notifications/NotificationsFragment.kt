@@ -22,6 +22,7 @@ import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
 import com.android.hre.R
 import com.android.hre.adapter.AttendanceAdapter
+import com.android.hre.adapter.AttendanceDataAdapter
 import com.android.hre.adapter.TicketAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentNotificationsBinding
@@ -48,6 +49,9 @@ class NotificationsFragment : Fragment() {
 
 
     private lateinit var attedanceadapter: AttendanceAdapter
+
+    private lateinit var attedanceDataadapter: AttendanceDataAdapter
+
 
 
     private val fromDateClickListener = View.OnClickListener {
@@ -155,11 +159,15 @@ class NotificationsFragment : Fragment() {
                         }
                     }
 
-                    attedanceadapter.differ.submitList(attendanceListData)
+                  //  attedanceadapter.differ.submitList(attendanceListData)
+
+                    attedanceDataadapter = AttendanceDataAdapter(attendanceListData)
+
 
                     binding.rvRecylergrndata.apply {
                         layoutManager = LinearLayoutManager(context)
-                        adapter = attedanceadapter
+                       // adapter = attedanceadapter
+                        adapter = attedanceDataadapter
                     }
 
                 } else  {

@@ -152,6 +152,32 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Material Category"
+                android:minWidth="140dp"
+                android:textColor="#FF9797"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_matrilcategrory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GRN"
+                android:minWidth="120dp"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Brand"
                 android:minWidth="140dp"
                 android:textColor="#FF9797"
@@ -177,7 +203,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dispatched No"
+                android:text="Qty Raised"
                 android:minWidth="140dp"
                 android:textColor="#FF9797"
                 android:textSize="14sp" />
@@ -491,6 +517,7 @@
                         android:gravity="center"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
                         android:layout_gravity="center"
                         android:textSize="13dp"
                         android:background="@drawable/icrectborder"
@@ -502,6 +529,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:autoSizeTextType="uniform"
+                        android:clickable="true"
                         android:gravity="center"
                         android:id="@+id/tv_viewdteuils"
                         android:layout_weight="1"

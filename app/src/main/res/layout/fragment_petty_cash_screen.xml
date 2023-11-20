@@ -63,7 +63,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -99,7 +99,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Wallet"
+                            android:layout_marginTop="2dp"
+                            android:text="Issued Amt"
                             android:textSize="13dp">
 
                         </TextView>
@@ -143,7 +144,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Approved"
+                            android:layout_marginTop="2dp"
+                            android:text="Approved Amt"
                             android:textSize="13dp">
 
                         </TextView>
@@ -188,7 +190,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Spend"
+                            android:text="UnApproved"
+                            android:layout_marginTop="2dp"
                             android:textSize="13dp">
 
                         </TextView>
@@ -375,6 +378,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardElevation="3dp"
+                android:id="@+id/stratdate"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp">
