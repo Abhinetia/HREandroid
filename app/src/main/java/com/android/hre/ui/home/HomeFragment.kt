@@ -7,9 +7,9 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -56,6 +56,10 @@ import com.android.hre.VaultFragment
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
+import android.provider.Settings
+import android.content.pm.PackageManager
+import android.media.MediaPlayer
+
 
 
 class HomeFragment : Fragment() {
@@ -77,6 +81,7 @@ class HomeFragment : Fragment() {
     lateinit var editor : SharedPreferences.Editor
     private lateinit var locationHelper: LocationHelper
     var version :String = ""
+    private lateinit var mediaPlayer: MediaPlayer
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -85,6 +90,8 @@ class HomeFragment : Fragment() {
             // Permission granted, proceed with location retrieval
             getCurrentLocation()
         } else {
+
+            openAppSettings()
             // Permission denied, handle accordingly
         }
     }
@@ -104,6 +111,8 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         requestLocationPermissionn()
+
+
 
 
          sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
@@ -152,6 +161,8 @@ class HomeFragment : Fragment() {
         fetchTheIndentList()
 
         fetchDashboardData()
+
+        mediaPlayer = MediaPlayer.create(requireContext(),com.android.hre.R.raw.sound) // Replace with your sound file
 
 
 
@@ -278,6 +289,7 @@ class HomeFragment : Fragment() {
                    binding.slider.outerColor = Color.parseColor("#F10909")
                    getLastLocation()
                     var action = "login"
+                   mediaPlayer.start()
 //                   editor.putBoolean("isLoggedIn",true)
 //                   editor.apply()
 //                   editor.commit()
@@ -293,6 +305,7 @@ class HomeFragment : Fragment() {
                    binding.slider.outerColor = Color.parseColor("#3EBA26")
                    getLastLocation()
                    var action = "logout"
+                 //  mediaPlayer.start()
 //                   editor.putBoolean("isLoggedIn",false)
 //                   editor.apply()
 //                   editor.commit()
@@ -310,6 +323,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        mediaPlayer.release() 
     }
     private fun checkLocationPermission(): Boolean {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
@@ -373,14 +387,14 @@ class HomeFragment : Fragment() {
                     if (status?.equals(1)!!){
                        // Toast.makeText(context, "Login Successfull", Toast.LENGTH_LONG).show()
                         if (response.body()!!.message.contains("Login")){
-                            Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
+                           // Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
                             editor.putBoolean(Constants.isEmployeeLoggedIn,true)
                             binding.slider.text = "Attendance Logout"
                             binding.slider.outerColor = Color.parseColor("#F10909")
                             editor.apply()
                             editor.commit()
                         } else if(response.body()!!.message.contains("Logout")){
-                            Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
+                            //Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
                             binding.slider.text = "Attendance Login"
                             binding.slider.outerColor = Color.parseColor("#3EBA26")
                             editor.putBoolean(Constants.isEmployeeLoggedIn,false)
@@ -495,6 +509,13 @@ class HomeFragment : Fragment() {
             Looper.getMainLooper()
         )
 
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", requireContext().packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 
     private fun fetchtheappData() {

@@ -8,6 +8,7 @@ package com.android.hre.adapter
     import android.view.View
     import android.view.ViewGroup
     import android.widget.TextView
+    import androidx.cardview.widget.CardView
     import androidx.recyclerview.widget.RecyclerView
     import com.android.hre.R
     import com.android.hre.response.newindentrepo.NewIndents
@@ -24,6 +25,7 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
              val tvpcndetails: TextView = itemView.findViewById(R.id.tvdpcndatapcn)
              val tvdate: TextView = itemView.findViewById(R.id.tv_displaydate)
              val viewmore :  TextView = itemView.findViewById(R.id.tv_viewindents)
+             val cardView : CardView = itemView.findViewById(R.id.carviewdata)
 
 
          }
@@ -45,7 +47,7 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
              if (dataX.status.equals("Completed")){
                  holder.tvstatus.setBackgroundResource(R.drawable.ic_greenbaby)
              } else{
-                 holder.tvstatus.setBackgroundResource(R.drawable.ic_rectangle)
+                 holder.tvstatus.setBackgroundResource(R.drawable.cardgreen)
 
              }
 
@@ -63,6 +65,15 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
 
 
              holder.viewmore.setOnClickListener {
+                 Log.v("TAG",dataX.indent_id.toString())
+                 val intent = Intent(context, ViewMoreIndentActivity::class.java)
+                 intent.putExtra("indentid",dataX.indent_id.toString())
+                 intent.putExtra("pcn",dataX.pcn)
+                 intent.putExtra("pcndetails",dataX.pcn_detail)
+                 context.startActivity(intent)
+             }
+
+             holder.cardView.setOnClickListener {
                  Log.v("TAG",dataX.indent_id.toString())
                  val intent = Intent(context, ViewMoreIndentActivity::class.java)
                  intent.putExtra("indentid",dataX.indent_id.toString())

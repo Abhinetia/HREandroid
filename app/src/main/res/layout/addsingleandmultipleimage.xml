@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:padding="8dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@color/white"
             android:clickable="true"
             android:src="@drawable/close" />

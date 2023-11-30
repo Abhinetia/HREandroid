@@ -20,6 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
+            android:id="@+id/cardviewticket"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:cardUseCompatPadding="true"
             app:cardElevation="1dp">
             <RelativeLayout
@@ -92,12 +95,11 @@
                     android:id="@+id/tv_ticketstatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_openrectan"
                     android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/imgline"
                     android:layout_marginLeft="25dp"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Open"
                     android:textColor="@color/black_text"
                     android:textSize="12dp" />
@@ -182,9 +184,13 @@
                     android:padding="5dp"
                     android:layout_marginTop="10dp"
                     android:minWidth="150dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center"
                     android:id="@+id/tv_viewmore"
                     android:text="View Convo"
-                    android:textColor="#FF5E5E"
+                    android:textColor="@color/white"
                     android:textSize="13dp" />
 
 

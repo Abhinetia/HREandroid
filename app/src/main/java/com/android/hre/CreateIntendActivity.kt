@@ -71,7 +71,7 @@ class CreateIntendActivity : AppCompatActivity(), FullScreenBottomSheetDialog.Bo
 //             val Intent = Intent(this@CreateIntendActivity,SearchMaterialIndentActivity::class.java)
 //             startForResult.launch(Intent)
 
-            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this)
+            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this,this)
             fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialog::class.simpleName)
 
         }

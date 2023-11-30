@@ -5,11 +5,11 @@ data class Getmaterials(
     val status: Int
 ) {
     data class DataX(
-        val brand: String,
+        var brand: String,
       //  val information: Information,
-        val material_id: String,
-        val name: String,
-        val uom: String,
+        var material_id: String,
+        var name: String,
+        var uom: String,
         val information: Map<String,String>
     )
 

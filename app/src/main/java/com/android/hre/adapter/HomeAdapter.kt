@@ -77,6 +77,14 @@ class HomeAdapter  : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
                         intent.putExtra("pcndetails",dataX.pcn_detail)
                         context.startActivity(intent)
                     }
+                    binding.carviewdata.setOnClickListener {
+                        Log.v("TAG",dataX.indent_id.toString())
+                        val intent = Intent(context,ViewMoreIndentActivity::class.java)
+                        intent.putExtra("indentid",dataX.indent_id.toString())
+                        intent.putExtra("pcn",dataX.pcn)
+                        intent.putExtra("pcndetails",dataX.pcn_detail)
+                        context.startActivity(intent)
+                    }
 
               }
 

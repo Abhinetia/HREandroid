@@ -74,7 +74,7 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                         tvAssigned.visibility = View.GONE
                         tvViewmore.text = "Rejected"
                     } else if (dataX.status.contains("Created")){
-                        tvTicketstatus.setBackgroundResource(R.drawable.ic_rectangle)
+                        tvTicketstatus.setBackgroundResource(R.drawable.cardgreen)
                        //tvMailcount.visibility = View.GONE
                         tvAssigned.visibility = View.GONE
                         tvViewmore.text = "Update Ticket"
@@ -125,20 +125,13 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
 
                     tvDate.text  = outputDateString
 
+                    tvViewmore.setBackgroundResource(R.drawable.cardgrey)
+
                     binding.tvViewmore.setOnClickListener {
                         if (dataX.status.contains("Created")){
                               if (tvViewmore.text.contains("Update Ticket")){
 
-//                                  val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
 //
-//
-//                                  intent.type = "application/*" // Adjust the MIME type based on the type of files you are sharing
-//
-//                                  val fileUris = ArrayList<Uri>()
-//
-//                                  intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris)
-//                                  intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing files")
-//                                  intent.putExtra(Intent.EXTRA_TEXT, "Check out these files!")
 
                                   val Intent = Intent(context,UpdateTicketActivity::class.java)
                                   Intent.putExtra("TicketId",dataX.ticket_id)
@@ -156,9 +149,10 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                               }
                         } else if (dataX.status.equals("Pending/Ongoing") || dataX.status.equals("Completed") || dataX.status.equals("Resolved")){
                             if (tvViewmore.text.contains("View Convo")){
-
                                 moreClickListener = btnlistner
                                 moreClickListener?.onBtnClick(position,dataX)
+
+
 ////
                                /* val Intent = Intent(context, ViewTicketActivity::class.java)
                                 Intent.putExtra("TicketId",dataX.ticket_id)

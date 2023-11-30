@@ -31,7 +31,9 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivnotification"
-                android:padding="5dp"
+                android:padding="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/close"/>
@@ -68,6 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardElevation="3dp"
+                    android:visibility="gone"
                     android:layout_margin="10dp"
                     app:cardCornerRadius="10dp">
 
@@ -90,6 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="OR"
+                    android:visibility="gone"
                     android:id="@+id/tvor"
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
@@ -119,7 +123,7 @@
                             android:layout_margin="10dp"
                             app:cardCornerRadius="10dp">
 
-                            <AutoCompleteTextView
+                            <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:hint="   MaterialName "
@@ -176,26 +180,33 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/btn_materials"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/ln_indent"
-                android:background="@drawable/round_corner"
-                android:text="Search"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_list"
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/lisview"
+                android:layout_height="wrap_content"/>
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_below="@+id/ln_indent"
-                />
+                android:overScrollMode="never"
+                android:background="@color/lightgrey"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_gridLevelSinglePiece"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+
+
+            </ScrollView>
 
 
 

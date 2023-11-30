@@ -20,6 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
+            android:id="@+id/carviewdata"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="#DDDCD9"
             app:cardUseCompatPadding="true"
             app:cardElevation="1dp">
@@ -52,8 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
+                    android:padding="5dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_rectangle"
                     android:gravity="center"
                     android:text="Pending"
                     android:textColor="#5C0000"
@@ -163,11 +165,17 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="120dp"
+                android:layout_marginBottom="10dp"
                 android:padding="5dp"
                 android:minWidth="150dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@drawable/cardgrey"
                 android:id="@+id/tv_viewindents"
                 android:text="View Indents"
-                android:textColor="#FF5E5E"
+                android:textStyle="bold"
+                android:textColor="@color/white"
                 android:textSize="12dp" />
 
 

@@ -120,6 +120,7 @@ class UpdateTicketActivity : AppCompatActivity() {
         binding.etPriority.setAdapter(arrayAdapter)
         binding.etPriority.setOnClickListener {
             binding.etPriority.showDropDown()
+            binding.etPriority.isEnabled = !(binding.etPriority.isEnabled)
         }
 
 

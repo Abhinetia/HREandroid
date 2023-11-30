@@ -22,10 +22,12 @@
         >
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
             android:id="@+id/ivBack"
-            android:padding="10dp"
+            android:padding="7dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:src="@drawable/icwhitearrow"/>
 
@@ -47,6 +49,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/round_corner"
             android:text="Create Indent"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/tvheadername"
             android:textAllCaps="false"

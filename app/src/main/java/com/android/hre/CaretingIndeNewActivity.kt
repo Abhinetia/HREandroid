@@ -28,6 +28,7 @@ import com.android.hre.response.pcns.PCN
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 
 class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog.BottomSheetItemClickListener  {
@@ -49,7 +50,6 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
     private var actualmaterilaqty : List<TextView>? =  null
     private var actualmaterialDesc : List<TextView>? = null
 
-    var arrayList_details: List<Indent> = arrayListOf()
     val indentHashMap = HashMap<String, Indent>()
     val indentArrayList: ArrayList<Indent> = arrayListOf()
     var indentNo :String = ""
@@ -101,7 +101,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 //            }
 
 
-            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this)
+            val fullScreenBottomSheetDialogFragment = FullScreenBottomSheetDialog(this,this)
             fullScreenBottomSheetDialogFragment.show(supportFragmentManager, FullScreenBottomSheetDialog::class.simpleName)
 
         }
@@ -114,7 +114,8 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
 
         binding.btncreateintend.setOnClickListener {
-            sendDataToServer()
+           sendDataToServer()
+          //  showAlertDialogOkAndClose("This Is Internal Server error")
         }
 
 
@@ -264,6 +265,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 //            arrayList_details = arrayList_details + indentHashMap.getValue(key)
 //        }
 
+        var arrayList_details: List<Indent> = arrayListOf()
         for (keys in indentArrayList){
             arrayList_details = arrayList_details + keys
         }
@@ -288,7 +290,20 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 //                    if (apiResponse?.status == 1){
 ////                        showAlertDialogOkAndCloseAfter(apiResponse.message.toString()+ " " + " IndentNo : " )
 //                        val responseString = apiResponse.message.toString()
-//
+//   {
+//    "user_id": "1",
+//    "pcn": "PCN_001",
+//    "indents": [{
+//            "material_id": "CT00001",
+//            "description": "ABCD",
+//            "quantity": "20"
+//        },
+//        {
+//            "material_id": "CT00002",
+//            "description": "DEF",
+//            "quantity": "10"
+//        }
+//    ]
 //
 //
 //                        showAlertDialogOkAndCloseAfter(responseString.toString())
@@ -319,6 +334,8 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
             override fun onFailure(call: Call<NewRepsonse>, t: Throwable) {
                 progressDialog.dismiss()
                 // Handle network failure or other errors
+                showAlertDialogOkAndClose(t.message.toString())
+
                 Log.v("data",t.toString())
 
                 // ...
@@ -396,14 +413,16 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
 //        indentHashMap.put(datax.material_id,Indent(materialId = datax.material_id, description = desc, quantity = size))
 
-        indentArrayList.add(Indent(materialId = datax.material_id, description = desc, quantity = size))
+//        indentArrayList.add(Indent(materialId = datax.material_id, description = desc, quantity = size))
+
+        var intends = Indent(materialId = datax.material_id, description = desc, quantity = size)
 
         Log.v("TAG",indentArrayList.toString())
-        singleLogic(datax,size,desc,indentArrayList)
+        singleLogic(datax,size,desc,intends)
 
     }
 
-    private fun singleLogic(datax: Getmaterials.DataX, size: String, desc: String,indentArrayList : ArrayList<Indent>) {
+    private fun singleLogic(datax: Getmaterials.DataX, size: String, desc: String,intends : Indent) {
 
         val infalot = LayoutInflater.from(this)
         val custrom = infalot.inflate(R.layout.recyclerview_row,null)
@@ -414,7 +433,6 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         val  textqty = custrom.findViewById<TextView>(R.id.tv_qtysize)
         val textdesc = custrom.findViewById<TextView>(R.id.tvdescrtipondisp)
         val iv_cancel = custrom.findViewById<ImageView>(R.id.iv_cancel)
-        textViewitemcode.setTag(indentArrayList.size-1)
 
         textViewitemcode.text = datax.material_id
         textmaterialnames.text = datax.name
@@ -422,17 +440,21 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
         textqty.text = size
         textdesc.text = desc
 
+        Log.v("Remove",indentArrayList.toString())
+
         iv_cancel.setOnClickListener {
             binding.linearLayoutGridLevelSinglePiece.removeView(custrom)
 
+                indentArrayList.remove(intends)
+                Log.v("RemoveInside",indentArrayList.toString())
 
-            indentArrayList.removeAt(textViewitemcode.getTag() as Int)
 
 //            if (indentHashMap.containsKey(datax.material_id)) {
 //                indentHashMap.remove(datax.material_id)
 //            }
         }
 
+        indentArrayList.add(intends)
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
     }
 

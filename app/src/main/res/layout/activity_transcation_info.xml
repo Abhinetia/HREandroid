@@ -15,8 +15,10 @@
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="50dp"
-            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:padding="15sp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/icwhitearrow" />
@@ -222,7 +224,7 @@
         android:id="@+id/rv_recylergrndata"
         android:layout_width="match_parent"
         android:visibility="visible"
-        android:layout_below="@+id/linearmain"
+        android:layout_below="@+id/rvbackname"
         android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         android:scrollbarThumbHorizontal="@null"

@@ -106,7 +106,7 @@
                 android:id="@+id/tv_versionnumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1.0.6"
+                android:text="1.0.7"
                 android:minWidth="120dp"
                 android:textColor="@color/black_text"
                 android:textSize="14sp" />

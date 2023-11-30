@@ -21,6 +21,7 @@ import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.searchindent.SearchIndent
 import com.android.hre.response.searchmaterialIndents.searchMaterial
+import com.android.hre.response.statementNew.NewStatment
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
 import com.android.hre.response.tickets.TicketList
@@ -240,6 +241,14 @@ interface Api {
         @Field("to_date") end_date:String
     ) :Call<StatementListData>
 
+
+    @FormUrlEncoded
+    @POST("get-pettycash_bills-summary")
+    fun getStatmnetNew(
+        @Field("user_id") user_id:String,
+        @Field("from_date") start_date:String,
+        @Field("to_date") end_date:String
+    ) :Call<NewStatment>
 
     @FormUrlEncoded
     @POST("vault")

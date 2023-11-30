@@ -447,6 +447,7 @@
             android:layout_alignParentEnd="true"
             android:background="@drawable/round_corner"
             android:text="Add Material"
+            android:foreground="?android:attr/selectableItemBackground"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="13sp" />

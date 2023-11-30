@@ -22,6 +22,7 @@ import com.android.hre.adapter.StatementAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentPettyCashScreenBinding
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
+import com.android.hre.response.statementNew.NewStatment
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.google.android.material.textfield.TextInputEditText
@@ -50,9 +51,12 @@ class PettyCashScreenFragment : Fragment() {
     var frommdate :String = ""
     var toodate :String = ""
     private lateinit var statmentadapter: StatementAdapter
+
     var issuedAm : String = ""
     var balancecash :String = ""
     var statemnetlistData: ArrayList<StatementListData.Data> = arrayListOf()
+    var statemnetlistNewData: ArrayList<NewStatment.Data> = arrayListOf()
+
     var transList :List<TranscationInfoDetails.Data> = arrayListOf()
 
 
@@ -99,25 +103,27 @@ class PettyCashScreenFragment : Fragment() {
             binding.rvRecylergrndata.visibility = View.GONE
             binding.etDate.setText("")
             binding.etMonth.setText("")
-            val intent = Intent(context, UploadExpensesActivity::class.java)
+           // val intent = Intent(context, UploadExpensesActivity::class.java)
+            val intent = Intent(context, UploadExpenseActivityNew::class.java)
+
             startActivity(intent)
         }
 
         binding.lnStatment.setOnClickListener {
            binding.linedate.visibility = View.VISIBLE
 
-            binding.stratdate.setOnClickListener {
-                showDatePickerDialog(true)
-            }
-//            binding.etDate.setOnClickListener {
-//               showDatePickerDialog(true)
-//           }
-            binding.crdmonthg.setOnClickListener {
+//            binding.stratdate.setOnClickListener {
+//                showDatePickerDialog(true)
+//            }
+            binding.etDate.setOnClickListener {
+               showDatePickerDialog(true)
+           }
+//            binding.crdmonthg.setOnClickListener {
+//                showDatePickerDialog(false)
+//            }
+            binding.etMonth.setOnClickListener {
                 showDatePickerDialog(false)
             }
-//            binding.etMonth.setOnClickListener {
-//
-//            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -129,6 +135,7 @@ class PettyCashScreenFragment : Fragment() {
             val fdate = todaydate.withDayOfMonth(1)
 
             fetchtheattendanceListt(fdate.toString(),currentDate)
+            fetchtheattendanceListtNew(fdate.toString(),currentDate)
 
         }
 
@@ -170,6 +177,48 @@ class PettyCashScreenFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<StatementListData>, t: Throwable) {
+                // Handle network error
+            }
+        })
+    }
+
+    private fun fetchtheattendanceListtNew(fdate: String, currentDate: String) {
+        statemnetlistNewData.clear()
+        val call = RetrofitClient.instance.getStatmnetNew(userid,fdate,currentDate)
+        call.enqueue(object : Callback<NewStatment> {
+            override fun onResponse(call: Call<NewStatment>, response: Response<NewStatment>) {
+                if (response.isSuccessful) {
+                    val responseData = response.body()?.data
+//
+                    Log.v("dat", statemnetlistNewData.toString())
+
+                    val opening = responseData!!.opening
+                    val closing = responseData!!.closing
+
+                    binding.tvopening.text= "Opening Bal :" + " " +opening.toString()
+                    binding.tvclosing.text= "Closing Bal :" + " " + closing.toString()
+
+                  //  val checkDaata = responseData.summary
+
+/*
+                    if (statemnetlistNewData != null) {
+                        // Set up the adapter and RecyclerView
+                        statmentadapternew.differ.submitList(statemnetlistNewData)
+
+                        binding.rvRecylergrndata.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = statmentadapternew
+                        }
+
+                    } else {
+
+                        // Handle error response
+                    }
+*/
+                }
+            }
+
+            override fun onFailure(call: Call<NewStatment>, t: Throwable) {
                 // Handle network error
             }
         })
@@ -356,6 +405,7 @@ class PettyCashScreenFragment : Fragment() {
         if (frommdate.isNotBlank() && toodate.isNotBlank()) {
             if (checkDates(frommdate, toodate)) {
                 fetchthestatmentList()
+                fetchtheattendanceListtNew(frommdate,toodate)
             } else {
                 showAlertDialogOkAndCloseAfter("End date should be after start date!")
             }
@@ -363,7 +413,7 @@ class PettyCashScreenFragment : Fragment() {
     }
 
     fun checkDates(d1: String, d2: String): Boolean {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         var b = false
 
         try {
