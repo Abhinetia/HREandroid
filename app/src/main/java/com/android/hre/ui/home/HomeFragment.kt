@@ -59,7 +59,7 @@ import com.android.hre.response.newindentrepo.NewIndents
 import android.provider.Settings
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
-
+import com.android.hre.PCNFragment
 
 
 class HomeFragment : Fragment() {
@@ -120,7 +120,6 @@ class HomeFragment : Fragment() {
         var name = sharedPreferences?.getString("username", "")
         var empId = sharedPreferences?.getString("employee_id","")
         userid = sharedPreferences?.getString("user_id", "")!!
-        binding.tvDisplay.text = name
 //
         val simpleDate = SimpleDateFormat("dd/M/yyyy ")
         val currentDate = simpleDate.format(Date())
@@ -158,7 +157,7 @@ class HomeFragment : Fragment() {
             fetchtheappData()
         }
 
-        fetchTheIndentList()
+
 
         fetchDashboardData()
 
@@ -206,14 +205,10 @@ class HomeFragment : Fragment() {
                             val myIndents = indentResponse.data.myindents
                             homeAdapter.differ.submitList(myIndents.reversed())
 
-                            binding.rvRecylergrndata.apply {
-                                layoutManager = LinearLayoutManager(context)
-                                adapter = homeAdapter
-                            }
+
                         }
                         else {
-                            binding.tvShowPening.visibility = View.VISIBLE
-                            binding.tvShowPening.text = "No Pending Indents"
+
                             // Handle error or unexpected response
                         }
                     } else {
@@ -233,18 +228,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivnotificatn.setOnClickListener {
-            findNavController().navigate(com.android.hre.R.id.action_navigation_home_to_ticketFragment)
-        }
+
 
 //        binding.logo.setOnClickListener {
 //            findNavController().navigate(com.android.hre.R.id.action_navigation_home_to_indentFragment2)
 //        }
 
-        binding.tvGrn.setOnClickListener {
-            val Intent = Intent(context, DisplayGrnActivity::class.java)
-            startActivity(Intent)
-        }
         binding.indentdata.setOnClickListener {
             val fragmentB = IndentFragment()
             (activity as MainActivity).replaceFragment(fragmentB)
@@ -274,6 +263,11 @@ class HomeFragment : Fragment() {
             (activity as MainActivity).replaceFragment(fragmentG)
         }
 
+        binding.pcnndata.setOnClickListener {
+            val fragmentH = PCNFragment()
+            (activity as MainActivity).replaceFragment(fragmentH)
+        }
+
 
 
         binding.slider.onSlideCompleteListener =  object : SlideToActView.OnSlideCompleteListener {
@@ -290,6 +284,7 @@ class HomeFragment : Fragment() {
                    getLastLocation()
                     var action = "login"
                    mediaPlayer.start()
+                   fetchDashboardData()
 //                   editor.putBoolean("isLoggedIn",true)
 //                   editor.apply()
 //                   editor.commit()
@@ -389,6 +384,7 @@ class HomeFragment : Fragment() {
                         if (response.body()!!.message.contains("Login")){
                            // Toast.makeText(context, response.body()?.message, Toast.LENGTH_LONG).show()
                             editor.putBoolean(Constants.isEmployeeLoggedIn,true)
+                            fetchDashboardData()
                             binding.slider.text = "Attendance Logout"
                             binding.slider.outerColor = Color.parseColor("#F10909")
                             editor.apply()

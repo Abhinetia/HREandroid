@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="2sp"
+    android:layout_height="wrap_content"
+    android:id="@+id/rv_chosepcn"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:id="@+id/carviewdata"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="#DDDCD9"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="1dp">
+
+            <RelativeLayout
+                android:id="@+id/rvstatus_showing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_PcnNOdata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="PCN852"
+                    android:textColor="@color/black_text"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_pcnstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="Pending"
+                    android:textColor="#5C0000"
+                    android:textSize="13sp" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_status"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/ic_linehoriz" />
+
+            <TextView
+                android:id="@+id/tvpcnbillingname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:marqueeRepeatLimit= "marquee_forever"
+                android:layout_marginTop="60dp"
+                android:text="PCN852"
+                android:textColor="@color/black_text"
+                android:textSize="12sp" />
+
+
+            <RelativeLayout
+                android:id="@+id/rrrr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="75dp"
+                android:layout_marginBottom="10sp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:minWidth="150dp"
+                    android:text="Brand :"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvdpcnbrand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="PCN852"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="95dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10sp"
+                android:padding="5dp">
+
+
+                <TextView
+                    android:id="@+id/tvpcnaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="marquee"
+                    android:layout_marginLeft="10sp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:marqueeRepeatLimit= "marquee_forever"
+                    android:text="PCN852"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>
