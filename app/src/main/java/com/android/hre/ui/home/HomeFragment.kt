@@ -418,36 +418,7 @@ class HomeFragment : Fragment() {
 
     }
 
-   /* fun main() {
-        // Get the current time
-        val currentTime = Calendar.getInstance()
 
-        val randomStartTime = Calendar.getInstance().apply {
-            val randomHour = Random.nextInt(0, 24) // Generate a random hour (0-23)
-            set(Calendar.HOUR_OF_DAY, randomHour)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-
-        val defaultEndTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 18)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-
-        val elapsedTime = currentTime.timeInMillis - randomStartTime.timeInMillis
-
-        val elapsedHours = elapsedTime / (60 * 60 * 1000)
-
-        val hasWorked8Hours = elapsedHours >= 8
-        if (hasWorked8Hours) {
-            Toast.makeText(context, "You have worked 8 hours or more.", Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(context, "You have not worked 8 hours yet.", Toast.LENGTH_LONG).show()
-
-        }
-    }
-*/
     private fun requestLocationPermissionn() {
         when {
             ContextCompat.checkSelfPermission(
