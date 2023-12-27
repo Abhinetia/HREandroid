@@ -283,6 +283,8 @@ class LoginActivity :AppCompatActivity() {
         editor.putString("username", JsonObject1.getString("username"))
         editor.putString("role", JsonObject1.getString("role"))
         editor.putString("role_name",JsonObject1.getString("role_name"))
+        editor.putInt("role_id", JsonObject1.getInt("role_id"))
+        Log.v("roleid", JsonObject1.getInt("role_id").toString())
         editor.apply()
         editor.commit()
         val intent = Intent(applicationContext, MainActivity::class.java)

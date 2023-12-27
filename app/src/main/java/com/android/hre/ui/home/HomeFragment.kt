@@ -117,9 +117,11 @@ class HomeFragment : Fragment() {
 
          sharedPreferences = context?.getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)!!
         editor = sharedPreferences.edit()
-        var name = sharedPreferences?.getString("username", "")
+        var name = sharedPreferences?.getInt("role_id", 0)
         var empId = sharedPreferences?.getString("employee_id","")
         userid = sharedPreferences?.getString("user_id", "")!!
+
+      //  binding.hellodat.text = name.toString()
 //
         val simpleDate = SimpleDateFormat("dd/M/yyyy ")
         val currentDate = simpleDate.format(Date())
@@ -589,6 +591,7 @@ class HomeFragment : Fragment() {
                     binding.tvgrncount.text =  dataList!!.grn_count
                     binding.tvticketcount.text =  dataList!!.tickets_count.toString()
                     binding.pettycashcount.text = "₹" + dataList!!.pettycash.toString()
+                    binding.tvpcncount.text = dataList!!.pcn.toString()
 
 
 

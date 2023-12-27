@@ -528,7 +528,6 @@
                                 android:textSize="13dp"
                                 android:id="@+id/tvpcncount"
                                 android:text="-"
-                                android:visibility="invisible"
                                 android:textColor="#3E3E3E"
                                 />
 
