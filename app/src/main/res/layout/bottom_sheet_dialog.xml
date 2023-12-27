@@ -21,11 +21,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Intend Material"
-                android:layout_centerInParent="true"
                 android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="Create Indent"
                 android:textColor="@color/black_text"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="50dp"
@@ -126,7 +126,7 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:hint="   MaterialName "
+                                android:hint="Search Product/Name/Brand "
                                 android:singleLine="true"
                                 android:id="@+id/etMaterial"
                                 android:imeOptions="actionNext"

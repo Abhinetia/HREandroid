@@ -10,11 +10,14 @@
         android:layout_width="match_parent"
         android:id="@+id/tv_textData"
         android:textSize="15sp"
+        android:layout_margin="5dp"
+        android:padding="10dp"
         android:textColor="@color/black"
         android:layout_height="wrap_content"/>
 
     <View
         android:layout_width="match_parent"
+        android:padding="5dp"
         android:background="@color/hre_header"
         android:layout_height="1dp"/>
 

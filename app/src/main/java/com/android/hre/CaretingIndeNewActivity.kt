@@ -115,7 +115,7 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
 
         binding.btncreateintend.setOnClickListener {
            sendDataToServer()
-          //  showAlertDialogOkAndClose("This Is Internal Server error")
+          //  showAlertDialogOkAndClose("Creating Indent is not enabled")
         }
 
 
