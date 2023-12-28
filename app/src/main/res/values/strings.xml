@@ -37,11 +37,22 @@
     </string-array>
 
     <string-array name="roles">
+        <item>superadmin</item>
         <item>admin</item>
         <item>manager</item>
-        <item>procurement</item>
+        <item>project_manager</item>
+        <item>asst_manager</item>
+        <item>project_incharge</item>
+        <item>trainee_supervisor</item>
         <item>finance</item>
+        <item>finance_manager</item>
+        <item>sr_accountant</item>
+        <item>jr_accountant</item>
+        <item>hr</item>
         <item>supervisor</item>
+        <item>procurement_manager</item>
+        <item>sr_executive</item>
+        <item>jr_executive</item>
 
     </string-array>
 
@@ -50,6 +61,13 @@
         <item>Medium</item>
         <item>Low</item>
     </string-array>
+
+    <string-array name="statuscreate">
+        <item>Created</item>
+        <item>Ongoing</item>
+        <item>Reject</item>
+    </string-array>
+
 
     <string-array name="purpose">
         <item>Personal</item>

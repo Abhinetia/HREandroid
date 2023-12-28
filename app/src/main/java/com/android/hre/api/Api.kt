@@ -2,6 +2,7 @@ package com.android.hre.api
 
 import com.android.hre.response.*
 import com.android.hre.response.ApprovalPettyCash.AprrovalPettyCash
+import com.android.hre.response.asignticket.ticketAssign
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.countupdate.CountList
@@ -329,6 +330,20 @@ interface Api {
     fun searchMaterialData(
         @Field("search") search:String
     ) : Call<searchMaterial>
+
+
+    @FormUrlEncoded
+    @POST("assign-ticket")
+    fun assignTicket(
+        @Field("user_id") user_id :String,
+        @Field("ticket_id") ticket_id :String,
+        @Field("status")  status:String,
+        @Field("comment") comment:String,
+        @Field("recipient") recipient:String,
+        @Field("priority") priority:String,
+        @Field("tat") tat:String
+    ) :Call<ticketAssign>
+
 
 
     @Headers("Content-Type: application/json")

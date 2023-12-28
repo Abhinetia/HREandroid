@@ -30,6 +30,7 @@
 
         <ImageView
             android:layout_width="50dp"
+            android:padding="10sp"
             android:layout_height="wrap_content"
             android:id="@+id/ivnotification"
             android:backgroundTint="@color/white"

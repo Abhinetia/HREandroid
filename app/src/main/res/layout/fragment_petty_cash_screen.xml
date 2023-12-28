@@ -416,7 +416,7 @@
             android:orientation="horizontal"
             android:weightSum="2"
             android:layout_marginTop="5dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_below="@+id/linearmain"
             android:id="@+id/linedate"
             android:layout_height="wrap_content">

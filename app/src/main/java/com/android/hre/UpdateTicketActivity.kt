@@ -1,6 +1,7 @@
 package com.android.hre
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
@@ -9,22 +10,24 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityUpdateTicketBinding
-import com.android.hre.databinding.ActivityViewTicketBinding
+import com.android.hre.response.asignticket.ticketAssign
 import com.android.hre.response.createtccikets.TicketCreated
 import com.android.hre.response.departement.GetDepartment
+import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.pcns.PCN
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -36,8 +39,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
 
 class UpdateTicketActivity : AppCompatActivity() {
     var ticketno :String = ""
@@ -49,6 +54,8 @@ class UpdateTicketActivity : AppCompatActivity() {
     var pcn :String = ""
     var pcndetails :String = ""
     var priority :String = ""
+    var ticketcreator :String = ""
+    var roleId :Int = 0
     val listdata: ArrayList<String> = arrayListOf()
     val listdata2 :ArrayList<String> = arrayListOf()
     var listDepartmetData :ArrayList<GetDepartment.Data> = arrayListOf()
@@ -59,6 +66,15 @@ class UpdateTicketActivity : AppCompatActivity() {
     private val pickImage = 100
     private var imageUri: Uri? = null
     private var file: File? = null
+
+    val listdata1: ArrayList<String> = arrayListOf()
+    var listEmployeeData: ArrayList<EmployeeList.Data> = arrayListOf()
+
+    private val calendar = Calendar.getInstance()
+    var receiptEmployee: Int? = null
+
+
+
 
 
 
@@ -73,6 +89,7 @@ class UpdateTicketActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences(Constants.PREFS_KEY, Context.MODE_PRIVATE)
         userid = sharedPreferences?.getString("user_id", "")!!
+         roleId = sharedPreferences?.getInt("role_id", 0)!!
 
        /* val fileUris = intent.getParcelableArrayListExtra<Uri>("fileUris")
 
@@ -92,6 +109,22 @@ class UpdateTicketActivity : AppCompatActivity() {
         pcn = intentUser.getStringExtra("PCN").toString()
         priority = intentUser.getStringExtra("Priority").toString()
         pcndetails = intentUser.getStringExtra("PCN_Detilas").toString()
+        ticketcreator = intentUser.getStringExtra("ticketcreator").toString()
+
+
+        if (ticketcreator == userid){
+            binding.etDescrtiption.isEnabled = true
+            binding.etTickettitle.setInputType(1)
+            binding.etTickettitle.setEnabled(true); // Enables the view for user input
+            binding.etTickettitle.setFocusableInTouchMode(true);
+        }  else{
+            binding.etTickettitle.isEnabled = false
+            binding.etDescrtiption.isEnabled = false
+
+        }
+
+
+
 
 
 //        binding.etTickettitle.text = ticketno
@@ -123,17 +156,102 @@ class UpdateTicketActivity : AppCompatActivity() {
             binding.etPriority.isEnabled = !(binding.etPriority.isEnabled)
         }
 
+        val ststuscreated = resources.getStringArray(R.array.statuscreate)
+        val arrayAdapter1 = ArrayAdapter(this,R.layout.dropdwon_item,ststuscreated)
+        binding.etStstusCreated.setAdapter(arrayAdapter1)
+        binding.etStstusCreated.setOnClickListener {
+            binding.etStstusCreated.showDropDown()
+            binding.etStstusCreated.setOnItemClickListener(OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                Log.v("TAG",selectedItem)
+                if (selectedItem.equals("Ongoing")){
+                    binding.lineaassign.visibility = View.VISIBLE
+                    binding.btnAsiigntickte.visibility = View.VISIBLE
+                    binding.btnCretaeticket.visibility = View.GONE
+                } else if (selectedItem.equals("Created")|| selectedItem.equals("Reject")) {
+                    binding.lineaassign.visibility = View.GONE
+                    binding.btnAsiigntickte.visibility = View.GONE
+                    binding.btnCretaeticket.visibility = View.VISIBLE
+                    binding.etComments.setText("")
+                    binding.etDate.setText("")
+                    binding.etAssignto.setText("")
+                }
+
+            })
+
+        }
+
+
+        if (roleId ==1 || roleId == 2 || roleId == 6 ){
+            binding.ststusname.visibility = View.VISIBLE
+            binding.etStstusCreated.visibility = View.VISIBLE
+
+        } else {
+            binding.lineaassign.visibility = View.GONE
+            binding.ststusname.visibility = View.GONE
+            binding.etStstusCreated.visibility = View.GONE
+            binding.btnAsiigntickte.visibility = View.GONE
+            binding.btnCretaeticket.visibility = View.VISIBLE
+
+        }
+
+
+
+        dropdownEmployeeDetails()
+
 
         binding.btnCretaeticket.setOnClickListener {
-
             validationPart()
         }
 
 
-        binding.ivnotification.setOnClickListener {
-            finish()
+        binding.ivback.setOnClickListener {
+           onBackPressed()
         }
+
+        binding.etDate.setOnClickListener {
+            showDatePicker()
+        }
+
+        binding.etAssignto.setOnItemClickListener { adapterView, view, i, l ->
+
+            var index = listdata1.indexOf(adapterView.getItemAtPosition(i))
+
+            Log.v("TAG","i is: "+listEmployeeData.get(index).recipient)
+            receiptEmployee  = listEmployeeData.get(index).recipient
+
+
+        }
+        binding.btnAsiigntickte.setOnClickListener {
+            assignToEmployee()
+        }
+
     }
+
+    private fun showDatePicker() {
+        // Create a DatePickerDialog
+        val datePickerDialog = DatePickerDialog(
+            this, {DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                // Create a new Calendar instance to hold the selected date
+                val selectedDate = Calendar.getInstance()
+                // Set the selected date using the values received from the DatePicker dialog
+                selectedDate.set(year, monthOfYear, dayOfMonth)
+                // Create a SimpleDateFormat to format the date as "dd/MM/yyyy"
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                // Format the selected date into a string
+                val formattedDate = dateFormat.format(selectedDate.time)
+                // Update the TextView to display the selected date with the "Selected Date: " prefix
+                binding.etDate.setText(formattedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        // Show the DatePicker dialog
+        datePickerDialog.show()
+    }
+
+
 
     private fun validationPart() {
         if (binding.etPriority.text.isEmpty()){
@@ -204,6 +322,70 @@ class UpdateTicketActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
+                progressDialog.dismiss()
+
+                Log.v("TAG", t.toString())
+            }
+
+        })
+
+    }
+
+
+    private fun assignToEmployee() {
+
+
+
+        val ststus =  binding.etStstusCreated.text.toString()
+        val comment = binding.etComments.text.toString()
+        val recipeinet = receiptEmployee.toString()
+        val priority = binding.etPriority.text.toString()
+        val tat = binding.etDate.text.toString()
+
+         var ticketststraus = ststus
+        if (ststus.equals("Ongoing")){
+            ticketststraus = "Pending/Ongoing"
+        }
+        if (tat.isEmpty()){
+            binding.etDate.error = "Please Select Date"
+            binding.etDate.requestFocus()
+            return
+        }
+        if(comment.isEmpty()){
+            binding.etComments.error = "Comments required"
+            binding.etComments.requestFocus()
+            return
+        }
+
+
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Saving Data")
+        progressDialog.setMessage("Please wait...")
+        progressDialog.setCancelable(false)
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+
+
+
+        val call = RetrofitClient.instance.assignTicket(userid,ticketid,ticketststraus,comment,recipeinet,priority,tat)
+
+       call.enqueue(object : retrofit2.Callback<ticketAssign> {
+            override fun onResponse(call: Call<ticketAssign>, response: Response<ticketAssign>) {
+                progressDialog.dismiss()
+                Log.v("TAG", response.body().toString())
+                Log.v("TAG","message "+ response.body()?.message.toString())
+                if (response.body()!!.message.contains("Ticket Assigned Successfully")){
+                    showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+
+                }
+                // showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
+                else if (response.body()!!.message.contains("Insufficient Inputs")){
+                    showAlertDialogOkAndAfter(response.body()?.message.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ticketAssign>, t: Throwable) {
                 progressDialog.dismiss()
 
                 Log.v("TAG", t.toString())
@@ -395,6 +577,68 @@ class UpdateTicketActivity : AppCompatActivity() {
 
         return File(storageDir, imageFileName)
     }
+
+    private fun dropdownEmployeeDetails() {
+        val call =  RetrofitClient.instance.getEmployee(userid)
+        call.enqueue(object : Callback<EmployeeList> {
+            override fun onResponse(call: Call<EmployeeList>, response: Response<EmployeeList>) {
+                if (response.isSuccessful) {
+                    //  val myDataList = response.body()?.data
+
+                    var listMaterials: EmployeeList? = response.body()
+                    listdata1.clear()
+                    listEmployeeData.clear()
+
+
+                    listEmployeeData = listMaterials?.data as java.util.ArrayList<EmployeeList.Data>
+
+                    //  listdata.add("ewfwef")
+                    for (i in 0 until listEmployeeData?.size!!) {
+                        val dataString: EmployeeList.Data = listEmployeeData.get(i)
+
+
+                        Log.v("log", i.toString())
+                        listdata1.add(dataString.name  + " : " + dataString.role)
+
+
+                    }
+                    Log.v("TAG","Empl lis : $listdata1")
+
+
+
+                    val arrayAdapter =
+                        ArrayAdapter(this@UpdateTicketActivity, R.layout.dropdwon_item, listdata1)
+                    binding.etAssignto.setAdapter(arrayAdapter)
+                    binding.etAssignto.setThreshold(1)
+
+
+
+                } else {
+                    // Handle error response
+                }
+            }
+
+            override fun onFailure(call: Call<EmployeeList>, t: Throwable) {
+                // Handle network error
+            }
+        })
+
+    }
+
+    private fun showAlertDialogOkAndCloseAr(message:String, alertMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message + "\n"+ alertMessage)
+        builder.setPositiveButton(
+            "OK"
+        ) { dialogInterface, i ->
+            setResult(Activity.RESULT_OK)
+        }
+        val alertDialog: Dialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+
 
 
 

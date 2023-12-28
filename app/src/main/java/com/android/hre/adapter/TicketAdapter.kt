@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,20 +131,21 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                     binding.tvViewmore.setOnClickListener {
                         if (dataX.status.contains("Created")){
                               if (tvViewmore.text.contains("Update Ticket")){
-
-//
-
+                                  var  ticketId = dataX.ticket_id.toString()
                                   val Intent = Intent(context,UpdateTicketActivity::class.java)
-                                  Intent.putExtra("TicketId",dataX.ticket_id)
+                                  Intent.putExtra("TicketId",ticketId)
                                   Intent.putExtra("TicketNo",dataX.ticket_no)
                                   Intent.putExtra("Subject",dataX.category)
                                   Intent.putExtra("Body",dataX.message)
                                   Intent.putExtra("PCN",dataX.pcn)
                                   Intent.putExtra("PCN_Detilas",dataX.pcn_detail)
                                   Intent.putExtra("Priority",dataX.priority)
+                                  Intent.putExtra("ticketcreator",dataX.ticket_creator)
                                  // Intent.putExtra("fileUris", fileUris)
 
-                                //  Log.v("Image", fileUris.toString())
+
+
+                                  Log.v("ticketid", ticketId)
 
                                   context.startActivity(Intent)
                               }
