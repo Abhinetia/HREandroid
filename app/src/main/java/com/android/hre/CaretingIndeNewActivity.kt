@@ -176,12 +176,12 @@ class CaretingIndeNewActivity : AppCompatActivity() ,FullScreenBottomSheetDialog
                         var position : Int = listdata.indexOf(binding.etpcnId.text.toString())
                         var data: PCN.Data = arrayList_details.get(position)
                         isSelectedText = true
-                        if (data.status.contains("Active")){
+                        if (data.status.contains("Active") || data.status.contains("On-Hold")){
                             binding.carviewpcn.visibility = View.VISIBLE
                             binding.pcnClinet.text = data.brand
                             binding.pcnAddress.text =  data.location + data.area + " -" + data.city + data.pincode
 
-                        } else if (data.status.contains("Completed")){
+                        } else if (data.status.contains("Completed") || data.status.contains("Cancelled")){
                            // showAlertDialogOkAndCloseAr("This PCN is Completed , Please contact your Super Admin for more information","")
                             showAlertDialogOkAndCloseAr("Selected Project is Completed, Please contact super Admin for more information","")
                             binding.etpcnId.setText("")
