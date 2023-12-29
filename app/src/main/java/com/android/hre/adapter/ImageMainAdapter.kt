@@ -1,11 +1,13 @@
 package com.android.hre.adapter
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -27,6 +29,7 @@ import com.android.hre.R
 import com.android.hre.api.RetrofitClient
 import com.android.hre.response.newvault.NewVaultDetiailsMainFolder
 import com.bumptech.glide.Glide
+import java.io.File
 
 class ImageMainAdapter (private val mList: List<NewVaultDetiailsMainFolder.DataX> , val context :Context) : RecyclerView.Adapter<ImageMainAdapter.ViewHolder>() {
 
@@ -105,6 +108,9 @@ class ImageMainAdapter (private val mList: List<NewVaultDetiailsMainFolder.DataX
             .setDescription("Downloading") // You can customize the description
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+
+        val destination = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName)
+        request.setDestinationUri(Uri.fromFile(destination))
 
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadManager.enqueue(request)
