@@ -17,6 +17,7 @@ import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.newindentrepo.NewIndents
 import com.android.hre.response.newticketReponse.TikcetlistNew
+import com.android.hre.response.newvault.NewVaultDetiailsMainFolder
 import com.android.hre.response.pcns.PCN
 import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
@@ -344,6 +345,53 @@ interface Api {
         @Field("tat") tat:String
     ) :Call<ticketAssign>
 
+
+    @FormUrlEncoded
+    @POST("new-vault")
+    fun newVault(
+        @Field("user_id") user_id :String
+        ) :Call<NewVaultDetiailsMainFolder>
+
+    @FormUrlEncoded
+    @POST("new-vault-level-1")
+    fun newValut1(
+        @Field("user_id") user_id :String,
+        @Field("f1") f1 :String
+    ) :Call<NewVaultDetiailsMainFolder>
+    @FormUrlEncoded
+    @POST("new-vault-level-2")
+    fun newValut2(
+        @Field("user_id") user_id :String,
+        @Field("f1") f1 :String,
+        @Field("f2") f2 :String
+    ):Call<NewVaultDetiailsMainFolder>
+    @FormUrlEncoded
+    @POST("new-vault-level-3")
+    fun newValut3(
+        @Field("user_id") user_id :String,
+        @Field("f1") f1 :String,
+        @Field("f2") f2 :String,
+    @Field("f3") f3 :String
+    ):Call<NewVaultDetiailsMainFolder>
+    @FormUrlEncoded
+    @POST("new-vault-level-4")
+    fun newValut4(
+        @Field("user_id") user_id :String,
+        @Field("f1") f1 :String,
+        @Field("f2") f2 :String,
+        @Field("f3") f3 :String,
+        @Field("f4") f4 :String
+    ):Call<NewVaultDetiailsMainFolder>
+    @FormUrlEncoded
+    @POST("new-vault-level-5")
+    fun newValut5(
+        @Field("user_id") user_id :String,
+        @Field("f1") f1 :String,
+        @Field("f2") f2 :String,
+        @Field("f3") f3 :String,
+        @Field("f4") f4 :String,
+        @Field("f5") f5 :String
+    ) :Call<NewVaultDetiailsMainFolder>
 
 
     @Headers("Content-Type: application/json")

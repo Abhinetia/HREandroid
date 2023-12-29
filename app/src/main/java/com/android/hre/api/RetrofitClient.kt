@@ -18,7 +18,7 @@ object RetrofitClient {
     private val AUTH = "Basic "+ Base64.encodeToString("belalkhan:123456".toByteArray(), Base64.NO_WRAP)
 
 
-  private const val BASE_URL = "https://hre.netiapps.com/api/"
+  public const val BASE_URL = "https://hre.netiapps.com/api/"
 
  //  private const val BASE_URL = "https://admin.hresolutions.in/api/"
 

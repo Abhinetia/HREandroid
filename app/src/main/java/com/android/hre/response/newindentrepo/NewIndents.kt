@@ -19,6 +19,8 @@ data class NewIndents(
         val indent_no: String,
         val pcn: String,
         val pcn_detail: String,
-        val status: String
+        val status: String,
+        val creator_name:String,
+        val creator_emplid:String
     )
 }

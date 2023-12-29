@@ -27,6 +27,8 @@ data class TikcetlistNew(
         var status: String,
         var comments :String,
         val ticket_creator: String,
+        val creator_name :String,
+        val creator_role :String,
         val ticket_id: Int,
         val ticket_no: String
     )

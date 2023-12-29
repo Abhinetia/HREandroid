@@ -26,6 +26,7 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
              val tvdate: TextView = itemView.findViewById(R.id.tv_displaydate)
              val viewmore :  TextView = itemView.findViewById(R.id.tv_viewindents)
              val cardView : CardView = itemView.findViewById(R.id.carviewdata)
+             val creatorname :TextView = itemView.findViewById(R.id.tvcretaornme)
 
 
          }
@@ -44,6 +45,7 @@ class HomeAdapter2(private var items: List<NewIndents.Myindent>,private val cont
              holder.tvpcndetails.text = dataX.pcn_detail
              //tvDisplaydate.text = dataX.created_on
              holder.tvpcndetails.setSelected(true)
+             holder.creatorname.text = dataX.creator_name
 
              if (dataX.status.equals("Completed")){
                  holder.tvstatus.setBackgroundResource(R.drawable.ic_greenbaby)

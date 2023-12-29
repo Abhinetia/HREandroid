@@ -367,7 +367,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="2dp"
                         android:layout_gravity="center"
-
                         android:id="@+id/pettydata"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:clickable="true"
@@ -476,7 +475,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:gravity="center"
-                    android:layout_marginTop="-10dp"
+                    android:layout_marginTop="-5dp"
                     android:layout_marginBottom="10sp"
                     android:layout_centerInParent="true"
                     android:background="@color/lightgrey"

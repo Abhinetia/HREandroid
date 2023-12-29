@@ -60,6 +60,8 @@ import android.provider.Settings
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import com.android.hre.PCNFragment
+import com.android.hre.VaultMainActivity
+import com.android.hre.VaultMainFragment
 
 
 class HomeFragment : Fragment() {
@@ -261,8 +263,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.vaultdata.setOnClickListener {
-            val fragmentG = VaultFragment()
-            (activity as MainActivity).replaceFragment(fragmentG)
+//            val fragmentG = VaultMainFragment()
+//            (activity as MainActivity).replaceFragment(fragmentG)
+
+//            val Intent = Intent(context,VaultMainActivity::class.java)
+//            startActivity(Intent)
+
+            startActivity(VaultMainActivity().newInstance(requireContext(),""))
         }
 
         binding.pcnndata.setOnClickListener {

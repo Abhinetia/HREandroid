@@ -50,6 +50,9 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                     tvTicketstatus.text = dataX.status
                     tvPcn.text = dataX.pcn
                     tvdpcndatapcn.text = dataX.pcn_detail
+                    tvdpcndatapcn.setSelected(true)
+                    tvCreatorname.text = dataX.creator_name + "-" + dataX.creator_role
+                    tvCreatorname.setSelected(true)
 
                     val open = dataX.status
 //                    tvTicketstatus.text = "$open"

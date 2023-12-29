@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="Bill Date"
                 android:minWidth="120dp"
-                android:textColor="@color/black_text"
+                android:textColor="#FF9797"
                 android:textSize="14sp" />
 
 
@@ -61,9 +61,9 @@
                 android:id="@+id/tv_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Amount"
+                android:text="PNG"
                 android:minWidth="120dp"
-                android:textColor="@color/black_text"
+                android:textColor="#FF9797"
                 android:textSize="14sp" />
 
 

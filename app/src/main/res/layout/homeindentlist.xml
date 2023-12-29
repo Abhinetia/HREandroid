@@ -123,12 +123,46 @@
 
 
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rrrrr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="95dp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:minWidth="150dp"
+                    android:text="Creator Name :"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvcretaornme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="PCN852"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="95dp"
+                android:layout_marginTop="120dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp">
 
@@ -164,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginBottom="10dp"
                 android:padding="5dp"
                 android:minWidth="150dp"
