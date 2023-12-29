@@ -287,11 +287,11 @@ class MainActivity : AppCompatActivity() {
                     println("App version: $version")
 
                     if (!dataList!!.need_update.equals("No")){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETEAMS")
                         return
                     }
                     if(!dataList!!.app_version.equals(version)){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETEAMS")
                         return
                     }
 
