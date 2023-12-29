@@ -430,7 +430,7 @@
                         android:layout_gravity="start"
                         android:background="@color/white"
                         android:gravity="start"
-                        android:hint="Comments"
+                        android:hint="Narration"
                         android:padding="12dp"
                         android:singleLine="false"
                         android:textColor="@color/black_text"
