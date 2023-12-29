@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/hre_background"
+    tools:context=".VaultFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:id="@+id/rvbackname"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ivBack"
+                android:padding="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icwhitearrow"/>
+
+            <TextView
+                android:id="@+id/tvheadername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Vault"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/btn_materials"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/round_corner"
+                android:text="Request Cash"
+                android:visibility="invisible"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_folder"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_below="@+id/rvbackname"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_imagedoc"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_below="@+id/rv_folder"
+            android:layout_marginTop="10sp"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+        <TextView
+            android:id="@+id/tv_showPening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:padding="5dp"
+            android:text=""
+            android:visibility="invisible" />
+
+
+
+    </RelativeLayout>
+</FrameLayout>
