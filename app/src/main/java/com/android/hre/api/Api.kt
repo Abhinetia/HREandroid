@@ -23,6 +23,7 @@ import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
 import com.android.hre.response.searchindent.SearchIndent
 import com.android.hre.response.searchmaterialIndents.searchMaterial
+import com.android.hre.response.searchpcndata.SearchPCNDataN
 import com.android.hre.response.statementNew.NewStatment
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
@@ -392,6 +393,16 @@ interface Api {
         @Field("f4") f4 :String,
         @Field("f5") f5 :String
     ) :Call<NewVaultDetiailsMainFolder>
+
+
+    @FormUrlEncoded
+    @POST("search-pcn")
+    fun searchPcn(
+        @Field("user_id") user_id:String,
+        @Field("search") search:String
+    ) :Call<PCN>
+
+
 
 
     @Headers("Content-Type: application/json")

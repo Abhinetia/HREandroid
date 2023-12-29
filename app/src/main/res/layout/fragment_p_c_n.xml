@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colordarkgrey">
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:id="@+id/rvbackname"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:layout_width="60dp"
+            android:id="@+id/ivBack"
+            android:padding="7dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icwhitearrow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/ivBack"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/tvheadername"
+            android:textSize="15dp"
+            android:text="PCN"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivsearch"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_search"/>
+
+
+
+    </RelativeLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/carviewseacrh"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/rvbackname"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etsearch"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="Search"
+                android:inputType="textCapWords"
+                android:layout_toLeftOf="@+id/iv_progressBar"
+                android:padding="13dp"
+                android:singleLine="true"
+                android:textSize="13sp" />
+
+            <ProgressBar
+                android:id="@+id/iv_progressBar"
+                android:layout_width="25dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                android:layout_height="25dp"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rv_recvyler"
+        android:layout_below="@+id/carviewseacrh"
+        android:layout_height="match_parent">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recylergrndata"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <TextView
+            android:id="@+id/tv_showPening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="No Pending  Indent has Been Created"
+            android:visibility="invisible" />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</RelativeLayout>
