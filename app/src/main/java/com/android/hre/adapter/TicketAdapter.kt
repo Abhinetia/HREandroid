@@ -144,6 +144,7 @@ class TicketAdapter(val btnlistner: ViewMoreClickListener) : RecyclerView.Adapte
                                   Intent.putExtra("PCN_Detilas",dataX.pcn_detail)
                                   Intent.putExtra("Priority",dataX.priority)
                                   Intent.putExtra("ticketcreator",dataX.ticket_creator)
+                                  Intent.putExtra("Stauts",dataX.status)    // ststua has been added
                                  // Intent.putExtra("fileUris", fileUris)
 
 

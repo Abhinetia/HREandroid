@@ -63,7 +63,7 @@ class VaultAdapter : RecyclerView.Adapter<VaultAdapter.ViewHolder>() {
                             .into(ivSavedFile)
                     }
                     else{
-                        ivSavedFile.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.attach_svgrepo_com))
+                        ivSavedFile.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_download))
                     }
 
 

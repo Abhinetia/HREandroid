@@ -60,7 +60,7 @@ class ImageMainAdapter (private val mList: List<NewVaultDetiailsMainFolder.DataX
                 .into(holder.imageView)
         }
         else{
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.attach_svgrepo_com))
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_download))
         }
 
         holder.imageView.setOnClickListener {

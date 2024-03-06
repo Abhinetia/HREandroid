@@ -12,23 +12,17 @@ import com.android.hre.response.employee.EmployeeList
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.getconve.Conversation
 import com.android.hre.response.grn.GrnList
-import com.android.hre.response.homeindents.GetIndentsHome
 import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.listmaterial.ListMaterials
 import com.android.hre.response.newindentrepo.NewIndents
 import com.android.hre.response.newticketReponse.TikcetlistNew
 import com.android.hre.response.newvault.NewVaultDetiailsMainFolder
 import com.android.hre.response.pcns.PCN
-import com.android.hre.response.pettycashDetails.PettyCashDetails
 import com.android.hre.response.pettycashfirstscreen.PettyCashFirstScreen
-import com.android.hre.response.searchindent.SearchIndent
 import com.android.hre.response.searchmaterialIndents.searchMaterial
-import com.android.hre.response.searchpcndata.SearchPCNDataN
 import com.android.hre.response.statementNew.NewStatment
 import com.android.hre.response.statment.StatementListData
 import com.android.hre.response.ticketreposnenewCreate.TicketReposneNewCreated
-import com.android.hre.response.tickets.TicketList
-import com.android.hre.response.ticketsearch.SearchTicket
 import com.android.hre.response.transcationinfo.TranscationInfoDetails
 import com.android.hre.response.vaults.VaultDetails
 import com.android.hre.response.viewmoreindent.ViewMoreIndent
@@ -128,6 +122,8 @@ interface Api {
         @Part("issue") issue:RequestBody,
         @Part("ticket_no") ticket_no:RequestBody,
         @Part("priority") priority:RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("comment") comment :RequestBody
     ) :Call<TicketCreated>
 
     @Multipart

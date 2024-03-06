@@ -21,15 +21,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.hre.Constants
 import com.android.hre.LocationHelper
 import com.android.hre.adapter.HomeAdapter
 import com.android.hre.adapter.HomeAdapterNew
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.FragmentHomeBinding
-import com.android.hre.grn.DisplayGrnActivity
 import com.android.hre.response.attenda.LoginpageAttendance
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -52,7 +49,6 @@ import com.android.hre.LoginActivity
 import com.android.hre.MainActivity
 import com.android.hre.PettyCashScreenFragment
 import com.android.hre.TicketFragment
-import com.android.hre.VaultFragment
 import com.android.hre.response.getappdata.AppDetails
 import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
@@ -61,7 +57,6 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import com.android.hre.PCNFragment
 import com.android.hre.VaultMainActivity
-import com.android.hre.VaultMainFragment
 
 
 class HomeFragment : Fragment() {

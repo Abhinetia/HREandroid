@@ -168,10 +168,12 @@ class UpdateTicketActivity : AppCompatActivity() {
                     binding.lineaassign.visibility = View.VISIBLE
                     binding.btnAsiigntickte.visibility = View.VISIBLE
                     binding.btnCretaeticket.visibility = View.GONE
+                    binding.etCommentsofrejection.visibility = View.GONE
                 } else if (selectedItem.equals("Created")|| selectedItem.equals("Reject")) {
                     binding.lineaassign.visibility = View.GONE
                     binding.btnAsiigntickte.visibility = View.GONE
                     binding.btnCretaeticket.visibility = View.VISIBLE
+                    binding.etCommentsofrejection.visibility = View.VISIBLE
                     binding.etComments.setText("")
                     binding.etDate.setText("")
                     binding.etAssignto.setText("")
@@ -277,19 +279,28 @@ class UpdateTicketActivity : AppCompatActivity() {
 
     private fun updateToServer() {
 
+        val comment = binding.etCommentsofrejection.text.toString()
+        val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
+        val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
+        val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
+        val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
+        val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
+        val ststus =  binding.etStstusCreated.text.toString()
+        var ticketststraus = ststus
+        if (ststus.contains("Reject")){
+            ticketststraus = "Rejected"
+        }
+        val ststusda=  RequestBody.create(MediaType.parse("text/plain"), ticketststraus)
+        val commments = RequestBody.create(MediaType.parse("text/plain"), comment)
+
+
+
         val progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Saving Data")
         progressDialog.setMessage("Please wait...")
         progressDialog.setCancelable(false)
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.show()
-
-        val userId = RequestBody.create(MediaType.parse("text/plain"), userid)
-        val ticketno = RequestBody.create(MediaType.parse("text/plain"), ticketno)
-        val priority = RequestBody.create(MediaType.parse("text/plain"), binding.etPriority.text.toString())  // extra added priority
-        val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
-        val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
-
 
         var call: Call<TicketCreated>? = null
 
@@ -299,7 +310,7 @@ class UpdateTicketActivity : AppCompatActivity() {
             call = RetrofitClient.instance.updateticketwithimage(userId,subject,issue,ticketno,priority,image)
 
         }else{
-            call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority)
+            call = RetrofitClient.instance.updateticket(userId,subject,issue,ticketno,priority,ststusda,commments)
         }
 
 //            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), Imaagefile)
