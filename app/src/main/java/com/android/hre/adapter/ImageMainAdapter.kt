@@ -51,7 +51,9 @@ class ImageMainAdapter (private val mList: List<NewVaultDetiailsMainFolder.DataX
 
         //val url = RetrofitClient.BASE_URL.replace("api/","");
 
-        val url = "https://hre.netiapps.com/"
+       // val url = "https://hre.netiapps.com/"
+
+        val url = "https://admin.hresolutions.in/"
 
         if (ItemsViewModel.filename.lowercase().contains(".jpg") || ItemsViewModel.filename.lowercase().contains(".jpeg") || ItemsViewModel.filename.lowercase().contains(".png") ||
             ItemsViewModel.filename.lowercase().contains(".gif")){
