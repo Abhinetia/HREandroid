@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,6 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.webkit.MimeTypeMap
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
@@ -34,6 +36,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import com.android.hre.adapter.AutoCompleteAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.ActivityCreateTicketBinding
@@ -55,6 +58,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.AutoCompleteTextView.Validator as TextViewValidator
@@ -67,6 +71,7 @@ class CreateTicketActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTicketBinding
     var userid: String = ""
     private val pickImage = 100
+    private val pickDocument = 200
     private var imageUri: Uri? = null
     private val IMAGE_PICK_CODE = 1000
     val listdata: ArrayList<String> = arrayListOf()
@@ -241,10 +246,12 @@ class CreateTicketActivity : AppCompatActivity() {
 
             for (i in imgList){
                 Log.v("TAG","imglist is $i")
-                val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+               // val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
+                val requestFile: RequestBody = createRequestBody(i);
+
 
                // val requestBody = RequestBody.create(MediaType.parse("image/jpg"), i)
-                val image =   MultipartBody.Part.createFormData("image[$i]", Imaagefile?.name, requestFile)
+                val image =   MultipartBody.Part.createFormData("image[$i]", getFileName(i), requestFile)
                 listOfImages.add(image)
             }
             Log.v("TAG","Multipartarray is $listOfImages")
@@ -295,6 +302,10 @@ class CreateTicketActivity : AppCompatActivity() {
     }
 
 
+    fun getFileName(file: File): String {
+        return file.name
+    }
+
 
     fun  checkIfPermissionGrantedAndroid13(){
         if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED ||
@@ -341,6 +352,7 @@ class CreateTicketActivity : AppCompatActivity() {
     private fun selectImage() {
         val items = arrayOf<CharSequence>(
              "Choose from Library",
+            "Choose Document",
             "Cancel"
         ) //"Take Photo",
         val builder = AlertDialog.Builder(this@CreateTicketActivity)
@@ -353,7 +365,12 @@ class CreateTicketActivity : AppCompatActivity() {
             if (items[item] == "Choose from Library") {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, pickImage)
-            } else if (items[item] == "Cancel") {
+            }  else if (items[item] == "Choose Document"){
+                val documentIntent = Intent(Intent.ACTION_GET_CONTENT)
+                documentIntent.type = "*/*" // All file types
+                startActivityForResult(documentIntent, pickDocument)
+            }
+            else if (items[item] == "Cancel") {
                 dialog.dismiss()
             }
         }
@@ -416,7 +433,31 @@ class CreateTicketActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == pickImage) {
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                pickImage -> {
+                    // Handle image selection
+                    imageUri = data?.data
+                    file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } }
+                    val fileValue = compressAndSaveImage(file.toString(), 50)
+                    addImage(imageUri!!, fileValue)
+                }
+                pickDocument -> {
+                    val selectedFileUri = data?.data
+                    selectedFileUri?.let { uri ->
+                        val documentFile = DocumentFile.fromSingleUri(this, uri)
+                        val selectedFilePath = documentFile?.uri?.toString()
+                        selectedFilePath?.let {
+                            val selectedFile = getFileFromUri(this,selectedFileUri)
+                            Log.v("FileName", "$selectedFile")
+                            addImage(selectedFileUri, selectedFile!!)
+                        }
+                    }
+                }
+            }
+        }
+       /* if (resultCode == RESULT_OK && requestCode == pickImage) {
             imageUri = data?.data
 //            binding.image.setImageURI(imageUri)
             file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
@@ -429,29 +470,71 @@ class CreateTicketActivity : AppCompatActivity() {
             addImage("$imageUri",fileValue)
 
 
+        }*/
+//        if (resultCode == RESULT_OK && requestCode == 200 && data != null){
+//            //imageView.setImageBitmap(data.extras.get("data") as Bitmap)
+//
+//            val photo = data.extras!!["data"] as Bitmap?
+//            if (photo!= null){
+////                binding.ivImagecapture.setImageBitmap(photo)
+////                binding.ivImagecapture.visibility = View.VISIBLE
+//               // binding.ivCamera.isVisible = false
+//              //  addImage("$photo")
+//
+//            }
+//            imageUri = this?.let { getImageUri(it, photo!!) }
+//            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
+//            val fileValue = compressAndSaveImage(file.toString(),50)
+//
+//            addImage(imageUri!!,fileValue)
+//
+//
+//            Log.v("TAG","image path : $imageUri and $file")
+//
+//        }
+    }
+
+
+    fun createRequestBody(file: File): RequestBody {
+        // Determine the media type based on the file extension or type
+        val mediaType = when (file.extension.toLowerCase()) {
+            "pdf" -> "application/pdf"
+            "doc", "docx" -> "application/msword"
+            "xls", "xlsx" -> "application/vnd.ms-excel"
+            "ppt", "pptx" -> "application/vnd.ms-powerpoint"
+            "jpg", "jpeg" -> "image/jpeg"
+            "png" -> "image/png"
+            // Add more cases for other document types as needed
+            else -> "application/octet-stream" // Default to binary data
         }
-        if (resultCode == RESULT_OK && requestCode == 200 && data != null){
-            //imageView.setImageBitmap(data.extras.get("data") as Bitmap)
-
-            val photo = data.extras!!["data"] as Bitmap?
-            if (photo!= null){
-//                binding.ivImagecapture.setImageBitmap(photo)
-//                binding.ivImagecapture.visibility = View.VISIBLE
-               // binding.ivCamera.isVisible = false
-              //  addImage("$photo")
-
+        // Create the RequestBody using the determined media type
+        return RequestBody.create(MediaType.parse(mediaType), file)
+    }
+    fun getFileFromUri(context: Context, uri: Uri): File? {
+        val contentResolver: ContentResolver = context.contentResolver
+        val inputStream: InputStream? = contentResolver.openInputStream(uri)
+        var file: File? = null
+        inputStream?.use { input ->
+            val fileExtension = getFileExtension(contentResolver, uri)
+            val fileName = "file_${System.currentTimeMillis()}.$fileExtension"
+            val outputFile = File(context.cacheDir, fileName)
+            FileOutputStream(outputFile).use { output ->
+                input.copyTo(output)
             }
-            imageUri = this?.let { getImageUri(it, photo!!) }
-            file = imageUri?.let { getRealPathFromURI(it)?.let { File(it) } };
-            val fileValue = compressAndSaveImage(file.toString(),50)
+            file = outputFile
+        }
+        return file
+    }
 
-            addImage("$imageUri",fileValue)
-
-
-            Log.v("TAG","image path : $imageUri and $file")
-
+    fun getFileExtension(contentResolver: ContentResolver, uri: Uri): String {
+        val mimeType = contentResolver.getType(uri)
+        return if (mimeType != null) {
+            MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType) ?: ""
+        } else {
+            uri.path?.substringAfterLast('.') ?: ""
         }
     }
+
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -764,7 +847,7 @@ class CreateTicketActivity : AppCompatActivity() {
         })
     }
 
-    private fun addImage(image: String,fileValue : File) {
+    private fun addImage(uri: Uri,fileValue : File) {
 
         val infalot = LayoutInflater.from(this)
         val custrom = infalot.inflate(R.layout.addsingleandmultipleimage,null)
@@ -773,18 +856,19 @@ class CreateTicketActivity : AppCompatActivity() {
         val icclose = custrom.findViewById<ImageView>(R.id.imageView_close)
         val linear = custrom.findViewById<LinearLayout>(R.id.linear)
 
-        Log.v("ImahgeBe","$imageUriList")
-
-        imageUriList.add(imageUri!!) // adding the image to the list
-        imageview.setImageURI(imageUri) // setting the image view
+        Log.v("ImahgeBe", uri.toString())
+        imageUriList.add(uri) // adding the image to the list
         imgList.add(fileValue)
 
-        icclose.setOnClickListener {
-//            imageview.setImageResource(0)
-//            icclose.setImageResource(0)
-//            imageUriList.removeAt(1)
-//            imgList.removeAt(1)
+        val mimeType = getMimeType(this, uri)
+        if (isImageMimeType(mimeType)) {
+            imageview.setImageURI(uri) // setting the image view
+        } else if (isPdfMimeType(mimeType)) {
+            imageview.setImageResource(R.drawable.pdf_ic)
+        }
 
+        icclose.setOnClickListener {
+//
             if(imgList.contains(fileValue)){
                 imgList.remove(fileValue)
             }
@@ -800,6 +884,24 @@ class CreateTicketActivity : AppCompatActivity() {
         }
 
         binding.linearLayoutGridLevelSinglePiece.addView(custrom)
+    }
+
+    fun getMimeType(context: Context, uri: Uri): String? {
+        val contentResolver: ContentResolver = context.contentResolver
+        return if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
+            contentResolver.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+        }
+    }
+
+    fun isImageMimeType(mimeType: String?): Boolean {
+        return mimeType?.startsWith("image/") == true
+    }
+
+    fun isPdfMimeType(mimeType: String?): Boolean {
+        return mimeType == "application/pdf"
     }
 
     private fun checkTheRunTimePermissions() {
