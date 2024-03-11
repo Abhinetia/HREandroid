@@ -286,6 +286,13 @@ class UpdateTicketActivity : AppCompatActivity() {
         val subject = RequestBody.create(MediaType.parse("text/plain"), binding.etTickettitle.text.toString())
         val issue = RequestBody.create(MediaType.parse("text/plain"), binding.etDescrtiption.text.toString())
         val ststus =  binding.etStstusCreated.text.toString()
+
+        if (ststus.isEmpty()){
+            binding.etStstusCreated.error = "Please Select Status"
+            binding.etStstusCreated.requestFocus()
+            return
+        }
+
         var ticketststraus = ststus
         if (ststus.contains("Reject")){
             ticketststraus = "Rejected"
@@ -352,6 +359,7 @@ class UpdateTicketActivity : AppCompatActivity() {
         val recipeinet = receiptEmployee.toString()
         val priority = binding.etPriority.text.toString()
         val tat = binding.etDate.text.toString()
+
 
          var ticketststraus = ststus
         if (ststus.equals("Ongoing")){

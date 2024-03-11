@@ -245,7 +245,7 @@
                         android:background="@color/white"
                         android:gravity="start"
                         android:visibility="gone"
-                        android:hint="Rejection Comments"
+                        android:hint="Comments"
                         android:padding="12dp"
                         android:singleLine="false"
                         android:textColor="@color/black_text"
