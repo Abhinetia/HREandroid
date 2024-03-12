@@ -3,6 +3,7 @@ package com.android.hre
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -162,6 +163,13 @@ class ViewTicketActivity : AppCompatActivity() {
             Log.v("Data","$receiptEmployee")
             Log.v("Data","abcd $binding.etpcnId.text.toString()")
 
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Saving Data")
+            progressDialog.setMessage("Please wait...")
+            progressDialog.setCancelable(false)
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+
 
             var call: Call<TicketCreated>? = null
 
@@ -176,6 +184,7 @@ class ViewTicketActivity : AppCompatActivity() {
 
             call.enqueue(object : retrofit2.Callback<TicketCreated> {
                 override fun onResponse(call: Call<TicketCreated>, response: Response<TicketCreated>) {
+                    progressDialog.dismiss()
                     Log.v("TAG", response.body().toString())
                     Log.v("TAG","message "+ response.body()?.message.toString())
                     showAlertDialogOkAndCloseAfter(response.body()?.message.toString())
@@ -183,7 +192,7 @@ class ViewTicketActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TicketCreated>, t: Throwable) {
-
+                    progressDialog.dismiss()
                     Log.v("TAG", t.toString())
                 }
 
