@@ -54,7 +54,9 @@ import com.android.hre.response.homeresponse.DashbardData
 import com.android.hre.response.newindentrepo.NewIndents
 import android.provider.Settings
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.media.MediaPlayer
+import android.text.TextUtils
 import com.android.hre.PCNFragment
 import com.android.hre.VaultMainActivity
 
@@ -276,41 +278,57 @@ class HomeFragment : Fragment() {
 
         binding.slider.onSlideCompleteListener =  object : SlideToActView.OnSlideCompleteListener {
            override fun onSlideComplete(view: SlideToActView) {
-               if (!attendanceOn){
-                   attendanceOn = true
-                   binding.slider.isReversed = true
-                   binding.slider.resetSlider()
-                    simpleDateFormat = SimpleDateFormat("HH:mm")
-                    currentDateAndTime = simpleDateFormat.format(Date())
-                   Log.v("location","$currentDateAndTime")
-                   binding.slider.text = "Attendance Logout"
-                   binding.slider.outerColor = Color.parseColor("#F10909")
-                   getLastLocation()
-                    var action = "login"
-                   mediaPlayer.start()
-                   fetchDashboardData()
+               if (isGpsEnabled()) {
+                   if (!checkLocationPermission()){
+                       if (!attendanceOn){
+                           attendanceOn = true
+                           binding.slider.isReversed = true
+                           binding.slider.resetSlider()
+                           simpleDateFormat = SimpleDateFormat("HH:mm")
+                           currentDateAndTime = simpleDateFormat.format(Date())
+                           Log.v("location","$currentDateAndTime")
+                           binding.slider.text = "Attendance Logout"
+                           binding.slider.outerColor = Color.parseColor("#F10909")
+
+                           getLastLocation()
+
+                           //getLastLocation()
+                           var action = "login"
+                           mediaPlayer.start()
+                           fetchDashboardData()
 //                   editor.putBoolean("isLoggedIn",true)
 //                   editor.apply()
 //                   editor.commit()
-                   loginattendance(action)
-                   fetchtheappData()
-               } else{
-                   attendanceOn = false
-                   binding.slider.isReversed = false
-                   binding.slider.resetSlider()
-                   simpleDateFormat = SimpleDateFormat("HH:mm")
-                   currentDateAndTime = simpleDateFormat.format(Date())
-                   binding.slider.text = "Attendance Login"
-                   binding.slider.outerColor = Color.parseColor("#3EBA26")
-                   getLastLocation()
-                   var action = "logout"
-                 //  mediaPlayer.start()
+                           loginattendance(action)
+                           fetchtheappData()
+                       } else{
+                           attendanceOn = false
+                           binding.slider.isReversed = false
+                           binding.slider.resetSlider()
+                           simpleDateFormat = SimpleDateFormat("HH:mm")
+                           currentDateAndTime = simpleDateFormat.format(Date())
+                           binding.slider.text = "Attendance Login"
+                           binding.slider.outerColor = Color.parseColor("#3EBA26")
+
+                           getLastLocation()
+
+                           //getLastLocation()
+                           var action = "logout"
+                           //  mediaPlayer.start()
 //                   editor.putBoolean("isLoggedIn",false)
 //                   editor.apply()
 //                   editor.commit()
-                   loginattendance(action)
-                   Log.v("location","$currentDateAndTime")
-                   fetchtheappData()
+                           loginattendance(action)
+                           Log.v("location","$currentDateAndTime")
+                           fetchtheappData()
+                       }
+                   } else{
+                       requestLocationPermissionn()
+                   }
+
+               }else {
+                   // GPS is not enabled, show enable GPS dialog
+                   showEnableGpsDialog()
                }
 
            }
@@ -373,6 +391,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun loginattendance( action:String) {
+        if (TextUtils.isEmpty(address)){
+            showAlertDialogOkAndCloseAfter("Address Empty")
+            if(action.equals("login")){
+                attendanceOn = false
+                binding.slider.isReversed = false
+                binding.slider.resetSlider()
+                binding.slider.text = "Attendance Login"
+                binding.slider.outerColor = Color.parseColor("#3EBA26")
+            }else{
+                attendanceOn = true
+                binding.slider.isReversed = true
+                binding.slider.resetSlider()
+                binding.slider.text = "Attendance Logout"
+                binding.slider.outerColor = Color.parseColor("#F10909")
+            }
+            return
+        }
 
         RetrofitClient.instance.getattendance(userid, action,currentDateAndTime,latitude,longitude,address)
             .enqueue(object: retrofit2.Callback<LoginpageAttendance> {
@@ -420,6 +455,8 @@ class HomeFragment : Fragment() {
 
 
     private fun requestLocationPermissionn() {
+        binding.slider.resetSlider()
+
         when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -431,6 +468,7 @@ class HomeFragment : Fragment() {
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 // Explain the need for the permission if necessary
                 // For example, show a dialog explaining why location access is required
+                showLocationPermissionDeniedDialog()
             }
             else -> {
                 // Request the permission from the user
@@ -502,11 +540,11 @@ class HomeFragment : Fragment() {
                     println("App version: $version")
 
                     if (!dataList!!.need_update.equals("No")){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETeams")
                         return
                     }
                     if(!dataList!!.app_version.equals(version)){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETeams")
                         return
                     }
 
@@ -552,9 +590,11 @@ class HomeFragment : Fragment() {
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(alertMessage)
-        builder.setPositiveButton(
-            "OK"
-        ) { dialogInterface, i ->  }  // LoginActivity::class.java
+        builder.setPositiveButton("OK") {
+                                        dialogInterface, i ->
+            dialogInterface.dismiss()
+
+        }  // LoginActivity::class.java
         val alertDialog: Dialog = builder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.show()
@@ -614,8 +654,43 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun isGpsEnabled(): Boolean {
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+    private fun showEnableGpsDialog() {
+        binding.slider.resetSlider()
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.apply {
+            setMessage("GPS is disabled. Enable GPS to proceed.To Login The Attendance or Logout Attendance")
+            setPositiveButton("Enable GPS") { dialog, _ ->
+                // Open GPS settings
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                dialog.dismiss()
+            }
 
-
-
+        }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+        //getLastLocation()
+    }
+    private fun showLocationPermissionDeniedDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.apply {
+            setMessage("Location permission is required for the app to function properly. ")
+            setPositiveButton("Grant Permission") { dialog, _ ->
+                // Request the permission again
+                requestLocationPermissionn()
+                dialog.dismiss()
+            }
+            setNegativeButton("Exit") { dialog, _ ->
+                // Exit the app or take appropriate action
+                dialog.dismiss()
+            }
+        }
+        builder.setCancelable(false)
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
 
 }
