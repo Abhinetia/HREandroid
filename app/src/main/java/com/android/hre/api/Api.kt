@@ -258,7 +258,8 @@ interface Api {
     @FormUrlEncoded
     @POST("get-app-data")
     fun getappData(
-        @Field("user_id") user_id:String
+        @Field("user_id") user_id:String,
+        @Field("app_version") app_version :String
     ) :Call<AppDetails>
 
     @FormUrlEncoded

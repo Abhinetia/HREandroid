@@ -274,49 +274,7 @@ class MainActivity : AppCompatActivity() {
         return "Unknown"
     }
 
-    private fun fetchtheappData() {
-        val call = RetrofitClient.instance.getappData(userid)
-        call.enqueue(object : Callback<AppDetails> {
-            override fun onResponse(call: Call<AppDetails>, response: Response<AppDetails>) {
-                if (response.isSuccessful) {
-                    val indentResponse = response.body()
-                    val dataList = indentResponse?.data
-                    Log.v("dat", dataList.toString())
 
-                    val version = getAppVersion(applicationContext)
-                    println("App version: $version")
-
-                    if (!dataList!!.need_update.equals("No")){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETEAMS")
-                        return
-                    }
-                    if(!dataList!!.app_version.equals(version)){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETEAMS")
-                        return
-                    }
-
-                    if (dataList!!.isloggedin.equals("true")){
-                        // openDashboard()
-                    } else {
-                        openDataLogin()
-                        /*showAlertDialogOkAndCloseAfter("Please contact your Super Admin for more information")
-                        return*/
-                    }
-
-                    val isLoggedIn = dataList!!.isloggedin
-                    val appVersion = dataList!!.app_version
-                    val needUpdate = dataList!!.need_update
-
-                } else  {
-                    // Handle error response
-                }
-            }
-
-            override fun onFailure(call: Call<AppDetails>, t: Throwable) {
-                // Handle network error
-            }
-        })
-    }
 
     fun openDashboard(){
         var intent =  Intent(this, MainActivity::class.java)

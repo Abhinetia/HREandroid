@@ -123,23 +123,25 @@ class SplashScreenAtivity :AppCompatActivity(){
     }
 
     private fun fetchtheappData() {
-        val call = RetrofitClient.instance.getappData(userid)
+        val version = getAppVersion(applicationContext)
+
+        val call = RetrofitClient.instance.getappData(userid,version)
         call.enqueue(object : Callback<AppDetails> {
             override fun onResponse(call: Call<AppDetails>, response: Response<AppDetails>) {
                 if (response.isSuccessful) {
                     val indentResponse = response.body()
                     val dataList = indentResponse?.data
+
                     Log.v("dat", dataList.toString())
 
-                    val version = getAppVersion(applicationContext)
                     println("App version: $version")
 
-                    if (!dataList!!.need_update.equals("No")){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                    if (!dataList!!.need_update.equals("No") && dataList.app_version > version){
+                        showAlertDialogOkAndCloseAfter("Upadte The HRETeams APK ")
                         return
                     }
-                    if(!dataList!!.app_version.equals(version)){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of ARCHIVE")
+                    if((dataList!!.app_version > version) && dataList!!.need_update.equals("No")){
+                        showAlertDialogOkAndCloseAfter("NewApk Is Available For Update")
                         return
                     }
 

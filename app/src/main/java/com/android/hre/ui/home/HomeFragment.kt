@@ -56,6 +56,7 @@ import android.provider.Settings
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.media.MediaPlayer
+import android.os.Message
 import android.text.TextUtils
 import com.android.hre.PCNFragment
 import com.android.hre.VaultMainActivity
@@ -87,7 +88,7 @@ class HomeFragment : Fragment() {
     ) { isGranted ->
         if (isGranted) {
             // Permission granted, proceed with location retrieval
-            getCurrentLocation()
+            getLastLocation("")
         } else {
 
             openAppSettings()
@@ -166,11 +167,11 @@ class HomeFragment : Fragment() {
 
 
 
-        if (checkLocationPermission()) {
-            getLastLocation()
-        } else {
-            requestLocationPermission()
-        }
+//        if (checkLocationPermission()) {
+//            getLastLocation()
+//        } else {
+//            requestLocationPermission()
+//        }
 
         binding.indentdata.setOnClickListener {
 //
@@ -279,7 +280,7 @@ class HomeFragment : Fragment() {
         binding.slider.onSlideCompleteListener =  object : SlideToActView.OnSlideCompleteListener {
            override fun onSlideComplete(view: SlideToActView) {
                if (isGpsEnabled()) {
-                   if (!checkLocationPermission()){
+                   if (isLocationPermissionGranted()){
                        if (!attendanceOn){
                            attendanceOn = true
                            binding.slider.isReversed = true
@@ -290,16 +291,10 @@ class HomeFragment : Fragment() {
                            binding.slider.text = "Attendance Logout"
                            binding.slider.outerColor = Color.parseColor("#F10909")
 
-                           getLastLocation()
-
-                           //getLastLocation()
                            var action = "login"
+                           getLastLocation(action)
                            mediaPlayer.start()
-                           fetchDashboardData()
-//                   editor.putBoolean("isLoggedIn",true)
-//                   editor.apply()
-//                   editor.commit()
-                           loginattendance(action)
+                           //fetchDashboardData()
                            fetchtheappData()
                        } else{
                            attendanceOn = false
@@ -310,15 +305,10 @@ class HomeFragment : Fragment() {
                            binding.slider.text = "Attendance Login"
                            binding.slider.outerColor = Color.parseColor("#3EBA26")
 
-                           getLastLocation()
-
-                           //getLastLocation()
                            var action = "logout"
-                           //  mediaPlayer.start()
-//                   editor.putBoolean("isLoggedIn",false)
-//                   editor.apply()
-//                   editor.commit()
-                           loginattendance(action)
+                           getLastLocation(action)
+
+
                            Log.v("location","$currentDateAndTime")
                            fetchtheappData()
                        }
@@ -353,18 +343,15 @@ class HomeFragment : Fragment() {
         ActivityCompat.requestPermissions(context as Activity, arrayOf(permission), LOCATION_PERMISSION_REQUEST_CODE)
     }
 
-    private fun getLastLocation() {
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
+    private fun getLastLocation(action: String) {
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
 
             return
@@ -377,22 +364,31 @@ class HomeFragment : Fragment() {
                     address = locationHelper.getAddressFromLocation(latitude, longitude)
                         .toString()
 
-                   // address = getAddressFromLocation(requireContext(), latitude, longitude)!!
+                    if(!TextUtils.isEmpty(action)){
+                        loginattendance(action)
+                    }
+
+                    // address = getAddressFromLocation(requireContext(), latitude, longitude)!!
                     Log.v("location","$latitude+ $longitude + $address")
 
                 }
             }
             .addOnFailureListener { exception: Exception ->
+                showToast("Sorry unable to fetch the address.")
             }
+    }
+
+    fun showToast(message: String){
+        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
     }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 123
+        private const val GPS_REQUEST_CODE = 124
     }
 
     private fun loginattendance( action:String) {
         if (TextUtils.isEmpty(address)){
-            showAlertDialogOkAndCloseAfter("Address Empty")
             if(action.equals("login")){
                 attendanceOn = false
                 binding.slider.isReversed = false
@@ -406,6 +402,7 @@ class HomeFragment : Fragment() {
                 binding.slider.text = "Attendance Logout"
                 binding.slider.outerColor = Color.parseColor("#F10909")
             }
+            showAlertDialogOkAndCloseAfter("Please Check Your GPS is Working Or Not")
             return
         }
 
@@ -453,15 +450,42 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun isLocationPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GPS_REQUEST_CODE) {
+            // Check GPS status after the user returns from the settings screen
+            checkGPSStatusAndGetCurrentLocation()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Location permission granted, proceed to check GPS status and get current location
+                checkGPSStatusAndGetCurrentLocation()
+            } else {
+              showLocationPermissionDeniedDialog()
+            }
+        }
+    }
 
     private fun requestLocationPermissionn() {
         binding.slider.resetSlider()
 
+
         when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
                 // Permission already granted, proceed with location retrieval
                 getCurrentLocation()
             }
@@ -474,6 +498,17 @@ class HomeFragment : Fragment() {
                 // Request the permission from the user
                 locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
+        }
+    }
+
+
+    private fun checkGPSStatusAndGetCurrentLocation() {
+
+        if (isGpsEnabled()) {
+            getLastLocation("")
+        } else {
+            // GPS is not enabled, prompt the user to enable it
+            showEnableGpsDialog()
         }
     }
 
@@ -528,7 +563,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchtheappData() {
-        val call = RetrofitClient.instance.getappData(userid)
+        version = getAppVersion(requireContext())
+        val call = RetrofitClient.instance.getappData(userid,version)
         call.enqueue(object : Callback<AppDetails> {
             override fun onResponse(call: Call<AppDetails>, response: Response<AppDetails>) {
                 if (response.isSuccessful) {
@@ -536,15 +572,15 @@ class HomeFragment : Fragment() {
                     val dataList = indentResponse?.data
                     Log.v("dat", dataList.toString())
 
-                     version = getAppVersion(context!!)
+
                     println("App version: $version")
 
-                    if (!dataList!!.need_update.equals("No")){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETeams")
+                    if (!dataList!!.need_update.equals("No") && dataList.app_version > version){
+                        showAlertDialogOkAndCloseAfter("Upadte The HRETeams APK ")
                         return
                     }
-                    if(!dataList!!.app_version.equals(version)){
-                        showAlertDialogOkAndCloseAfter("Please Use the latest Application of HRETeams")
+                    if((dataList!!.app_version > version) && dataList!!.need_update.equals("No")){
+                        showAlertDialogOkAndCloseAfter("NewApk Is Available For Update")
                         return
                     }
 
@@ -680,8 +716,8 @@ class HomeFragment : Fragment() {
             setMessage("Location permission is required for the app to function properly. ")
             setPositiveButton("Grant Permission") { dialog, _ ->
                 // Request the permission again
-                requestLocationPermissionn()
                 dialog.dismiss()
+                openAppSettings()
             }
             setNegativeButton("Exit") { dialog, _ ->
                 // Exit the app or take appropriate action

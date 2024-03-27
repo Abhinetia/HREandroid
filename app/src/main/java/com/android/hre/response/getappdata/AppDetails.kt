@@ -6,8 +6,8 @@ data class AppDetails(
     val status: Int
 ) {
     data class Data(
-        val app_version: String,
+        var app_version: String,
         val isloggedin: String,
-        val need_update: String
+        var need_update: String
     )
 }
