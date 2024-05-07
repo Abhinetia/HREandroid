@@ -51,6 +51,13 @@ interface Api {
        @Field("material_brand") material_brand :String
    ) :Call<Getmaterials>
 
+    @FormUrlEncoded
+    @POST("get-product-details")
+    fun getUserMaterialsearch(
+        @Field("code") code:String,
+        @Field("user_id") user_id:String
+    ) :Call<searchMaterial>
+
    @FormUrlEncoded
    @POST("get-material-list")
    fun getListMaterial(
@@ -324,12 +331,19 @@ interface Api {
 //    @POST("create-indent")
 //     fun createIndent(@Body request: CreateIndentRequest): Call<IndentResponse>
 
-    @FormUrlEncoded
+    //previous response
+   /* @FormUrlEncoded
     @POST("search-material")
     fun searchMaterialData(
         @Field("search") search:String
     ) : Call<searchMaterial>
+*/
 
+    @FormUrlEncoded
+    @POST("custom-material-search")
+    fun searchMaterialData(
+        @Field("search") search:String
+    ) : Call<searchMaterial>
 
     @FormUrlEncoded
     @POST("assign-ticket")

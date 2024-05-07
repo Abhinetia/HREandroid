@@ -15,12 +15,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.hre.adapter.AttendanceDataAdapter
 import com.android.hre.adapter.CustomAdapterList
 import com.android.hre.adapter.SearchMaterialIndentAdapter
 import com.android.hre.api.RetrofitClient
 import com.android.hre.databinding.BottomSheetDialogBinding
 import com.android.hre.interfac.CustomAdapterListInterface
 import com.android.hre.response.Getmaterials
+import com.android.hre.response.attendncelist.AttendanceListData
 import com.android.hre.response.searchmaterialIndents.searchMaterial
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
@@ -85,8 +88,9 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                 // fetchthelistMaterial(s.toString())
             }
         })
-
-
+        binding.btnSearch.setOnClickListener {
+            fetchTheMaterials()
+        }
 
         return binding.root
 
@@ -102,54 +106,9 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-/*
-    private fun fetchthelistMaterial() {
-
-        RetrofitClient.instance.getListMaterial(userid)
-            .enqueue(object: retrofit2.Callback<ListMaterials> {
-                override fun onFailure(call: Call<ListMaterials>, t: Throwable) {
-                    Toast.makeText(context, "Reqeusted List not Found", Toast.LENGTH_LONG).show()
-                }
-
-                override fun onResponse(call: Call<ListMaterials>, response: Response<ListMaterials>) {
-                    // val jsonresponse = response.body()
-
-                    var listMaterials: ListMaterials? = response.body()
-                    listdata.clear()
-
-                    var arrayList_details: List<ListMaterials.Data>? = listMaterials?.data
-
-                    for (i in 0 until arrayList_details?.size!!){
-                        val dataString : ListMaterials.Data  = arrayList_details.get(i)
-
-                        Log.v("log",i.toString())
-                        listdata.add(dataString.name)
-                    }
-
-
-                  //  val arrayAdapter = ArrayAdapter(context!!,R.layout.dropdwon_item,listdata)
-                    val arrayAdapter =
-                        AutoCompleteAdapter(context, R.layout.dropdwon_item, listdata)
-
-                    binding.etMaterial.setAdapter(arrayAdapter)
-                    binding.etMaterial.setThreshold(1)
-
-
-                    binding.etMaterial.setOnItemClickListener { adapterView, view, i, l ->
-
-                       // binding.etMaterial.isEnabled = false
-
-
-                    }
-                }
-            })
-
-    }
-*/
 
 
     private fun fetchthelistMaterial(search: String) {
-
         searchListMultiple.clear()
         RetrofitClient.instance.searchMaterialData(search)
             .enqueue(object : retrofit2.Callback<searchMaterial> {
@@ -186,60 +145,52 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                             binding.lisview.visibility = View.VISIBLE
                         }
 
-
-                        // Drop down layout style - simple list view with radio button
-                        //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        //searchList.adapter = adapter
-
                         customAdapterList = CustomAdapterList(arrayList_details, mContext,this@FullScreenBottomSheetDialog)
                         binding.lisview.adapter= customAdapterList
 
-
                     }
                 }
             })
 
     }
 
-/*
+
     private fun fetchTheMaterials() {
 
-        val itemCode =  binding.etItemcode.text.toString().trim()
-        val materialName = binding.etMaterial.text.toString().trim()
-        val materialBrnad = binding.etBrnad.text.toString().trim()
+        val itemCode =  binding.searchitemcode.text.toString().trim()
+        if (itemCode.isEmpty()){
+            showAlertDialogOkAndCloseAfter("Item Code Cannot be empty ")
 
+            return
+        }
 
-        RetrofitClient.instance.getUserMaterial(itemCode, materialName,materialBrnad)
-            .enqueue(object: retrofit2.Callback<Getmaterials> {
-                override fun onFailure(call: Call<Getmaterials>, t: Throwable) {
+        RetrofitClient.instance.getUserMaterialsearch(itemCode,userid)
+            .enqueue(object: retrofit2.Callback<searchMaterial> {
+                override fun onFailure(call: Call<searchMaterial>, t: Throwable) {
                     Toast.makeText(context, "Reqeusted Id not Found", Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<Getmaterials>, response: Response<Getmaterials>) {
-                    Log.v("Sucess",response.body().toString())
-//
-                    response.body()?.let { itBody ->
-                        itBody.data.let { itData ->
-                            if (itData.isNotEmpty()) {
-                                searchMaterialIndentAdapter.differ.submitList(itData)
-                                //Recycler
-                                binding.searchList.apply {
-                                    layoutManager = LinearLayoutManager(context)
-                                    adapter = searchMaterialIndentAdapter
-                                }
-
-                                val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                imm.hideSoftInputFromWindow(view?.windowToken, 0)
-
+                override fun onResponse(call: Call<searchMaterial>, response: Response<searchMaterial>) {
+                    if (response.isSuccessful) {
+                        val indentResponse = response.body()
+                        val dataList = indentResponse?.data
+                        if (!dataList.isNullOrEmpty()) {
+                            Log.v("dat", dataList.toString())
+                            for (data in dataList) {
+                                addData(data)
                             }
+                        } else {
+                            // Handle empty data response here
+                            showAlertDialogOkAndCloseAfter("Invalid Item Code")
                         }
+                    } else {
+                        Log.v("dat", "Unsuccessful response")
                     }
-
                 }
             })
 
     }
-*/
+
 
 
 
@@ -261,17 +212,6 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
 
     override fun onItemClick(datax: Getmaterials.DataX, size: String, desc: String) {
 
-//        val data = Intent()
-//        data.putExtra("MaterialID",  datax.material_id)
-//        data.putExtra("MaterialBrand", datax.brand)
-//        data.putExtra("MaterialName", datax.name)
-//        data.putExtra("MaterialUOM", datax.uom)
-//        data.putExtra("MaterialSize",size)
-//        data.putExtra("MaterialDescrption",desc)
-
-//        Indent(materialId = datax.material_id, description = desc, quantity = size)
-
-
         bottomSheetItemClickListener.onClick(datax,size,desc)
         dialog?.dismiss()
 
@@ -281,7 +221,6 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
         fun onClick(datax : Getmaterials.DataX,size : String, desc :String)
     }
     private fun addData(datax: searchMaterial.Data) {
-
         val infalot = LayoutInflater.from(context)
         val custrom = infalot.inflate(R.layout.item_layout,null)
 
@@ -293,10 +232,12 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
         val remarks = custrom.findViewById<TextInputEditText>(R.id.description)
         val tvsleect = custrom.findViewById<TextView>(R.id.tv_viewmore)
         val infoDisplay = custrom.findViewById<TextView>(R.id.tv_display)
+        val uom = custrom.findViewById<TextView>(R.id.qteey)
 
         materialName.text = datax.name
         brandNmae.text = datax.brand
         itemcode.text = datax.item_code
+        uom.text = datax.uom
 
         var infoDetails = datax.information
         var obj = JSONObject(infoDetails)
@@ -330,8 +271,8 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
             val descEntered = remarks.text.toString()
 
 
-            if (qtyenteredd.isEmpty()){
-                showAlertDialogOkAndCloseAfter("Quantity required")
+            if (qtyenteredd.isEmpty()|| qtyenteredd == "0"){
+                showAlertDialogOkAndCloseAfter("Quantity cannot be zero or empty")
 
                 //Toast.makeText(context,"Quantity required",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -349,18 +290,9 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
             Log.v("DATA",getmaterials.toString())
 
 //
-//            val qtyenteredd = qtyedity.text.toString()
-//            val descEntered = remarks.text.toString()
-
 
 
            // data.information = brandNmae.text.toString()
-
-//            val brand: String,
-//            //  val information: Information,
-//            val material_id: String,
-//            val name: String,
-//            val uom: String,
 //            val information: Map<String,String>
 
             bottomSheetItemClickListener.onClick(getmaterials,qtyenteredd,descEntered)
@@ -394,6 +326,10 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
     override fun onItemClick(datax: searchMaterial.Data) {
         binding.lisview.visibility = View.GONE
         addData(datax)
+
+        binding.etMaterial.text.clear()
+        binding.etMaterial.clearFocus()
+
     }
     private fun showAlertDialogOkAndCloseAfter(alertMessage: String) {
         val builder = AlertDialog.Builder(requireContext())

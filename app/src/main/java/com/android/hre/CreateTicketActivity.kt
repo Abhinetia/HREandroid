@@ -669,10 +669,10 @@ class CreateTicketActivity : AppCompatActivity() {
 //                    val arrayAdapter =
 //                        ArrayAdapter(this@CaretingIndeNewActivity, R.layout.dropdwon_item, listdata)
 
-                  //  Toast.makeText(this@CreateTicketActivity,listdata.size,Toast.LENGTH_SHORT).show()
+                    //  Toast.makeText(this@CreateTicketActivity,listdata.size,Toast.LENGTH_SHORT).show()
                     Log.v("TAG","$listdata")
                     val arrayAdapter =
-                        AutoCompleteAdapter(this@CreateTicketActivity, R.layout.dropdwon_item, listdata)
+                        AutoCompleteAdapter(this@CreateTicketActivity, android.R.layout.simple_list_item_1, listdata)
 
 
                     binding.etSelctpcn.setAdapter(arrayAdapter)
@@ -710,7 +710,7 @@ class CreateTicketActivity : AppCompatActivity() {
                             if (enteredText.isNotEmpty() && !listdata.contains(enteredText)) {
                                 // Handle the case when the user didn't select from the dropdown
                                 showAlertDialogOkAndCloseAr("Wrong PCN, please select from Drop Down: $enteredText","")
-                               // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
+                                // Toast.makeText(this@CreateTicketActivity, "wrong input please correct: $enteredText", Toast.LENGTH_SHORT).show()
                                 binding.etSelctpcn.setText("")
                                 binding.etSelctpcn.requestFocus()// Clear the invalid entry
                             }
@@ -748,13 +748,12 @@ class CreateTicketActivity : AppCompatActivity() {
 
 
                 }
-                
+
 
             })
 
 
     }
-
 
 
 
