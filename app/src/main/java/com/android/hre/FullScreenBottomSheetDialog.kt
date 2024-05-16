@@ -66,9 +66,6 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
         Log.v("Sucede",listdata.toString())
 
 //
-//        binding.btnMaterials.setOnClickListener {
-//            fetchTheMaterials()
-//        }
         binding.ivnotification.setOnClickListener {
             dialog?.dismiss()
         }
@@ -80,7 +77,9 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 //handleSearchInput(s.toString())
-                fetchthelistMaterial(s.toString())
+                if(s.toString().length > 0){
+                    fetchthelistMaterial(s.toString())
+                }
 
             }
 
@@ -95,18 +94,6 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
         return binding.root
 
     }
-    fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        var view = activity.currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-
 
     private fun fetchthelistMaterial(search: String) {
         searchListMultiple.clear()
@@ -178,6 +165,8 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
                             Log.v("dat", dataList.toString())
                             for (data in dataList) {
                                 addData(data)
+                                binding.searchitemcode.text.clear()
+                                binding.searchitemcode.clearFocus()
                             }
                         } else {
                             // Handle empty data response here
@@ -197,9 +186,7 @@ class FullScreenBottomSheetDialog constructor(private val bottomSheetItemClickLi
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.setOnShowListener { dialogInterface ->
-//            val bottomSheetBehavior: BottomSheetBehavior<*> =
-//                BottomSheetBehavior.from<View>(bottomSheet)
-//            bottomSheetBehavior.setPeekHeight(200)
+//
         }
         return dialog
     }
