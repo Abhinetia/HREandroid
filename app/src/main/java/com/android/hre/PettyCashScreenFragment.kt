@@ -251,8 +251,8 @@ class PettyCashScreenFragment : Fragment() {
                        // binding.tvsepend.text =  "₹" + ""+ dataString.balance_amount.toString()
 
 
-                        val num1issued : Int = dataString.issued_amount.toInt()
-                        val num2mySpend : Int = dataString.my_spend.toInt()
+                        val num1issued  = dataString.issued_amount.toInt()
+                        val num2mySpend  = dataString.my_spend.toInt()
 
                         val balancetotal = num1issued - num2mySpend
 

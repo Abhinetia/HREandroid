@@ -371,7 +371,7 @@
         android:layout_alignParentBottom="true"
         android:textAllCaps="false"
         android:textSize="14sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:clickable="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="38dp"
